@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components';
+import Topbar from '@/app/topbar';
+import Footer from '@/app/footer';
 import './globals.css';
 
 const fontSans = FontSans({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-sans' });
@@ -16,7 +18,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <html lang="en" suppressHydrationWarning>
             <body
                 className={cn(
-                    'min-h-screen bg-background font-sans antialiased',
+                    'min-w-screen min-h-screen bg-background font-sans antialiased',
                     fontSans.variable
                 )}
             >
@@ -26,7 +28,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                     enableSystem
                     disableTransitionOnChange
                 >
-                    {children}
+                    <Topbar />
+                    <div className="max-w-screen-3xl relative flex min-h-screen min-w-full flex-col items-center justify-start">
+                        <main className="min-h-main md:min-h-mainMd pt-nav md:pt-navMd relative flex min-w-full flex-col items-center justify-start">
+                            {children}
+                        </main>
+                        <Footer />
+                    </div>
                 </ThemeProvider>
             </body>
         </html>
