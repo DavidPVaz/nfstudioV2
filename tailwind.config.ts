@@ -16,7 +16,7 @@ const config = {
             padding: '2rem',
             screens: {
                 '2xl': '1400px',
-                '3xl': '1600px'
+                '3xl': '1536px'
             }
         },
         extend: {
@@ -76,14 +76,6 @@ const config = {
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out'
-            },
-            spacing: {
-                footer: 'var(--footer)',
-                footerMd: 'var(--footer-md)',
-                main: 'calc(100vh - var(--footer))',
-                mainMd: 'calc(100vh - var(--footer-md))',
-                nav: 'calc(var(--nav))',
-                navMd: 'calc(var(--nav-md))'
             }
         }
     },

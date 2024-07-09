@@ -33,10 +33,6 @@
         --ring: 222.2 84% 4.9%;
 
         --radius: 0.5rem;
-        --footer: 3rem;
-        --footer-md: 7rem;
-        --nav: 56px;
-        --nav-md: 80px;
     }
 
     .dark {
@@ -77,6 +73,7 @@
     }
     body {
         @apply bg-background text-foreground;
+        padding-left: calc(100vw - 100%);
     }
 }
 

@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter as FontSans } from 'next/font/google';
+import { Chakra_Petch as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from '@/components';
-import Topbar from '@/app/topbar';
-import Footer from '@/app/footer';
-import './globals.css';
+import { Header, Footer } from '@/components/organisms';
+import '@/styles/globals.css';
 
 const fontSans = FontSans({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-sans' });
 
@@ -28,10 +27,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <Topbar />
-                    <div className="max-w-screen-3xl relative flex min-h-screen min-w-full flex-col items-center justify-start">
-                        <main className="min-h-main md:min-h-mainMd pt-nav md:pt-navMd relative flex min-w-full flex-col items-center justify-start">
-                            {children}
+                    <div className="relative flex min-h-screen flex-col">
+                        <Header />
+                        <main className="flex-1">
+                            <div className="container relative">{children}</div>
                         </main>
                         <Footer />
                     </div>
