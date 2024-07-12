@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Chakra_Petch as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
-import { ThemeProvider } from '@/components';
+import { ColorThemeProvider } from '@/app/color-theme-provider';
 import { Header, Footer } from '@/components/organisms';
 import '@/styles/globals.css';
 
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                     fontSans.variable
                 )}
             >
-                <ThemeProvider
+                <ColorThemeProvider
                     attribute="class"
                     defaultTheme="system"
                     enableSystem
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                         </main>
                         <Footer />
                     </div>
-                </ThemeProvider>
+                </ColorThemeProvider>
             </body>
         </html>
     );

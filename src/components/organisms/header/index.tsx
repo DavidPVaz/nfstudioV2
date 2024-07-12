@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { ToggleTheme } from '@/components';
-import { Button } from '@/components/ui/button';
+import { ToggleColorTheme } from '@/components/molecules';
+import { Button } from '@/components/atoms';
 import { NFStudioIcon, NFStudioLettersIcon, TwitterIcon } from '@/resources';
 
 export const Header = () => {
@@ -19,7 +19,7 @@ export const Header = () => {
                             <span className="sr-only">Go to NFStudio's main page</span>
                         </Link>
                     </Button>
-                    <Button className="text-base sm:text-lg" variant="link" asChild>
+                    <Button className="font-semibold sm:text-lg" variant="link" asChild>
                         <Link
                             aria-label="Go to collections"
                             className="flex flex-row items-center gap-1"
@@ -42,7 +42,7 @@ export const Header = () => {
                         </a>
                     </Button>
 
-                    <ToggleTheme />
+                    <ToggleColorTheme />
                 </div>
             </div>
         </header>

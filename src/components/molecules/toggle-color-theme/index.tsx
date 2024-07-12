@@ -3,9 +3,9 @@
 import React, { useCallback } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms';
 
-export const ToggleTheme = () => {
+export const ToggleColorTheme = () => {
     const { setTheme, theme } = useTheme();
 
     const onToggle = useCallback(

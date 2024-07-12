@@ -1,0 +1,28 @@
+import { buildQueryString } from '@/lib/utils';
+import { type ImageLoaderProps } from 'next/image';
+
+interface LoaderProps extends ImageLoaderProps {
+    maxAge?: number | string;
+    sMaxAge?: number | string;
+}
+
+/**
+ * Create a custom image loader endpoint representation to use in image optimization.
+ *
+ * @param {LoaderProps} data data to compose URL query
+ * @param {LoaderProps['src']} data.url image src
+ * @param {LoaderProps['width']} data.width intended image width
+ * @param {LoaderProps['quality']} [data.quality] intended image quality
+ * @param {LoaderProps['maxAge']} [data.maxAge] number of seconds of browser cache
+ * @param {LoaderProps['sMaxAge']} [data.sMaxAge] number of seconds of server cache
+ */
+const loader = ({ src, width: w, quality: q, maxAge, sMaxAge }: LoaderProps) =>
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/loader?${buildQueryString({
+        src,
+        w,
+        q,
+        maxAge,
+        sMaxAge
+    })}`;
+
+export default loader;
