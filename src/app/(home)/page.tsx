@@ -19,20 +19,13 @@ const MOBILE = [
 
 const prefix = 'https://images.ctfassets.net/ze23ubzzqb1s';
 
-import { Image } from '@/components/atoms';
+import { NFTCard } from '@/components/molecules';
 
 export default function Home() {
     return (
-        <div className="relative flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-2 p-8">
-            {MOBILE.map(src => (
-                <div key={src} className="relative flex h-auto w-80 rounded-md bg-slate-600 p-2">
-                    <Image
-                        src={`${prefix}/${src}`}
-                        alt={'image'}
-                        optimizedWidth={300}
-                        useCustomLoader={false}
-                    />
-                </div>
+        <div className="relative grid grid-cols-2 items-center justify-center justify-items-center gap-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+            {MOBILE.map((src: string) => (
+                <NFTCard key={src} imgSrc={`${prefix}/${src}`} href="/collections" />
             ))}
         </div>
     );

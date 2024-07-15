@@ -6,7 +6,7 @@ import { NFStudioIcon, NFStudioLettersIcon, TwitterIcon } from '@/resources';
 
 export const Header = () => {
     return (
-        <header className="sticky top-0 z-50 w-full backdrop-blur">
+        <header className="sticky top-0 z-50 w-full backdrop-blur-md">
             <div className="container flex h-16 items-center justify-between gap-3">
                 <nav className="flex flex-row items-center gap-4">
                     <Button className="px-0 py-0" variant="link" asChild>
