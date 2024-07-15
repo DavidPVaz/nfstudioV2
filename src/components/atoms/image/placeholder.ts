@@ -1,3 +1,5 @@
+import { type PlaceholderValue } from 'next/dist/shared/lib/get-img-props';
+
 const shimmer = () => `
 <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
@@ -15,4 +17,5 @@ const shimmer = () => `
 const toBase64 = (string: string) =>
     typeof window === 'undefined' ? Buffer.from(string).toString('base64') : window.btoa(string);
 
-export const generatePlaceholder = () => `svg+xml;base64,${toBase64(shimmer())}`;
+export const generatePlaceholder = (): PlaceholderValue =>
+    `data:image/svg+xml;base64,${toBase64(shimmer())}`;

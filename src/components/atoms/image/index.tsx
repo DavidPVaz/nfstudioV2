@@ -8,21 +8,24 @@ import loader from './loader';
 import { generatePlaceholder } from './placeholder';
 import { cn } from '@/lib/utils';
 
-const imageVariants = cva('relative flex items-center justify-center overflow-hidden', {
-    variants: {
-        variant: {
-            default: 'object-cover',
-            contain: 'object-contain'
+const imageVariants = cva(
+    'relative flex items-center justify-center overflow-hidden object-center',
+    {
+        variants: {
+            variant: {
+                default: 'object-cover',
+                contain: 'object-contain'
+            },
+            size: {
+                default: 'h-full w-full'
+            }
         },
-        size: {
-            default: 'h-full w-full'
+        defaultVariants: {
+            variant: 'default',
+            size: 'default'
         }
-    },
-    defaultVariants: {
-        variant: 'default',
-        size: 'default'
     }
-});
+);
 
 export interface ImageProps
     extends React.ImgHTMLAttributes<HTMLImageElement>,
@@ -87,7 +90,7 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
                 unoptimized={!useCustomLoader}
                 priority={priority}
                 loading={priority ? 'eager' : 'lazy'}
-                placeholder={usePlaceholder ? `data:image/${generatePlaceholder()}` : undefined}
+                placeholder={usePlaceholder ? generatePlaceholder() : undefined}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
