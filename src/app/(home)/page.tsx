@@ -19,151 +19,33 @@ const MOBILE = [
 
 const prefix = 'https://images.ctfassets.net/ze23ubzzqb1s';
 
-import { NFTCard } from '@/components/molecules';
-import { Image } from '@/components/atoms';
+import { NFTCard, Gallery } from '@/components/molecules';
 
 export default function Home() {
     return (
-        <div className="relative flex w-fit flex-col items-center justify-start gap-y-12 md:gap-y-32">
-            <Gallery />
+        <div className="relative flex w-full flex-col items-center justify-start gap-y-12 md:gap-y-32">
+            <TopSection />
             <div>TEXT</div>
-            <div className="relative grid grid-cols-2 items-center justify-center justify-items-center gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
                 {MOBILE.map((src: string) => (
-                    <NFTCard key={src} imgSrc={`${prefix}/${src}`} href="/collections" />
+                    <NFTCard
+                        imgAlt="temp"
+                        key={src}
+                        imgSrc={`${prefix}/${src}`}
+                        href="/collections"
+                    />
                 ))}
             </div>
         </div>
     );
 }
-/*
-    width: 500%;
-    margin-left: -200%;
-    background-color:#aaa;
-    padding: 20px;
-*/
 
-const Gallery = () => {
+const TopSection = () => {
     return (
-        <div className="relative flex w-fit flex-row">
+        <section className="relative flex w-fit flex-row">
             <div className="hidden flex-col p-2 md:flex md:w-1/5">SOME TEXT</div>
-            <div className="flex flex-wrap md:w-4/5">
-                <div className="flex w-1/2 flex-wrap">
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-full p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                </div>
-                <div className="flex w-1/2 flex-wrap">
-                    <div className="w-full p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                </div>
-                <div className="flex w-1/2 flex-wrap">
-                    <div className="w-full p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                </div>
-                <div className="flex w-1/2 flex-wrap">
-                    <div className="w-full p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                    <div className="w-1/2 p-1 md:p-2">
-                        <Image
-                            optimizedWidth={500}
-                            alt="gallery"
-                            className="rounded-md"
-                            src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
-                            useCustomLoader={false}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
+            <Gallery className="md:w-4/5" />
+        </section>
     );
 };
