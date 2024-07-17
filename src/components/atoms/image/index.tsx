@@ -10,8 +10,8 @@ import { cn } from '@/lib/utils';
 const imageVariants = cva('pointer-events-none object-center', {
     variants: {
         variant: {
-            default: 'object-contain',
-            cover: 'object-cover',
+            default: 'object-cover',
+            contain: 'object-contain',
             fill_cover: 'object-cover !relative !h-[unset] !w-full',
             fill_contain: 'object-contain !relative !h-[unset] !w-full'
         }

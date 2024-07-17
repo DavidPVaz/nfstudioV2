@@ -23,20 +23,21 @@ import { NFTCard, Gallery } from '@/components/molecules';
 
 export default function Home() {
     return (
-        <div className="relative flex w-full flex-col items-center justify-start gap-y-12 md:gap-y-32">
+        <div className="relative flex w-full flex-col items-center justify-start gap-y-24 md:gap-y-36">
             <TopSection />
-            <div>TEXT</div>
-
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                {MOBILE.map((src: string) => (
-                    <NFTCard
-                        imgAlt="temp"
-                        key={src}
-                        imgSrc={`${prefix}/${src}`}
-                        href="/collections"
-                    />
-                ))}
-            </div>
+            <IntroSection />
+            <CollectionsSection>
+                <>
+                    {MOBILE.map((src: string) => (
+                        <NFTCard
+                            imgAlt="temp"
+                            key={src}
+                            imgSrc={`${prefix}/${src}`}
+                            href="/collections"
+                        />
+                    ))}
+                </>
+            </CollectionsSection>
         </div>
     );
 }
@@ -46,6 +47,42 @@ const TopSection = () => {
         <section className="relative flex w-fit flex-row">
             <div className="hidden flex-col p-2 md:flex md:w-1/5">SOME TEXT</div>
             <Gallery className="md:w-4/5" />
+        </section>
+    );
+};
+
+const IntroSection = () => {
+    return (
+        <section className="flex flex-col gap-y-10">
+            <h2 className="text-center text-3xl font-semibold leading-none sm:text-4xl lg:text-5xl xl:text-6xl">
+                Elevate your NFT collection with ease!
+            </h2>
+            <span className="text-start text-lg sm:text-center sm:text-xl md:text-2xl lg:text-3xl">
+                <strong>Create</strong> captivating <strong>social</strong> <strong>media</strong>{' '}
+                <strong>banners</strong>, <strong>desktop</strong> and <strong>mobile</strong>{' '}
+                <strong>wallpapers</strong> from your <strong>favorite</strong>{' '}
+                <strong>NFTs</strong> in <strong>seconds</strong>. Our <strong>user</strong>
+                <strong>-</strong>
+                <strong>friendly</strong> <strong>interface</strong> makes it simple to create{' '}
+                <strong>professional</strong>
+                <strong>-</strong>
+                <strong>looking</strong> <strong>graphics</strong> without the need for editing
+                skills. Join the digital art revolution and showcase your NFTs like never before.
+                Start converting your collection today!
+            </span>
+        </section>
+    );
+};
+
+const CollectionsSection = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    return (
+        <section className="flex w-full flex-col justify-start gap-y-6 sm:gap-y-10">
+            <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
+                COLLECTIONS
+            </h3>
+            <div className="3xl:grid-cols-6 xs:grid-cols-2 2xs:grid-cols-3 grid w-full grid-cols-1 gap-3 md:grid-cols-4 xl:grid-cols-5">
+                {children}
+            </div>
         </section>
     );
 };

@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import { fontFamily } from 'tailwindcss/defaultTheme';
+import { screens, fontFamily } from 'tailwindcss/defaultTheme';
 
 const config = {
     darkMode: ['class'],
@@ -21,6 +21,12 @@ const config = {
                 '2xl': '1400px',
                 '3xl': '1536px'
             }
+        },
+        screens: {
+            xs: '290px',
+            '2xs': '475px',
+            ...screens,
+            '3xl': '1536px'
         },
         extend: {
             fontFamily: {
@@ -79,6 +85,9 @@ const config = {
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out'
+            },
+            boxShadow: {
+                'border-extension': '0 0 0 1px hsl(var(--border))'
             }
         }
     },
