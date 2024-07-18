@@ -14,10 +14,10 @@ export const ToggleColorTheme = () => {
     );
 
     return (
-        <Button variant="ghost" size="icon" onClick={onToggle}>
-            <Sun className="h-[1.2rem] w-[1.2rem] scale-100 dark:scale-0" />
-            <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 dark:scale-100" />
-            <span className="sr-only">Toggle color theme</span>
+        <Button variant="ghost" size="icon2x" onClick={onToggle}>
+            <Sun className="h-[1.6rem] w-[1.6rem] scale-100 dark:scale-0" />
+            <Moon className="absolute h-[1.6rem] w-[1.6rem] scale-0 dark:scale-100" />
+            <span className="sr-only">{`Change color theme to ${theme === 'light' ? 'dark' : 'light'}`}</span>
         </Button>
     );
 };
