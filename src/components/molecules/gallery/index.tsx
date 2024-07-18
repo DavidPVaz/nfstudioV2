@@ -8,7 +8,9 @@ interface GalleryProps {
 
 export const Gallery = ({ className }: GalleryProps) => {
     return (
-        <div className={cn('flex overflow-hidden', className)}>
+        <div className={cn('relative flex overflow-hidden', className)}>
+            <div className="absolute left-0 z-10 h-full w-1/6 bg-gradient-to-r from-background to-65%" />
+
             <div className="animate-loop-scroll flex min-w-full">
                 <GalleryStructure />
             </div>
@@ -16,6 +18,8 @@ export const Gallery = ({ className }: GalleryProps) => {
             <div className="animate-loop-scroll flex min-w-full" aria-hidden>
                 <GalleryStructure />
             </div>
+
+            <div className="absolute right-0 z-10 h-full w-1/6 bg-gradient-to-l from-background to-65%" />
         </div>
     );
 };
