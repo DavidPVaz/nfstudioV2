@@ -80,7 +80,7 @@ const CollectionsSection = ({ children }: Readonly<{ children: React.ReactNode }
             <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
                 COLLECTIONS
             </h3>
-            <div className="3xl:grid-cols-6 xs:grid-cols-2 2xs:grid-cols-3 grid w-full grid-cols-1 gap-3 md:grid-cols-4 xl:grid-cols-5">
+            <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
                 {children}
             </div>
         </section>

@@ -1,10 +1,15 @@
 import React from 'react';
 import { Image } from '@/components/atoms';
 import { cn } from '@/lib/utils';
+import { GALLERY_IMAGES } from '@/shared/enums';
+
+const { MOBILE, DESKTOP, BANNER } = GALLERY_IMAGES;
 
 interface GalleryProps {
     className: string;
 }
+
+const getSrc = (src: string) => `src/${src}`;
 
 export const Gallery = ({ className }: GalleryProps) => {
     return (
@@ -33,9 +38,10 @@ const GalleryStructure = () => {
                         optimizedWidth={500}
                         alt="gallery"
                         className="rounded-md"
-                        src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
+                        src={getSrc(MOBILE[0])}
                         useCustomLoader={false}
-                        variant={'fill_cover'}
+                        width={278.4}
+                        height={391.94}
                     />
                 </div>
                 <div className="w-1/2 p-1 md:p-2">
@@ -43,9 +49,10 @@ const GalleryStructure = () => {
                         optimizedWidth={500}
                         alt="gallery"
                         className="rounded-md"
-                        src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
+                        src={getSrc(MOBILE[1])}
                         useCustomLoader={false}
-                        variant={'fill_cover'}
+                        width={278.4}
+                        height={391.94}
                     />
                 </div>
                 <div className="w-full p-1 md:p-2">
@@ -53,9 +60,10 @@ const GalleryStructure = () => {
                         optimizedWidth={500}
                         alt="gallery"
                         className="rounded-md"
-                        src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
+                        src={getSrc(DESKTOP[0])}
                         useCustomLoader={false}
-                        variant={'fill_cover'}
+                        width={572.8}
+                        height={322.2}
                     />
                 </div>
             </div>
@@ -65,29 +73,32 @@ const GalleryStructure = () => {
                         optimizedWidth={500}
                         alt="gallery"
                         className="rounded-md"
-                        src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
+                        src={getSrc(BANNER[0])}
                         useCustomLoader={false}
-                        variant={'fill_cover'}
+                        width={572.8}
+                        height={190.93}
                     />
                 </div>
-                <div className="w-1/2 p-1 md:p-2">
+                <div className="w-full p-1 md:p-2">
                     <Image
                         optimizedWidth={500}
                         alt="gallery"
                         className="rounded-md"
-                        src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
+                        src={getSrc(DESKTOP[0])}
                         useCustomLoader={false}
-                        variant={'fill_cover'}
+                        width={572.8}
+                        height={322.2}
                     />
                 </div>
-                <div className="w-1/2 p-1 md:p-2">
+                <div className="w-full p-1 md:p-2">
                     <Image
                         optimizedWidth={500}
                         alt="gallery"
                         className="rounded-md"
-                        src="https://tecdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(70).webp"
+                        src={getSrc(BANNER[0])}
                         useCustomLoader={false}
-                        variant={'fill_cover'}
+                        width={572.8}
+                        height={190.93}
                     />
                 </div>
             </div>
