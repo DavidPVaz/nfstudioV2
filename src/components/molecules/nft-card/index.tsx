@@ -13,7 +13,7 @@ interface CardProps {
 export const NFTCard = ({ className, imgSrc, href, imgAlt }: CardProps) => (
     <Card
         className={cn(
-            'hover:shadow-border-extension transition-all will-change-transform hover:-translate-y-1',
+            'transition-all will-change-transform hover:-translate-y-1 hover:shadow-border-extension',
             className
         )}
         asChild
