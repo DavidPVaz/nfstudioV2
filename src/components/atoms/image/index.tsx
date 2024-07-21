@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { default as NextImage, type ImageLoader } from 'next/image';
+import { default as NextImage } from 'next/image';
 import { cva, type VariantProps } from 'class-variance-authority';
-import loader from './loader';
+import getLoader from './loader';
 import { generatePlaceholder } from './placeholder';
 import { cn } from '@/lib/utils';
 
@@ -31,7 +31,6 @@ export interface ImageProps
 
     priority?: boolean;
     useCustomLoader?: boolean;
-    customLoader?: ImageLoader;
     usePlaceholder?: boolean;
     optimizedWidth: number;
     quality?: number;
@@ -47,7 +46,6 @@ export const Image = ({
     variant,
     priority = false,
     useCustomLoader = true,
-    customLoader,
     usePlaceholder = true,
     optimizedWidth,
     quality,
@@ -67,16 +65,13 @@ export const Image = ({
             className={cn(imageVariants({ variant }))}
             loader={
                 useCustomLoader
-                    ? customLoader
-                        ? customLoader
-                        : () =>
-                              loader({
-                                  src: encodeURI(src),
-                                  width: optimizedWidth,
-                                  quality,
-                                  maxAge,
-                                  sMaxAge
-                              })
+                    ? getLoader({
+                          src: encodeURI(src),
+                          width: optimizedWidth,
+                          quality,
+                          maxAge,
+                          sMaxAge
+                      })
                     : undefined
             }
             width={width}

@@ -1,3 +1,6 @@
 export { default as NFStudioIcon } from './NFStudioIcon.svg';
 export { default as NFStudioLettersIcon } from './NFStudioLettersIcon.svg';
 export { default as TwitterIcon } from './TwitterIcon.svg';
+export { default as WebsiteIcon } from './WebsiteIcon.svg';
+export { default as DiscordIcon } from './DiscordIcon.svg';
+export { default as MarketplaceIcon } from './MarketplaceIcon.svg';
