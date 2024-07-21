@@ -21,12 +21,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                     fontSans.variable
                 )}
             >
-                <ColorThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
+                <ColorThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
                     <div className="relative flex min-h-screen flex-col">
                         <Header />
                         <main className="flex-1">

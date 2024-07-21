@@ -9,18 +9,18 @@ interface GalleryProps {
     className: string;
 }
 
-const getSrc = (src: string) => `src/${src}`;
+const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
 
 export const Gallery = ({ className }: GalleryProps) => {
     return (
         <div className={cn('relative flex overflow-hidden', className)}>
             <div className="absolute left-0 z-10 h-full w-1/6 bg-gradient-to-r from-background to-65%" />
 
-            <div className="animate-loop-scroll flex min-w-full">
+            <div className="flex min-w-full animate-loop-scroll">
                 <GalleryStructure />
             </div>
 
-            <div className="animate-loop-scroll flex min-w-full" aria-hidden>
+            <div className="flex min-w-full animate-loop-scroll" aria-hidden>
                 <GalleryStructure />
             </div>
 

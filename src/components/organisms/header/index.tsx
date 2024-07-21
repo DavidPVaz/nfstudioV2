@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { PAGES } from '@/shared/enums';
 import { ToggleColorTheme } from '@/components/molecules';
 import { Button } from '@/components/atoms';
 import { NFStudioIcon, NFStudioLettersIcon, TwitterIcon } from '@/resources';
@@ -10,10 +11,7 @@ export const Header = () => {
             <div className="mx-auto flex h-20 w-full items-center justify-between gap-3 px-8">
                 <nav className="flex flex-row items-center gap-4">
                     <Button className="px-0 py-0" variant="link" asChild>
-                        <Link
-                            className="flex flex-row items-center gap-1"
-                            href={'http://localhost:3000'}
-                        >
+                        <Link className="flex flex-row items-center gap-1" href={PAGES.HOME}>
                             <NFStudioIcon className="h-[2.5rem] w-auto fill-current" />
                             <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-current sm:flex" />
                             <span className="sr-only">Go to main page</span>
@@ -23,7 +21,7 @@ export const Header = () => {
                         <Link
                             aria-label="Go to collections"
                             className="flex flex-row items-center gap-1"
-                            href={'http://localhost:3000/collections'}
+                            href={PAGES.COLLECTIONS}
                         >
                             Collections
                         </Link>

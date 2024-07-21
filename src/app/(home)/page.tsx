@@ -18,8 +18,13 @@ const MOBILE = [
 ];
 
 const prefix = 'https://images.ctfassets.net/ze23ubzzqb1s';
-
+import React from 'react';
+import { PAGES } from '@/shared/enums';
 import { NFTCard, Gallery } from '@/components/molecules';
+import { Button } from '@/components/atoms';
+import { ArrowUpRight } from 'lucide-react';
+import { CreateButton } from './create-button';
+import Link from 'next/link';
 
 export default function Home() {
     return (
@@ -42,22 +47,35 @@ export default function Home() {
     );
 }
 
-const TopSection = () => {
-    return (
-        <section className="relative flex w-fit flex-row">
-            <div className="hidden flex-col p-2 md:flex md:w-1/5">SOME TEXT</div>
-            <Gallery className="md:w-4/5" />
-        </section>
-    );
-};
+const TopSection = () => (
+    <section className="relative flex w-fit flex-row">
+        <div className="hidden flex-col gap-y-6 p-2 md:flex md:w-1/5 lg:gap-y-20">
+            <h1 className="hidden text-start text-2xl md:block md:text-3xl lg:text-5xl xl:text-6xl 3xl:text-7xl">
+                Ultimate <strong>NFT</strong> <strong>Display</strong> <strong>Solution</strong>
+            </h1>
+            <CreateButton className="font-semibold lg:w-1/2" />
+        </div>
+        <Gallery className="md:w-4/5" />
+    </section>
+);
 
-const IntroSection = () => {
-    return (
-        <section className="flex flex-col gap-y-10">
+const IntroSection = () => (
+    <section className="flex flex-col gap-y-24 md:gap-y-36">
+        <div className="flex flex-col items-center gap-y-6 md:hidden">
+            <h1 className="block text-center text-5xl">
+                Ultimate <strong>NFT</strong> <strong>Display</strong> <strong>Solution</strong>
+            </h1>
+            <CreateButton className="w-44 font-semibold" />
+        </div>
+
+        <div className="flex flex-col gap-y-10">
             <h2 className="text-center text-3xl font-semibold leading-none sm:text-4xl lg:text-5xl xl:text-6xl">
                 Elevate your NFT collection with ease!
             </h2>
-            <span className="text-start text-lg sm:text-center sm:text-xl md:text-2xl lg:text-3xl">
+            <span
+                id="value"
+                className="text-start text-lg sm:text-center sm:text-xl md:text-2xl lg:text-3xl"
+            >
                 <strong>Create</strong> captivating <strong>social</strong> <strong>media</strong>{' '}
                 <strong>banners</strong>, <strong>desktop</strong> and <strong>mobile</strong>{' '}
                 <strong>wallpapers</strong> from your <strong>favorite</strong>{' '}
@@ -70,19 +88,22 @@ const IntroSection = () => {
                 skills. Join the digital art revolution and showcase your NFTs like never before.
                 Start converting your collection today!
             </span>
-        </section>
-    );
-};
+        </div>
+    </section>
+);
 
-const CollectionsSection = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-    return (
-        <section className="flex w-full flex-col justify-start gap-y-6 sm:gap-y-10">
-            <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
-                COLLECTIONS
-            </h3>
-            <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
-                {children}
-            </div>
-        </section>
-    );
-};
+const CollectionsSection = ({ children }: Readonly<{ children: React.ReactNode }>) => (
+    <section className="flex w-full flex-col items-center justify-center gap-y-6 sm:gap-y-10">
+        <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
+            COLLECTIONS
+        </h3>
+        <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
+            {children}
+        </div>
+        <Button className="w-full font-semibold 2xs:w-72" asChild>
+            <Link href={PAGES.COLLECTIONS}>
+                SEE ALL COLLECTIONS <ArrowUpRight />
+            </Link>
+        </Button>
+    </section>
+);
