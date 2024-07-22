@@ -22,7 +22,7 @@ export const NFTCard = ({ className, imgSrc, href, imgAlt }: CardProps) => (
             <Image
                 width={350}
                 height={492}
-                className="rounded-md"
+                className="rounded-lg"
                 src={imgSrc}
                 alt={imgAlt}
                 optimizedWidth={300}

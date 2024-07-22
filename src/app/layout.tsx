@@ -24,7 +24,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <ColorThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
                     <div className="relative flex min-h-screen flex-col">
                         <Header />
-                        <main className="flex-1">
+                        <main className="flex-1 pb-10 sm:pb-20">
                             <div className="container relative">{children}</div>
                         </main>
                         <Footer />

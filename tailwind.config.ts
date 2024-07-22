@@ -82,16 +82,19 @@ const config = {
                 },
                 'loop-scroll': {
                     from: { transform: 'translateX(0)' },
-                    to: { transform: 'translateX(-100%)' }
+                    to: { transform: 'translateX(-400%)' }
                 }
             },
             animation: {
-                'loop-scroll': 'loop-scroll 30s linear infinite',
+                'loop-scroll': 'loop-scroll 120s linear infinite',
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out'
             },
             boxShadow: {
                 'border-extension': '0 0 0 1px hsl(var(--border))'
+            },
+            rotate: {
+                '20': '20deg'
             }
         }
     },
