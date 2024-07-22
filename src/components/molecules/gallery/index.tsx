@@ -15,6 +15,7 @@ export const Gallery = ({ className }: GalleryProps) => {
     return (
         <div className={cn('relative flex overflow-hidden', className)}>
             <div className="absolute left-0 z-10 h-full w-1/6 bg-gradient-to-r from-background to-65%" />
+            <div className="absolute right-0 z-10 h-full w-1/6 bg-gradient-to-l from-background to-65%" />
 
             <div className="flex min-w-full animate-loop-scroll">
                 <GalleryStructure />
@@ -23,8 +24,6 @@ export const Gallery = ({ className }: GalleryProps) => {
             <div className="flex min-w-full animate-loop-scroll" aria-hidden>
                 <GalleryStructure />
             </div>
-
-            <div className="absolute right-0 z-10 h-full w-1/6 bg-gradient-to-l from-background to-65%" />
         </div>
     );
 };
@@ -33,7 +32,7 @@ const GalleryStructure = () => {
     return (
         <>
             <div className="flex w-1/2 flex-wrap">
-                <div className="w-1/2 p-1 md:p-2">
+                <div className="m-auto w-1/2">
                     <Image
                         optimizedWidth={500}
                         alt="gallery"
