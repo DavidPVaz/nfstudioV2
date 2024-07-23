@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { Mail } from 'lucide-react';
 import { PAGES } from '@/shared/enums';
 import { ToggleColorTheme } from '@/components/molecules';
 import { Button } from '@/components/atoms';
@@ -13,22 +14,28 @@ export const Header = () => {
                     <Button className="px-0 py-0" variant="link" asChild>
                         <Link className="flex flex-row items-center gap-1" href={PAGES.HOME}>
                             <NFStudioIcon className="h-[2.5rem] w-auto fill-current" />
-                            <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-current sm:flex" />
+                            <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-current xs:flex" />
                             <span className="sr-only">Go to main page</span>
                         </Link>
                     </Button>
                     <Button className="hidden text-lg font-semibold sm:flex" variant="link" asChild>
-                        <Link
-                            aria-label="Go to collections"
-                            className="flex flex-row items-center gap-1"
-                            href={PAGES.COLLECTIONS}
-                        >
+                        <Link aria-label="Go to collections" href={PAGES.COLLECTIONS}>
                             Collections
                         </Link>
                     </Button>
                 </nav>
 
                 <div className="flex flex-row items-center">
+                    <Button variant="ghost" size="icon2x" asChild>
+                        <a
+                            href={'mailto:info@nfstudio.xyz'}
+                            rel="noopener noreferrer"
+                            target={'_blank'}
+                        >
+                            <Mail className="h-[1.6rem] w-[1.6rem] stroke-current" />
+                            <span className="sr-only">Send an email to NFStudio</span>
+                        </a>
+                    </Button>
                     <Button variant="ghost" size="icon2x" asChild>
                         <a
                             href={'https://twitter.com/nfstudio_xyz'}
