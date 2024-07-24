@@ -9,6 +9,6 @@ const CHAIN_ICON_MAP = {
     [CHAINS.ETHEREUM]: <EthereumIcon />,
     [CHAINS.POLYGON]: <PolygonIcon />,
     [CHAINS.OPTIMISM]: <OptimismIcon />
-};
+} as const;
 
 export const ChainIcon = ({ chain }: { chain: CHAIN }) => CHAIN_ICON_MAP[chain];

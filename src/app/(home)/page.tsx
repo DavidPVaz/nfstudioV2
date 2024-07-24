@@ -27,8 +27,10 @@ const TopSection = () => (
             <h1 className="hidden text-start text-2xl md:block md:text-3xl lg:text-5xl xl:text-6xl 3xl:text-7xl">
                 Ultimate <strong>NFT</strong> <strong>Display</strong> <strong>Solution</strong>
             </h1>
+
             <CreateButton className="font-semibold lg:w-1/2" />
         </div>
+
         <Gallery className="md:w-4/5" />
     </section>
 );
@@ -39,6 +41,7 @@ const IntroSection = () => (
             <h1 className="block text-center text-5xl">
                 Ultimate <strong>NFT</strong> <strong>Display</strong> <strong>Solution</strong>
             </h1>
+
             <CreateButton className="w-44 font-semibold" />
         </div>
 
@@ -46,6 +49,7 @@ const IntroSection = () => (
             <h2 className="text-center text-3xl font-semibold leading-none sm:text-4xl lg:text-5xl xl:text-6xl">
                 Elevate your NFT collection with ease!
             </h2>
+
             <span
                 id="value"
                 className="text-start text-lg sm:text-center sm:text-xl md:text-2xl lg:text-3xl"
@@ -65,12 +69,13 @@ const IntroSection = () => (
         </div>
     </section>
 );
-
+// TODO: replace with collection Images
 const CollectionsSection = () => (
     <section className="flex w-full flex-col items-center justify-center gap-y-6 sm:gap-y-10">
         <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
             COLLECTIONS
         </h3>
+
         <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
             {MOBILE.map((src: string) => (
                 <CollectionCard
@@ -82,6 +87,7 @@ const CollectionsSection = () => (
                 />
             ))}
         </div>
+
         <Button className="w-full font-semibold 2xs:w-72" asChild>
             <Link href={PAGES.COLLECTIONS}>
                 SEE ALL COLLECTIONS <ArrowUpRight />
@@ -107,6 +113,7 @@ const ShowcaseSection = () => (
                 </Link>
             </Button>
         </div>
+
         <ShowcaseSectionMiniGallery />
     </section>
 );
@@ -118,18 +125,31 @@ const CLASS_PER_COLUMN_MINI_GALLERY = [
     'absolute left-3/4 mt-5 flex w-1/4 flex-wrap sm:-mt-80'
 ];
 
-// TODO: use all 16 mobile pics here
+const constructMiniGalleryData = () => {
+    const IMAGE_PER_COLUMN = 4;
+    const miniGalleryData = [];
+
+    for (let index = 0; index < MOBILE.length; index += IMAGE_PER_COLUMN) {
+        const slice =
+            index + IMAGE_PER_COLUMN > MOBILE.length ? [index] : [index, index + IMAGE_PER_COLUMN];
+
+        miniGalleryData.push(MOBILE.slice(...slice));
+    }
+
+    return miniGalleryData;
+};
+
 const ShowcaseSectionMiniGallery = () => (
     <div className="absolute -right-48 top-28 z-0 w-[180%] rotate-20 2xs:-right-36 2xs:top-10 2xs:w-[120%] sm:-right-20 sm:-top-10 sm:w-2/3">
-        {CLASS_PER_COLUMN_MINI_GALLERY.map(className => (
-            <div key={className} className={className}>
-                {Array.from({ length: 4 }, (_, index) => (
-                    <div key={`${index}/${className}`} className="w-full p-1">
+        {constructMiniGalleryData().map((columnData, index) => (
+            <div key={index} className={CLASS_PER_COLUMN_MINI_GALLERY[index]}>
+                {columnData.map(imgSrc => (
+                    <div key={imgSrc} className="w-full p-1">
                         <Image
                             optimizedWidth={500}
                             alt="gallery"
                             className="rounded-lg"
-                            src={getSrc(MOBILE[1])}
+                            src={getSrc(imgSrc)}
                             useCustomLoader={false}
                             width={278.4}
                             height={391.94}
