@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { PAGES, GALLERY_IMAGES } from '@/shared/enums';
-import { NFTCard, Gallery } from '@/components/molecules';
+import { CollectionCard, Gallery } from '@/components/molecules';
 import { Button, Image } from '@/components/atoms';
 import { ArrowUpRight } from 'lucide-react';
 import { CreateButton } from './create-button';
@@ -73,7 +73,13 @@ const CollectionsSection = () => (
         </h3>
         <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
             {MOBILE.map((src: string) => (
-                <NFTCard imgAlt="temp" key={src} imgSrc={getSrc(src)} href="/collections" />
+                <CollectionCard
+                    imgAlt="temp"
+                    key={src}
+                    imgSrc={getSrc(src)}
+                    href="/collections"
+                    chain="Optimism"
+                />
             ))}
         </div>
         <Button className="w-full font-semibold 2xs:w-72" asChild>
@@ -114,7 +120,7 @@ const CLASS_PER_COLUMN_MINI_GALLERY = [
 
 // TODO: use all 16 mobile pics here
 const ShowcaseSectionMiniGallery = () => (
-    <div className="rotate-20 absolute -right-48 top-28 z-0 w-[180%] 2xs:-right-36 2xs:top-10 2xs:w-[120%] sm:-right-20 sm:-top-10 sm:w-2/3">
+    <div className="absolute -right-48 top-28 z-0 w-[180%] rotate-20 2xs:-right-36 2xs:top-10 2xs:w-[120%] sm:-right-20 sm:-top-10 sm:w-2/3">
         {CLASS_PER_COLUMN_MINI_GALLERY.map(className => (
             <div key={className} className={className}>
                 {Array.from({ length: 4 }, (_, index) => (

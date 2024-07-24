@@ -4,3 +4,7 @@ export { default as TwitterIcon } from './TwitterIcon.svg';
 export { default as WebsiteIcon } from './WebsiteIcon.svg';
 export { default as DiscordIcon } from './DiscordIcon.svg';
 export { default as MarketplaceIcon } from './MarketplaceIcon.svg';
+export { default as SolanaIcon } from './SolanaIcon.svg';
+export { default as EthereumIcon } from './EthereumIcon.svg';
+export { default as PolygonIcon } from './PolygonIcon.svg';
+export { default as OptimismIcon } from './OptimismIcon.svg';

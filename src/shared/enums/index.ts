@@ -2,8 +2,7 @@ export const CHAINS = {
     SOLANA: 'Solana',
     ETHEREUM: 'Ethereum',
     POLYGON: 'Polygon',
-    OPTIMISM: 'Optimism',
-    ARBITRUM: 'Arbitrum'
+    OPTIMISM: 'Optimism'
 } as const;
 export type CHAIN = (typeof CHAINS)[keyof typeof CHAINS];
 
