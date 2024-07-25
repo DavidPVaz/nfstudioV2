@@ -1,10 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import { PAGES, GALLERY_IMAGES } from '@/shared/enums';
 import { CollectionCard, Gallery } from '@/components/molecules';
 import { Button, Image } from '@/components/atoms';
-import { ArrowUpRight } from 'lucide-react';
 import { CreateButton } from './create-button';
+
+import { queryCollectionsData } from '@/server/service/mongo';
 
 const { MOBILE } = GALLERY_IMAGES;
 
@@ -69,32 +71,40 @@ const IntroSection = () => (
         </div>
     </section>
 );
-// TODO: replace with collection Images
-const CollectionsSection = () => (
-    <section className="flex w-full flex-col items-center justify-center gap-y-6 sm:gap-y-10">
-        <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
-            COLLECTIONS
-        </h3>
 
-        <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
-            {MOBILE.map((src: string) => (
-                <CollectionCard
-                    imgAlt="temp"
-                    key={src}
-                    imgSrc={getSrc(src)}
-                    href="/collections"
-                    chain="Optimism"
-                />
-            ))}
-        </div>
+const CollectionsSection = async () => {
+    const collections = await queryCollectionsData({
+        projection: { active: 0, createdAt: 0, config: 0 },
+        limit: 12
+    });
 
-        <Button className="w-full font-semibold 2xs:w-72" asChild>
-            <Link href={PAGES.COLLECTIONS}>
-                SEE ALL COLLECTIONS <ArrowUpRight />
-            </Link>
-        </Button>
-    </section>
-);
+    return (
+        <section className="flex w-full flex-col items-center justify-center gap-y-6 sm:gap-y-10">
+            <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
+                COLLECTIONS
+            </h3>
+
+            <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
+                {collections.map(({ _id, chain, presentation }) => (
+                    <CollectionCard
+                        imgAlt={`${_id} card`}
+                        key={_id}
+                        imgSrc={getSrc(presentation)}
+                        href={`/collections/${_id}`}
+                        chain={chain}
+                        name={_id}
+                    />
+                ))}
+            </div>
+
+            <Button className="w-full font-semibold 2xs:w-72" asChild>
+                <Link href={PAGES.COLLECTIONS}>
+                    SEE ALL COLLECTIONS <ArrowUpRight />
+                </Link>
+            </Button>
+        </section>
+    );
+};
 
 const ShowcaseSection = () => (
     <section className="relative flex h-[600px] w-full min-w-[226px] overflow-hidden rounded-lg bg-white sm:h-56">

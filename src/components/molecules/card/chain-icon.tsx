@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { type CHAIN, CHAINS } from '@/shared/enums';
+import { type Chain, CHAINS } from '@/shared/enums';
 import { SolanaIcon, EthereumIcon, PolygonIcon, OptimismIcon } from '@/resources';
 
 const CHAIN_ICON_MAP = {
@@ -11,4 +11,4 @@ const CHAIN_ICON_MAP = {
     [CHAINS.OPTIMISM]: <OptimismIcon />
 } as const;
 
-export const ChainIcon = ({ chain }: { chain: CHAIN }) => CHAIN_ICON_MAP[chain];
+export const ChainIcon = ({ chain }: { chain: Chain }) => CHAIN_ICON_MAP[chain];

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { type CHAIN } from '@/shared/enums';
+import { type Chain } from '@/shared/enums';
 import { Card, CardTitle, Image } from '@/components/atoms';
 import { cn } from '@/lib/utils';
 import { ChainIcon } from './chain-icon';
@@ -10,10 +10,11 @@ interface CardProps {
     imgSrc: string;
     imgAlt: string;
     href: string;
-    chain: CHAIN;
+    chain: Chain;
+    name: string;
 }
 
-export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain }: CardProps) => (
+export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }: CardProps) => (
     <Card
         className={cn(
             'transition-all will-change-transform hover:-translate-y-1 hover:shadow-border-extension',
@@ -26,6 +27,7 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain }: CardP
                 <ChainIcon chain={chain} />
             </div>
             <Image
+                variant={'contain'}
                 width={350}
                 height={492}
                 className="rounded-lg"
@@ -34,7 +36,7 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain }: CardP
                 optimizedWidth={300}
                 useCustomLoader={false}
             />
-            <CardTitle className="text-center">NAME</CardTitle>
+            <CardTitle className="text-center">{`${name.replace('_', ' ')}`}</CardTitle>
         </Link>
     </Card>
 );

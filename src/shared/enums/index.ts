@@ -4,7 +4,7 @@ export const CHAINS = {
     POLYGON: 'Polygon',
     OPTIMISM: 'Optimism'
 } as const;
-export type CHAIN = (typeof CHAINS)[keyof typeof CHAINS];
+export type Chain = (typeof CHAINS)[keyof typeof CHAINS];
 
 export const PAGES = {
     HOME: '/',
@@ -13,14 +13,14 @@ export const PAGES = {
     TERMS_OF_SERVICE: '/terms-of-service.pdf',
     PRIVACY_POLICY: '/privacy-policy.pdf'
 } as const;
-export type PAGE = (typeof PAGES)[keyof typeof PAGES];
+export type Page = (typeof PAGES)[keyof typeof PAGES];
 
 export const PLATFORMS = {
     SOCIAL_MEDIA: 'socialMedia',
     DESKTOP: 'desktop',
     MOBILE: 'mobile'
 } as const;
-export type PLATFORM = (typeof PLATFORMS)[keyof typeof PLATFORMS];
+export type Platform = (typeof PLATFORMS)[keyof typeof PLATFORMS];
 
 export const OPTIONS = {
     TWITTER_BANNER: 'twitterBanner',
@@ -40,14 +40,14 @@ export const OPTIONS = {
     SAMSUNG_S6: 'samsungS6',
     SAMSUNG_S8PLUS: 'samsungS8Plus'
 } as const;
-export type OPTION = (typeof OPTIONS)[keyof typeof OPTIONS];
+export type Option = (typeof OPTIONS)[keyof typeof OPTIONS];
 
 export const WIZARD_PAGES = {
     SELECTION: 'selection',
     CONFIRM: 'confirm',
     CHECKOUT: 'checkout'
 } as const;
-export type WIZARD_PAGE = (typeof WIZARD_PAGES)[keyof typeof WIZARD_PAGES];
+export type WizardPage = (typeof WIZARD_PAGES)[keyof typeof WIZARD_PAGES];
 
 export const GALLERY_IMAGES = {
     BANNER: [
