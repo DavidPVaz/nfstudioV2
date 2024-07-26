@@ -1,4 +1,4 @@
-import { customFetch } from '@/server/shared/http';
+import { customFetch } from '@/server/service/shared/http';
 
 export class MongoDataApiRequestError extends Error {
     code;
@@ -83,7 +83,7 @@ export function mongoApiRequest<T>({ access, action, data, retries = 0 }: MongoA
             init: { method: 'POST', headers: { 'api-key': ACCESS_KEY[access] } },
             data: { ...data, dataSource: 'nfstudio' }
         },
-        onError: (message, code) => new MongoDataApiRequestError(message, code)
+        onErrorThrow: (message, code) => new MongoDataApiRequestError(message, code)
     });
 }
 
