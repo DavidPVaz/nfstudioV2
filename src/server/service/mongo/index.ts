@@ -2,7 +2,6 @@ import 'server-only';
 
 import {
     mongoApiRequest,
-    ACCESS_TYPES,
     ACTIONS,
     DATABASES,
     type MongoFilter,
@@ -19,11 +18,10 @@ export const queryCollectionsData = async ({
     limit = null
 }: {
     filter?: MongoFilter;
-    projection: MongoProjection;
+    projection?: MongoProjection;
     limit?: MongoLimit;
 }) => {
     const { documents: collections } = await mongoApiRequest({
-        access: ACCESS_TYPES.APP,
         action: ACTIONS.FIND,
         data: {
             database: DATABASES.COLLECTIONS,
@@ -37,8 +35,7 @@ export const queryCollectionsData = async ({
                 createdAt: -1
             },
             limit
-        },
-        retries: 3
+        }
     });
 
     return collections;
