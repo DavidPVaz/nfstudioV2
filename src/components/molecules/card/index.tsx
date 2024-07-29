@@ -22,21 +22,23 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
         )}
         asChild
     >
-        <Link className="relative flex flex-col gap-y-2 p-2 sm:p-4" href={href}>
-            <div className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white sm:left-6 sm:top-6 sm:h-10 sm:w-10">
-                <ChainIcon chain={chain} />
-            </div>
-            <Image
-                variant={'contain'}
-                width={350}
-                height={492}
-                className="rounded-lg"
-                src={imgSrc}
-                alt={imgAlt}
-                optimizedWidth={300}
-                useCustomLoader={false}
-            />
-            <CardTitle className="text-center">{`${name.replace('_', ' ')}`}</CardTitle>
-        </Link>
+        <li>
+            <Link className="relative flex h-full w-full flex-col gap-y-2 p-2 sm:p-4" href={href}>
+                <div className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white sm:left-6 sm:top-6 sm:h-10 sm:w-10">
+                    <ChainIcon chain={chain} />
+                </div>
+                <Image
+                    variant={'contain'}
+                    width={350}
+                    height={492}
+                    className="rounded-lg"
+                    src={imgSrc}
+                    alt={imgAlt}
+                    optimizedWidth={300}
+                    useCustomLoader={false}
+                />
+                <CardTitle className="text-center">{`${name.replace('_', ' ')}`}</CardTitle>
+            </Link>
+        </li>
     </Card>
 );

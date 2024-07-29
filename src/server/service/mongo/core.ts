@@ -1,4 +1,7 @@
+import 'server-only';
+
 import { NFStudioRequestError, customFetch } from '@/server/service/shared/http';
+import { type Chain, type Platform, type Option } from '@/shared/enums';
 
 export class MongoDataApiRequestError extends NFStudioRequestError {
     constructor(message: string, code: number) {
@@ -23,10 +26,58 @@ export const ACTIONS = {
 } as const;
 export type Action = (typeof ACTIONS)[keyof typeof ACTIONS];
 
-// TODO: define all these types. possible data returning from mongo nfstudio database
-type NFStudioCollectionsData = Record<string, unknown>[];
-type NFStudioCollectionMetadata = Record<string, unknown>[];
-type NFStudioTransactionData = Record<string, unknown>[];
+export type CollectionConfiguration = {
+    _id: string;
+    chain: Chain;
+    presentation: string;
+    marketplace: string;
+    discord: string;
+    twitter: string;
+    website?: string;
+    createdAt?: string;
+    active?: boolean;
+    config?: {
+        cacheStrategy: { sMaxAge: number; maxAge: number } | {};
+        logos: Array<string>;
+        unsupportedTraits: { [key: string]: Array<string> } | {};
+        paylinkId: string;
+    };
+};
+export type CollectionMetadata = {
+    _id: number;
+    uri: string;
+};
+export type TransactionData = {
+    _id: string;
+    refunded: boolean;
+    verified: boolean;
+    paylinkId: string;
+    statusToken: string;
+    helioTransactionId: string;
+    createdAt: string;
+    clientPublicKey: string;
+    amount: string;
+    currency: {
+        decimals: number;
+        mintAddress: string;
+        symbol: string; // TODO: change for enum type when transactions are included
+    };
+    purchaseDetails: {
+        collection: string;
+        creationOptions: {
+            src: string;
+            width: number;
+            height: number;
+            dpi: number;
+            platform: Platform;
+            option: Option;
+            atRight: boolean;
+            coverStyle: boolean;
+            logo?: string;
+        };
+    };
+    associatedRefundTransactionSignature: string;
+};
 
 type MongoResponse<T> = {
     documents: T;

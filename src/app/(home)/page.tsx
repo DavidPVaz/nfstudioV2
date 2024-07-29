@@ -84,7 +84,7 @@ const CollectionsSection = async () => {
                 COLLECTIONS
             </h3>
 
-            <div className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
+            <ul className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
                 {collections.map(({ _id, chain, presentation }) => (
                     <CollectionCard
                         imgAlt={`${_id} card`}
@@ -95,7 +95,7 @@ const CollectionsSection = async () => {
                         name={_id}
                     />
                 ))}
-            </div>
+            </ul>
 
             <Button className="w-full font-semibold 2xs:w-72" asChild>
                 <Link href={PAGES.COLLECTIONS}>
@@ -117,6 +117,7 @@ const ShowcaseSection = () => (
                     Let's get started!
                 </span>
             </div>
+
             <Button className="w-3/4 font-semibold sm:w-72" asChild>
                 <Link href={PAGES.COLLECTIONS}>
                     START HERE <ArrowUpRight />

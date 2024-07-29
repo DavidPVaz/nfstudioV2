@@ -6,7 +6,8 @@ import {
     DATABASES,
     type MongoFilter,
     type MongoProjection,
-    type MongoLimit
+    type MongoLimit,
+    type CollectionConfiguration
 } from '@/server/service/mongo/core';
 
 /**
@@ -20,8 +21,8 @@ export const queryCollectionsData = async ({
     filter?: MongoFilter;
     projection?: MongoProjection;
     limit?: MongoLimit;
-}) => {
-    const { documents: collections } = await mongoApiRequest({
+} = {}) => {
+    const { documents: collections } = await mongoApiRequest<CollectionConfiguration[]>({
         action: ACTIONS.FIND,
         data: {
             database: DATABASES.COLLECTIONS,
@@ -40,5 +41,3 @@ export const queryCollectionsData = async ({
 
     return collections;
 };
-
-// TODO: tests
