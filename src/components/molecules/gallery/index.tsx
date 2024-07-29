@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Image } from '@/components/atoms';
 import { cn } from '@/lib/utils';
 import { GALLERY_IMAGES } from '@/shared/enums';

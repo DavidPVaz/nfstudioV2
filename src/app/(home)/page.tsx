@@ -162,8 +162,8 @@ const ShowcaseSectionMiniGallery = () => (
                             className="rounded-lg"
                             src={getSrc(imgSrc)}
                             useCustomLoader={false}
-                            width={278.4}
-                            height={391.94}
+                            width={337.16}
+                            height={394.79}
                         />
                     </div>
                 ))}

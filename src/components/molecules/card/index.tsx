@@ -29,8 +29,8 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
                 </div>
                 <Image
                     variant={'contain'}
-                    width={350}
-                    height={492}
+                    width={201.33}
+                    height={263.73}
                     className="rounded-lg"
                     src={imgSrc}
                     alt={imgAlt}
