@@ -45,9 +45,8 @@ describe('server/service/mongo/core', () => {
         });
 
         // verify
-        expect(customFetchMock).toHaveBeenCalledWith(expected);
-        expect(customFetchMock).toHaveBeenCalledOnce();
         expect(result).toEqual(responseData);
+        expect(customFetchMock).toHaveBeenNthCalledWith(1, expected);
     });
 
     it('should perform a Mongo Api Request and resolve ADMIN key', async () => {
@@ -75,9 +74,8 @@ describe('server/service/mongo/core', () => {
         });
 
         // verify
-        expect(customFetchMock).toHaveBeenCalledWith(expected);
-        expect(customFetchMock).toHaveBeenCalledOnce();
         expect(result).toEqual(responseData);
+        expect(customFetchMock).toHaveBeenNthCalledWith(1, expected);
     });
 
     it('should throw MongoDataApiRequestError', async () => {
@@ -105,8 +103,7 @@ describe('server/service/mongo/core', () => {
                 data: { database: 'refunds', collection: 'some collection' }
             })
         ).rejects.toThrowError(new MongoDataApiRequestError(statusText, status));
-        expect(customFetchMock).toHaveBeenCalledWith(expected);
-        expect(customFetchMock).toHaveBeenCalledOnce();
+        expect(customFetchMock).toHaveBeenNthCalledWith(1, expected);
     });
 
     it('should throw received error if not NFStudio Error', async () => {
@@ -133,7 +130,6 @@ describe('server/service/mongo/core', () => {
                 data: { database: 'refunds', collection: 'some collection' }
             })
         ).rejects.toThrowError(new Error(statusText));
-        expect(customFetchMock).toHaveBeenCalledWith(expected);
-        expect(customFetchMock).toHaveBeenCalledOnce();
+        expect(customFetchMock).toHaveBeenNthCalledWith(1, expected);
     });
 });

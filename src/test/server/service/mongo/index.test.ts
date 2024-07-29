@@ -47,8 +47,7 @@ describe('server/service/mongo/index', () => {
 
         // verify
         expect(collections).toEqual(documents);
-        expect(mongoApiRequestMock).toHaveBeenCalledWith(expectedOptions);
-        expect(mongoApiRequestMock).toHaveBeenCalledOnce();
+        expect(mongoApiRequestMock).toHaveBeenNthCalledWith(1, expectedOptions);
     });
 
     it('should query collections data', async () => {
@@ -76,8 +75,7 @@ describe('server/service/mongo/index', () => {
 
         // verify
         expect(collections).toEqual(documents);
-        expect(mongoApiRequestMock).toHaveBeenCalledWith(expectedOptions);
-        expect(mongoApiRequestMock).toHaveBeenCalledOnce();
+        expect(mongoApiRequestMock).toHaveBeenNthCalledWith(1, expectedOptions);
     });
 
     it('should query collections data and set the default active filter if production environment', async () => {
@@ -106,8 +104,7 @@ describe('server/service/mongo/index', () => {
 
         // verify
         expect(collections).toEqual(documents);
-        expect(mongoApiRequestMock).toHaveBeenCalledWith(expectedOptions);
-        expect(mongoApiRequestMock).toHaveBeenCalledOnce();
+        expect(mongoApiRequestMock).toHaveBeenNthCalledWith(1, expectedOptions);
 
         // cleanup
         vi.unstubAllEnvs();

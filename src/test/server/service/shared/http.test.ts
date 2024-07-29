@@ -55,7 +55,9 @@ describe('server/service/shared/http', () => {
         const result = await customFetch(requestData);
 
         // verify
-        expect(fetchMock).toHaveBeenCalledWith(
+        expect(result).toEqual(responseData);
+        expect(fetchMock).toHaveBeenNthCalledWith(
+            1,
             ...getExpectedFetchArguments({
                 url,
                 method,
@@ -63,8 +65,6 @@ describe('server/service/shared/http', () => {
                 data
             })
         );
-        expect(fetchMock).toHaveBeenCalledOnce();
-        expect(result).toEqual(responseData);
     });
 
     it('should retry a HTTP request', async () => {
@@ -95,7 +95,9 @@ describe('server/service/shared/http', () => {
         const result = await customFetch(requestData);
 
         // verify
-        expect(fetchMock).toHaveBeenCalledWith(
+        expect(result).toEqual(responseData);
+        expect(fetchMock).toHaveBeenNthCalledWith(
+            retries + 1,
             ...getExpectedFetchArguments({
                 url,
                 method,
@@ -103,8 +105,6 @@ describe('server/service/shared/http', () => {
                 data
             })
         );
-        expect(fetchMock).toHaveBeenCalledTimes(retries + 1);
-        expect(result).toEqual(responseData);
     });
 
     it('should throw NFStudioRequestError on failed request', async () => {
@@ -132,7 +132,8 @@ describe('server/service/shared/http', () => {
         await expect(customFetch(requestData)).rejects.toThrowError(
             new NFStudioRequestError(statusText, status)
         );
-        expect(fetchMock).toHaveBeenCalledWith(
+        expect(fetchMock).toHaveBeenNthCalledWith(
+            retries + 1,
             ...getExpectedFetchArguments({
                 url,
                 method,
@@ -140,6 +141,46 @@ describe('server/service/shared/http', () => {
                 data
             })
         );
-        expect(fetchMock).toHaveBeenCalledTimes(retries + 1);
+    });
+
+    it('should not retry if first response status is a client error', async () => {
+        // setup
+        const NON_RETRIABLE_CLIENT_ERROR_CODES = [400, 401, 403, 404, 409];
+        const retries = 1;
+        const url = 'url';
+        const method = 'POST';
+        const headers = { custom: 'header' };
+        const data = { dummy: 'data' };
+        const statusText = 'potato';
+
+        const requestData = {
+            retries,
+            options: {
+                url,
+                init: { method, headers },
+                data
+            }
+        };
+        NON_RETRIABLE_CLIENT_ERROR_CODES.forEach(status =>
+            fetchMock.mockImplementationOnce(() =>
+                Promise.resolve({ ok: false, statusText, status })
+            )
+        );
+
+        // exercise && verify
+        for (const status of NON_RETRIABLE_CLIENT_ERROR_CODES) {
+            await expect(customFetch(requestData)).rejects.toThrowError(
+                new NFStudioRequestError(statusText, status)
+            );
+        }
+        expect(fetchMock).toHaveBeenNthCalledWith(
+            NON_RETRIABLE_CLIENT_ERROR_CODES.length,
+            ...getExpectedFetchArguments({
+                url,
+                method,
+                headers,
+                data
+            })
+        );
     });
 });

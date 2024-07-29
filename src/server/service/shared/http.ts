@@ -18,6 +18,8 @@ interface HttpRequest {
     options: RequestOptions;
 }
 
+const NON_RETRIABLE_CLIENT_ERROR_CODES = [400, 401, 403, 404, 409];
+
 /**
  * Performs a HTTP request;
  *
@@ -42,13 +44,13 @@ export function customFetch<T>({
             return response.json() as Promise<T>;
         }
 
-        if (retries > 0) {
-            return customFetch<T>({
-                retries: --retries,
-                options: { url, init: { method, headers }, data }
-            });
+        if (retries === 0 || NON_RETRIABLE_CLIENT_ERROR_CODES.includes(response.status)) {
+            throw new NFStudioRequestError(response.statusText, response.status);
         }
 
-        throw new NFStudioRequestError(response.statusText, response.status);
+        return customFetch<T>({
+            retries: --retries,
+            options: { url, init: { method, headers }, data }
+        });
     });
 }
