@@ -1,5 +1,5 @@
 import { describe, expect, vi, afterEach, it } from 'vitest';
-import { customFetch } from '@/server/service/shared/http';
+import { customFetch, NFStudioRequestError } from '@/server/service/shared/http';
 
 const { fetchMock } = vi.hoisted(() => ({
     fetchMock: vi.fn()
@@ -31,7 +31,7 @@ describe('server/service/shared/http', () => {
         vi.clearAllMocks();
     });
 
-    it('should perform a HTTP request and retrieve the response JSON', async () => {
+    it('should perform a HTTP request and retrieve the JSON response', async () => {
         // setup
         const url = 'url';
         const method = 'GET';
@@ -39,7 +39,7 @@ describe('server/service/shared/http', () => {
         const data = undefined;
 
         const requestData = {
-            retries: 2,
+            retries: 0,
             options: {
                 url,
                 init: { method, headers },
@@ -84,11 +84,12 @@ describe('server/service/shared/http', () => {
             }
         };
         const responseData = { data: 'data' };
-        fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false }));
-        fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false }));
+        fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false })); // first call
+        fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false })); // first retry
+        fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false })); // second retry
         fetchMock.mockImplementationOnce(() =>
             Promise.resolve({ ok: true, json: () => Promise.resolve(responseData) })
-        );
+        ); // third retry
 
         // exercise
         const result = await customFetch(requestData);
@@ -102,62 +103,19 @@ describe('server/service/shared/http', () => {
                 data
             })
         );
-        expect(fetchMock).toHaveBeenCalledTimes(retries);
+        expect(fetchMock).toHaveBeenCalledTimes(retries + 1);
         expect(result).toEqual(responseData);
     });
 
-    it('should throw a generic Error on failed request', async () => {
+    it('should throw NFStudioRequestError on failed request', async () => {
         // setup
-        const retries = 3;
-        const url = 'url';
-        const method = 'POST';
-        const headers = { custom: 'header' };
-        const data = { dummy: 'data' };
-        const statusText = 'potato';
-
-        const requestData = {
-            retries,
-            options: {
-                url,
-                init: { method, headers },
-                data
-            }
-        };
-        fetchMock.mockImplementation(() => Promise.resolve({ ok: false, statusText }));
-
-        // exercise && verify
-        await expect(customFetch(requestData)).rejects.toThrowError(Error(statusText));
-
-        expect(fetchMock).toHaveBeenCalledWith(
-            ...getExpectedFetchArguments({
-                url,
-                method,
-                headers,
-                data
-            })
-        );
-        expect(fetchMock).toHaveBeenCalledTimes(retries + 1);
-    });
-
-    it('should throw the provided custom Error on failed request', async () => {
-        // setup
-        class CustomError extends Error {
-            constructor(message: string, code: number) {
-                super(message);
-            }
-        }
         const retries = 1;
         const url = 'url';
         const method = 'POST';
         const headers = { custom: 'header' };
         const data = { dummy: 'data' };
         const statusText = 'potato';
-        const status = 400;
-        const onErrorThrow = vi
-            .fn()
-            .mockImplementationOnce(
-                (statusText: string, status: number) => new CustomError(statusText, status)
-            );
+        const status = 500;
 
         const requestData = {
             retries,
@@ -165,16 +123,15 @@ describe('server/service/shared/http', () => {
                 url,
                 init: { method, headers },
                 data
-            },
-            onErrorThrow
+            }
         };
-        fetchMock.mockImplementation(() => Promise.resolve({ ok: false, statusText, status }));
+        fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false, statusText, status })); // first call
+        fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false, statusText, status })); // first retry
 
         // exercise && verify
         await expect(customFetch(requestData)).rejects.toThrowError(
-            new CustomError(statusText, status)
+            new NFStudioRequestError(statusText, status)
         );
-
         expect(fetchMock).toHaveBeenCalledWith(
             ...getExpectedFetchArguments({
                 url,
@@ -184,7 +141,5 @@ describe('server/service/shared/http', () => {
             })
         );
         expect(fetchMock).toHaveBeenCalledTimes(retries + 1);
-        expect(onErrorThrow).toHaveBeenCalledOnce();
-        expect(onErrorThrow).toHaveBeenCalledWith(statusText, status);
     });
 });

@@ -1,24 +1,22 @@
 import { describe, expect, vi, afterEach, it, beforeEach } from 'vitest';
 import { mongoApiRequest, MongoDataApiRequestError } from '@/server/service/mongo/core';
+import { NFStudioRequestError } from '@/server/service/shared/http';
 
 const { customFetchMock } = vi.hoisted(() => ({
     customFetchMock: vi.fn()
 }));
 
-vi.mock('@/server/service/shared/http', () => ({
-    customFetch: customFetchMock
-}));
+vi.mock('@/server/service/shared/http', async importOriginal => {
+    const actual: object = await importOriginal();
+    return {
+        ...actual,
+        customFetch: customFetchMock
+    };
+});
 
 describe('server/service/mongo/core', () => {
-    beforeEach(() => {
-        vi.stubEnv('MONGO_API', 'api-url');
-        vi.stubEnv('MONGO_API_KEY_READ', 'app');
-        vi.stubEnv('MONGO_API_KEY_WRITE', 'admin');
-    });
-
     afterEach(() => {
         vi.clearAllMocks();
-        vi.unstubAllEnvs();
     });
 
     it('should perform a Mongo Api Request and resolve APP key', async () => {
@@ -26,16 +24,14 @@ describe('server/service/mongo/core', () => {
         const expected = {
             retries: 1,
             options: {
-                url: 'api-url/find',
-                init: { method: 'POST', headers: { 'api-key': 'app' } },
+                url: `${process.env.MONGO_API}/find`,
+                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_READ } },
                 data: {
                     database: 'collections',
                     collection: 'some collection',
                     dataSource: 'nfstudio'
                 }
-            },
-            onErrorThrow: (message: string, code: number) =>
-                new MongoDataApiRequestError(message, code)
+            }
         };
         const responseData = { data: 'data' };
         customFetchMock.mockImplementationOnce(() => Promise.resolve(responseData));
@@ -57,16 +53,14 @@ describe('server/service/mongo/core', () => {
         const expected = {
             retries: 2,
             options: {
-                url: 'api-url/insertOne',
-                init: { method: 'POST', headers: { 'api-key': 'admin' } },
+                url: `${process.env.MONGO_API}/insertOne`,
+                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_WRITE } },
                 data: {
                     database: 'refunds',
                     collection: 'some collection',
                     dataSource: 'nfstudio'
                 }
-            },
-            onErrorThrow: (message: string, code: number) =>
-                new MongoDataApiRequestError(message, code)
+            }
         };
         const responseData = { data: 'data' };
         customFetchMock.mockImplementationOnce(() => Promise.resolve(responseData));
@@ -82,5 +76,62 @@ describe('server/service/mongo/core', () => {
         expect(customFetchMock).toHaveBeenCalledWith(expected);
         expect(customFetchMock).toHaveBeenCalledOnce();
         expect(result).toEqual(responseData);
+    });
+
+    it('should throw MongoDataApiRequestError', async () => {
+        // setup
+        const statusText = 'message';
+        const status = 500;
+        const expected = {
+            retries: 1,
+            options: {
+                url: `${process.env.MONGO_API}/insertOne`,
+                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_WRITE } },
+                data: {
+                    database: 'refunds',
+                    collection: 'some collection',
+                    dataSource: 'nfstudio'
+                }
+            }
+        };
+        customFetchMock.mockRejectedValueOnce(new NFStudioRequestError(statusText, status));
+
+        // exercise && verify
+        await expect(
+            mongoApiRequest({
+                action: 'insertOne',
+                data: { database: 'refunds', collection: 'some collection' }
+            })
+        ).rejects.toThrowError(new MongoDataApiRequestError(statusText, status));
+        expect(customFetchMock).toHaveBeenCalledWith(expected);
+        expect(customFetchMock).toHaveBeenCalledOnce();
+    });
+
+    it('should throw received error if not NFStudio Error', async () => {
+        // setup
+        const statusText = 'message';
+        const expected = {
+            retries: 1,
+            options: {
+                url: `${process.env.MONGO_API}/insertOne`,
+                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_WRITE } },
+                data: {
+                    database: 'refunds',
+                    collection: 'some collection',
+                    dataSource: 'nfstudio'
+                }
+            }
+        };
+        customFetchMock.mockRejectedValueOnce(new Error(statusText));
+
+        // exercise && verify
+        await expect(
+            mongoApiRequest({
+                action: 'insertOne',
+                data: { database: 'refunds', collection: 'some collection' }
+            })
+        ).rejects.toThrowError(new Error(statusText));
+        expect(customFetchMock).toHaveBeenCalledWith(expected);
+        expect(customFetchMock).toHaveBeenCalledOnce();
     });
 });

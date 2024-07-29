@@ -1,12 +1,9 @@
-import { customFetch } from '@/server/service/shared/http';
+import { NFStudioRequestError, customFetch } from '@/server/service/shared/http';
 
-export class MongoDataApiRequestError extends Error {
-    code;
-
+export class MongoDataApiRequestError extends NFStudioRequestError {
     constructor(message: string, code: number) {
-        super(message);
+        super(message, code);
         this.name = 'MongoDataApiRequestError';
-        this.code = code;
     }
 }
 
@@ -69,19 +66,26 @@ const ACCESS_KEY = {
 /**
  * Performs a request to MongoDB api.
  */
-export function mongoApiRequest<T>({ action, data, retries = 1 }: MongoApiRequest) {
-    return customFetch<MongoResponse<T>>({
-        retries,
-        options: {
-            url: `${process.env.MONGO_API}/${action}`,
-            init: {
-                method: 'POST',
-                headers: { 'api-key': action === ACTIONS.FIND ? ACCESS_KEY.APP : ACCESS_KEY.ADMIN }
-            },
-            data: { ...data, dataSource: 'nfstudio' }
-        },
-        onErrorThrow: (message, code) => new MongoDataApiRequestError(message, code)
-    });
-}
+export async function mongoApiRequest<T>({ action, data, retries = 1 }: MongoApiRequest) {
+    try {
+        return await customFetch<MongoResponse<T>>({
+            retries,
+            options: {
+                url: `${process.env.MONGO_API}/${action}`,
+                init: {
+                    method: 'POST',
+                    headers: {
+                        'api-key': action === ACTIONS.FIND ? ACCESS_KEY.APP : ACCESS_KEY.ADMIN
+                    }
+                },
+                data: { ...data, dataSource: 'nfstudio' }
+            }
+        });
+    } catch (error) {
+        if (error instanceof NFStudioRequestError) {
+            throw new MongoDataApiRequestError(error.message, error.code);
+        }
 
-// TODO: tests
+        throw error;
+    }
+}
