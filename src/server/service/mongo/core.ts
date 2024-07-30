@@ -87,22 +87,22 @@ export type MongoDocument = Record<string, unknown>;
 export type MongoFilter = Record<string, Record<string, boolean | number[]>>;
 export type MongoSort = Record<string, number | string>;
 export type MongoLimit = number | null;
-export type MongoProjection = Record<string, number>;
+export type MongoProjection<T> = Record<keyof T, 0 | 1> | {};
 export type MongoUpdate = Record<string, Record<string, unknown>>;
-export type MongoPostData = {
+export type MongoPostData<T> = {
     database: NFStudioDatabase;
     collection: string;
     document?: MongoDocument;
     filter?: MongoFilter;
     sort?: MongoSort;
     limit?: MongoLimit;
-    projection?: MongoProjection;
+    projection?: MongoProjection<T>;
     update?: MongoUpdate;
 };
 
-interface MongoApiRequest {
+interface MongoApiRequest<T> {
     action: Action;
-    data: MongoPostData;
+    data: MongoPostData<T>;
     retries?: number;
 }
 
@@ -115,9 +115,16 @@ const ACCESS_KEY = {
 };
 
 /**
- * Performs a request to MongoDB api.
+ * Performs a POST request to MongoDB api.
+ *
+ * @param {MongoApiRequest} data - mongo api request data
+ * @param {MongoApiRequest['action']} data.action - action type to perform in this request
+ * @param {MongoApiRequest['data']} data.data - the request data
+ * @param {MongoApiRequest['retries']} [data.retries] - number of times to retry this request
+ *
+ * @throws {Error | MongoDataApiRequestError} error if request failed
  */
-export async function mongoApiRequest<T>({ action, data, retries = 1 }: MongoApiRequest) {
+export async function mongoApiRequest<T>({ action, data, retries = 1 }: MongoApiRequest<T>) {
     try {
         return await customFetch<MongoResponse<T>>({
             retries,

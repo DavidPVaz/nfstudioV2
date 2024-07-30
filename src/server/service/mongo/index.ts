@@ -12,6 +12,13 @@ import {
 
 /**
  * Performs a query to mongodb NFStudio database to fetch available collections data.
+ *
+ * @param {object} options - options to query collection
+ * @param {MongoFilter} [options.filter] - filters to apply to the query
+ * @param {MongoProjection} [options.projection] - projection info to add/remove from request
+ * @param {MongoLimit} [options.limit] - max number of entries to query
+ *
+ * @throws {Error | MongoDataApiRequestError} error if request failed
  */
 export const queryCollectionsData = async ({
     filter = {},
@@ -19,7 +26,7 @@ export const queryCollectionsData = async ({
     limit = null
 }: {
     filter?: MongoFilter;
-    projection?: MongoProjection;
+    projection?: MongoProjection<CollectionConfiguration>;
     limit?: MongoLimit;
 } = {}) => {
     const { documents: collections } = await mongoApiRequest<CollectionConfiguration[]>({

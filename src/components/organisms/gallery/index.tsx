@@ -5,14 +5,10 @@ import { GALLERY_IMAGES } from '@/shared/enums';
 
 const { MOBILE, DESKTOP, BANNER } = GALLERY_IMAGES;
 
-interface GalleryProps {
-    className: string;
-}
-
-// will be removed
+// TODO: will be removed
 const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
 
-export const Gallery = ({ className }: GalleryProps) => (
+export const Gallery = ({ className }: { className: string }) => (
     <div className={cn('relative flex overflow-hidden', className)}>
         <div className="absolute left-0 z-10 h-full w-1/6 bg-gradient-to-r from-background to-65%" />
         <div className="absolute right-0 z-10 h-full w-1/6 bg-gradient-to-l from-background to-65%" />

@@ -10,7 +10,7 @@ type QueryStringProps = {
 };
 
 /**
- * Create a query string suitable for use in a URL.
+ * Create a query string suitable for use in an URL search params.
  *
  * @param {QueryStringProps} data key-value pairs of data
  */

@@ -6,50 +6,48 @@ import { ToggleColorTheme } from '@/components/molecules';
 import { Button } from '@/components/atoms';
 import { NFStudioIcon, NFStudioLettersIcon, TwitterIcon } from '@/resources';
 
-export const Header = () => {
-    return (
-        <header className="sticky top-0 z-50 w-full bg-background/60 backdrop-blur-md">
-            <div className="mx-auto flex h-20 w-full items-center justify-between gap-3 px-8">
-                <nav className="flex flex-row items-center gap-4">
-                    <Button className="px-0 py-0" variant="link" asChild>
-                        <Link className="flex flex-row items-center gap-1" href={PAGES.HOME}>
-                            <NFStudioIcon className="h-[2.5rem] w-auto fill-current" />
-                            <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-current xs:flex" />
-                            <span className="sr-only">Go to main page</span>
-                        </Link>
-                    </Button>
-                    <Button className="hidden text-lg font-semibold sm:flex" variant="link" asChild>
-                        <Link aria-label="Go to collections" href={PAGES.COLLECTIONS}>
-                            Collections
-                        </Link>
-                    </Button>
-                </nav>
+export const Header = () => (
+    <header className="sticky top-0 z-50 w-full bg-background/60 backdrop-blur-md">
+        <div className="mx-auto flex h-20 w-full items-center justify-between gap-3 px-8">
+            <nav className="flex flex-row items-center gap-4">
+                <Button className="px-0 py-0" variant="link" asChild>
+                    <Link className="flex flex-row items-center gap-1" href={PAGES.HOME}>
+                        <NFStudioIcon className="h-[2.5rem] w-auto fill-current" />
+                        <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-current xs:flex" />
+                        <span className="sr-only">Go to main page</span>
+                    </Link>
+                </Button>
+                <Button className="hidden text-lg font-semibold sm:flex" variant="link" asChild>
+                    <Link aria-label="Go to collections" href={PAGES.COLLECTIONS}>
+                        Collections
+                    </Link>
+                </Button>
+            </nav>
 
-                <div className="flex flex-row items-center">
-                    <Button variant="ghost" size="icon2x" asChild>
-                        <a
-                            href={'mailto:info@nfstudio.xyz'}
-                            rel="noopener noreferrer"
-                            target={'_blank'}
-                        >
-                            <Mail className="h-[1.6rem] w-[1.6rem] stroke-current" />
-                            <span className="sr-only">Send an email to NFStudio</span>
-                        </a>
-                    </Button>
-                    <Button variant="ghost" size="icon2x" asChild>
-                        <a
-                            href={'https://twitter.com/nfstudio_xyz'}
-                            rel="noopener noreferrer"
-                            target={'_blank'}
-                        >
-                            <TwitterIcon className="h-[1.4rem] w-[1.4rem] fill-current" />
-                            <span className="sr-only">Go to twitter account</span>
-                        </a>
-                    </Button>
+            <div className="flex flex-row items-center">
+                <Button variant="ghost" size="icon2x" asChild>
+                    <a
+                        href={'mailto:info@nfstudio.xyz'}
+                        rel="noopener noreferrer"
+                        target={'_blank'}
+                    >
+                        <Mail className="h-[1.6rem] w-[1.6rem] stroke-current" />
+                        <span className="sr-only">Send an email to NFStudio</span>
+                    </a>
+                </Button>
+                <Button variant="ghost" size="icon2x" asChild>
+                    <a
+                        href={'https://twitter.com/nfstudio_xyz'}
+                        rel="noopener noreferrer"
+                        target={'_blank'}
+                    >
+                        <TwitterIcon className="h-[1.4rem] w-[1.4rem] fill-current" />
+                        <span className="sr-only">Go to twitter account</span>
+                    </a>
+                </Button>
 
-                    <ToggleColorTheme />
-                </div>
+                <ToggleColorTheme />
             </div>
-        </header>
-    );
-};
+        </div>
+    </header>
+);

@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { PAGES, GALLERY_IMAGES } from '@/shared/enums';
-import { CollectionCard, Gallery } from '@/components/molecules';
+import { Gallery, Collections } from '@/components/organisms';
 import { Button, Image } from '@/components/atoms';
 import { CreateButton } from './create-button';
 
@@ -84,18 +84,7 @@ const CollectionsSection = async () => {
                 COLLECTIONS
             </h3>
 
-            <ul className="grid w-full grid-cols-1 gap-3 xs:grid-cols-2 2xs:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
-                {collections.map(({ _id, chain, presentation }) => (
-                    <CollectionCard
-                        imgAlt={`${_id} card`}
-                        key={_id}
-                        imgSrc={getSrc(presentation)}
-                        href={`/collections/${_id}`}
-                        chain={chain}
-                        name={_id}
-                    />
-                ))}
-            </ul>
+            <Collections data={collections} />
 
             <Button className="w-full font-semibold 2xs:w-72" asChild>
                 <Link href={PAGES.COLLECTIONS}>

@@ -21,11 +21,13 @@ interface HttpRequest {
 const NON_RETRIABLE_CLIENT_ERROR_CODES = [400, 401, 403, 404, 409];
 
 /**
- * Performs a HTTP request;
+ * Performs a HTTP request.
  *
- * @param {HttpRequest} data - request options
+ * @param {HttpRequest} data - request data
  * @param {HttpRequest['retries']} data.retries - the number of times to retry the request
  * @param {HttpRequest['options']} data.options - the request options
+ *
+ * @throws {Error | NFStudioRequestError} error if request failed
  */
 export function customFetch<T>({
     retries,
