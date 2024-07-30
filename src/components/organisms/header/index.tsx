@@ -22,7 +22,7 @@ export const Header = () => (
                     variant="link"
                     asChild
                 >
-                    <Link aria-label="Go to collections" href={PAGES.COLLECTIONS}>
+                    <Link aria-label="Go to collections page" href={PAGES.COLLECTIONS}>
                         Collections
                     </Link>
                 </Button>

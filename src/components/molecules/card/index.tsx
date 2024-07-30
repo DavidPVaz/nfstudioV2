@@ -22,7 +22,11 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
         )}
         asChild
     >
-        <Link className="relative flex flex-col gap-y-2 p-2 sm:p-4" href={href}>
+        <Link
+            className="relative flex flex-col gap-y-2 p-2 sm:p-4"
+            href={href}
+            aria-label={`Go to ${`${name.replace('_', ' ')} collection page`}`}
+        >
             <div className="border-primary-brand absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white sm:left-6 sm:top-6 sm:h-10 sm:w-10">
                 <ChainIcon chain={chain} className={'fill-primary-brand'} />
             </div>
