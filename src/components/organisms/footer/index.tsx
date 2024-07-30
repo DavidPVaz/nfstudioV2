@@ -9,12 +9,16 @@ export const Footer = () => (
         <div className="container flex flex-col items-center justify-center gap-4">
             <div className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-1">
-                    <NFStudioIcon className="h-[2.5rem] w-auto fill-current sm:h-[4rem]" />
+                    <NFStudioIcon className="fill-primary-brand h-[2.5rem] w-auto sm:h-[4rem]" />
                     <NFStudioLettersIcon className="hidden w-auto fill-current 2xs:flex 2xs:h-[2.5rem] sm:h-[4rem]" />
                 </div>
 
                 <div className="flex flex-col items-end">
-                    <Button className="text-base font-medium 2xs:text-lg" variant="link" asChild>
+                    <Button
+                        className="text-base font-medium text-foreground 2xs:text-lg"
+                        variant="link"
+                        asChild
+                    >
                         <Link
                             aria-label="Go to frequently asked questions"
                             href={PAGES.COLLECTIONS}
@@ -22,7 +26,11 @@ export const Footer = () => (
                             FAQ
                         </Link>
                     </Button>
-                    <Button className="text-base font-medium 2xs:text-lg" variant="link" asChild>
+                    <Button
+                        className="text-base font-medium text-foreground 2xs:text-lg"
+                        variant="link"
+                        asChild
+                    >
                         <Link
                             target="_blank"
                             aria-label="Consult terms of service"
@@ -31,7 +39,11 @@ export const Footer = () => (
                             TERMS OF SERVICE
                         </Link>
                     </Button>
-                    <Button className="text-base font-medium 2xs:text-lg" variant="link" asChild>
+                    <Button
+                        className="text-base font-medium text-foreground 2xs:text-lg"
+                        variant="link"
+                        asChild
+                    >
                         <Link
                             target="_blank"
                             aria-label="Consult privacy policy"

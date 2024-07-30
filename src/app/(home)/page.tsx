@@ -99,10 +99,10 @@ const ShowcaseSection = () => (
     <section className="relative flex h-[600px] w-full min-w-[226px] overflow-hidden rounded-lg bg-white sm:h-56">
         <div className="relative z-10 flex h-full w-full flex-col items-center justify-between pb-10 sm:items-start sm:p-5">
             <div className="flex min-w-full flex-col items-start bg-white p-5 sm:bg-transparent sm:p-0">
-                <span className="text-xl font-semibold text-black 2xs:text-3xl">
+                <span className="text-primary-brand-blue text-xl font-semibold 2xs:text-3xl md:text-4xl">
                     Want to create your own?
                 </span>
-                <span className="text-xl font-semibold text-black 2xs:text-3xl">
+                <span className="text-primary-brand text-xl font-semibold 2xs:text-3xl md:text-4xl">
                     Let's get started!
                 </span>
             </div>

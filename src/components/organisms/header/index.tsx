@@ -12,12 +12,16 @@ export const Header = () => (
             <nav className="flex flex-row items-center gap-4">
                 <Button className="px-0 py-0" variant="link" asChild>
                     <Link className="flex flex-row items-center gap-1" href={PAGES.HOME}>
-                        <NFStudioIcon className="h-[2.5rem] w-auto fill-current" />
-                        <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-current xs:flex" />
+                        <NFStudioIcon className="fill-primary-brand h-[2.5rem] w-auto" />
+                        <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-foreground xs:flex" />
                         <span className="sr-only">Go to main page</span>
                     </Link>
                 </Button>
-                <Button className="hidden text-lg font-semibold sm:flex" variant="link" asChild>
+                <Button
+                    className="hidden text-lg font-semibold text-foreground sm:flex"
+                    variant="link"
+                    asChild
+                >
                     <Link aria-label="Go to collections" href={PAGES.COLLECTIONS}>
                         Collections
                     </Link>

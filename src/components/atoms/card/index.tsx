@@ -14,7 +14,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
             <Comp
                 ref={ref}
                 className={cn(
-                    'rounded-lg border bg-card text-card-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1',
+                    'rounded-lg border bg-card text-card-foreground ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1',
                     className
                 )}
                 {...props}

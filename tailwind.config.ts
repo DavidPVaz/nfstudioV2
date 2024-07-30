@@ -39,7 +39,9 @@ const config = {
                 foreground: 'hsl(var(--foreground))',
                 primary: {
                     DEFAULT: 'hsl(var(--primary))',
-                    foreground: 'hsl(var(--primary-foreground))'
+                    foreground: 'hsl(var(--primary-foreground))',
+                    brand: 'hsl(var(--brand))',
+                    'brand-blue': 'hsl(var(--brand-blue))'
                 },
                 secondary: {
                     DEFAULT: 'hsl(var(--secondary))',
@@ -62,7 +64,7 @@ const config = {
                     foreground: 'hsl(var(--popover-foreground))'
                 },
                 card: {
-                    DEFAULT: 'hsl(var(--card))',
+                    DEFAULT: 'hsl(transparent)',
                     foreground: 'hsl(var(--card-foreground))'
                 }
             },
