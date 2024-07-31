@@ -17,7 +17,7 @@ type CardProps = {
 export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }: CardProps) => (
     <Card
         className={cn(
-            'transition-all will-change-transform hover:-translate-y-1 hover:shadow-border-extension',
+            'min-w-full transition-all will-change-transform hover:-translate-y-1 hover:shadow-border-extension',
             className
         )}
         asChild
@@ -27,7 +27,7 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
             href={href}
             aria-label={`Go to ${`${name.replace('_', ' ')} collection page`}`}
         >
-            <div className="border-primary-brand absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border bg-white sm:left-6 sm:top-6 sm:h-10 sm:w-10">
+            <div className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-primary-brand bg-white sm:left-6 sm:top-6 sm:h-10 sm:w-10">
                 <ChainIcon chain={chain} className={'fill-primary-brand'} />
             </div>
             <Image

@@ -1,4 +1,4 @@
-import { describe, expect, vi, afterEach, it, beforeEach } from 'vitest';
+import { describe, expect, vi, afterEach, it } from 'vitest';
 import { queryCollectionsData } from '@/server/service/mongo';
 
 const { mongoApiRequestMock } = vi.hoisted(() => ({

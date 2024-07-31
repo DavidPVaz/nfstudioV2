@@ -5,6 +5,7 @@ import { PAGES, GALLERY_IMAGES } from '@/shared/enums';
 import { Gallery, Collections } from '@/components/organisms';
 import { Button, Image } from '@/components/atoms';
 import { CreateButton } from './create-button';
+import { NFStudioList } from './nfstudio-list';
 
 import { queryCollectionsData } from '@/server/service/mongo';
 
@@ -74,8 +75,7 @@ const IntroSection = () => (
 
 const CollectionsSection = async () => {
     const collections = await queryCollectionsData({
-        projection: { active: 0, createdAt: 0, config: 0 },
-        limit: 12
+        projection: { active: 0, createdAt: 0, config: 0 }
     });
 
     return (
@@ -84,7 +84,9 @@ const CollectionsSection = async () => {
                 COLLECTIONS
             </h3>
 
-            <Collections data={collections} />
+            <Collections>
+                <NFStudioList collections={collections} />
+            </Collections>
 
             <Button className="w-full font-semibold 2xs:w-72" asChild>
                 <Link href={PAGES.COLLECTIONS}>

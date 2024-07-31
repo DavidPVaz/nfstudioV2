@@ -1,14 +1,14 @@
 import 'server-only';
 
 import {
-    mongoApiRequest,
     ACTIONS,
     DATABASES,
     type MongoFilter,
     type MongoProjection,
     type MongoLimit,
     type CollectionConfiguration
-} from '@/server/service/mongo/core';
+} from '@/server/service/mongo/types';
+import { mongoApiRequest } from '@/server/service/mongo/core';
 
 /**
  * Performs a query to mongodb NFStudio database to fetch available collections data.
