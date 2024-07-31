@@ -29,7 +29,7 @@ export const queryCollectionsData = async ({
     projection?: MongoProjection<CollectionConfiguration>;
     limit?: MongoLimit;
 } = {}) => {
-    const { documents: collections } = await mongoApiRequest<CollectionConfiguration[]>({
+    const { documents: collections } = await mongoApiRequest<CollectionConfiguration>({
         action: ACTIONS.FIND,
         data: {
             database: DATABASES.COLLECTIONS,

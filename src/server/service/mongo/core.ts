@@ -80,7 +80,7 @@ export type TransactionData = {
 };
 
 type MongoResponse<T> = {
-    documents: T;
+    documents: Array<T>;
 };
 
 export type MongoDocument = Record<string, unknown>;

@@ -3,6 +3,7 @@ import { Chakra_Petch as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { ColorThemeProvider } from '@/app/color-theme-provider';
 import { Header, Footer } from '@/components/organisms';
+import { ScrollUp } from '@/components/molecules';
 import '@/styles/globals.css';
 
 const fontSans = FontSans({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-sans' });
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                         </main>
                         <Footer />
                     </div>
+                    <ScrollUp />
                 </ColorThemeProvider>
             </body>
         </html>
