@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { type CollectionConfiguration } from '@/server/service/mongo/types';
 import { CollectionCard } from '@/components/molecules';

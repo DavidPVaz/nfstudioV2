@@ -13,16 +13,15 @@ const { MOBILE } = GALLERY_IMAGES;
 
 const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
 
-export default function Home() {
-    return (
-        <div className="relative flex w-full flex-col items-center justify-start gap-y-24 md:gap-y-36">
-            <TopSection />
-            <IntroSection />
-            <CollectionsSection />
-            <ShowcaseSection />
-        </div>
-    );
-}
+const HomePage = () => (
+    <div className="relative flex w-full flex-col items-center justify-start gap-y-24 md:gap-y-36">
+        <TopSection />
+        <IntroSection />
+        <CollectionsSection />
+        <ShowcaseSection />
+    </div>
+);
+export default HomePage;
 
 const TopSection = () => (
     <section className="relative flex w-fit flex-row">
@@ -75,7 +74,7 @@ const IntroSection = () => (
 
 const CollectionsSection = async () => {
     const collections = await queryCollectionsData({
-        projection: { active: 0, createdAt: 0, config: 0 }
+        projection: { _id: 1, presentation: 1, chain: 1 }
     });
 
     return (
