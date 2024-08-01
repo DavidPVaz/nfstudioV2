@@ -14,7 +14,7 @@ interface SearchDialogProps {
     data: Array<{ value: string; name: string; imgSrc?: string }>;
 }
 
-// TODO: add image
+// TODO: add image in item. add chain bar
 export const SearchDialog = ({ open, onOpenChange, onSelect, data }: SearchDialogProps) => (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
         <CommandInput placeholder="Search collections on NFStudio" />

@@ -11,8 +11,8 @@ const CollectionsPage = async () => {
 
     return (
         <div className="relative flex w-full flex-col items-start justify-start gap-y-12 md:gap-y-20">
-            <section className="relative flex w-fit flex-col">
-                <h1 className="py-3 text-start text-2xl text-foreground 2xs:text-3xl md:py-5 lg:text-5xl">
+            <section className="relative flex w-full flex-col 2xs:w-fit">
+                <h1 className="py-3 text-center text-2xl text-foreground 2xs:text-start 2xs:text-3xl md:py-5 lg:text-5xl">
                     PICK A COLLECTION
                 </h1>
 
