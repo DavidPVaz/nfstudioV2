@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { CommandShortcut } from '@/components/atoms/command';
 import { Button } from '@/components/atoms';
 import { CollectionConfiguration } from '@/server/service/mongo/types';
+import { Chain } from '@/shared/enums';
 
 const SearchDialog = dynamic(() => import('./dialog').then(module => module.SearchDialog));
 
@@ -13,7 +14,8 @@ const toValue = (id: string) => `${id.replace('_', ' ')}`;
 const toUrl = (id: string) => `${id.replace(' ', '_')}`;
 
 export const SearchCollections = ({ collections }: { collections: CollectionConfiguration[] }) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
+    const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
     const { push } = useRouter();
 
     useEffect(() => {
@@ -32,6 +34,11 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
         setOpen(false);
         push(`collections/${toUrl(collection)}`);
     }, []);
+    const onChain = useCallback((chain: Chain | null) => {
+        console.log('CHain: ', chain);
+        setSelectedChain(chain);
+    }, []);
+    console.log('SELECTED CHAIN: ', selectedChain);
 
     return (
         <>
@@ -45,10 +52,13 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
                     open={open}
                     onOpenChange={setOpen}
                     onSelect={onSelect}
-                    data={collections.map(({ _id, presentation }) => ({
+                    onChain={onChain}
+                    selectedChain={selectedChain}
+                    data={collections.map(({ _id, presentation, chain }) => ({
                         name: toValue(_id),
                         value: toValue(_id),
-                        imgSrc: presentation
+                        imgSrc: presentation,
+                        chain
                     }))}
                 />
             )}

@@ -1,3 +1,5 @@
+import { SolanaIcon, EthereumIcon, PolygonIcon, OptimismIcon } from '@/resources';
+
 export const CHAINS = {
     SOLANA: 'Solana',
     ETHEREUM: 'Ethereum',
@@ -5,6 +7,12 @@ export const CHAINS = {
     OPTIMISM: 'Optimism'
 } as const;
 export type Chain = (typeof CHAINS)[keyof typeof CHAINS];
+export const CHAIN_ICON_MAP = {
+    [CHAINS.SOLANA]: SolanaIcon,
+    [CHAINS.ETHEREUM]: EthereumIcon,
+    [CHAINS.POLYGON]: PolygonIcon,
+    [CHAINS.OPTIMISM]: OptimismIcon
+} as const;
 
 export const PAGES = {
     HOME: '/',
