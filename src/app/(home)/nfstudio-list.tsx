@@ -1,64 +1,27 @@
 'use client';
 
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useMemo } from 'react';
 import { type CollectionConfiguration } from '@/server/service/mongo/types';
 import { CollectionsList } from '@/components/organisms';
-import { useWindowWidth } from '@/hooks';
-
-const BREAKPOINTS = {
-    XL: 1280,
-    LG: 1024,
-    MD: 768,
-    XS: 290
-};
-const COLLECTIONS_PER_BREAKPOINT = {
-    [BREAKPOINTS.XL]: 12,
-    [BREAKPOINTS.LG]: 10,
-    [BREAKPOINTS.MD]: 8,
-    [BREAKPOINTS.XS]: 6
-};
-
-type BreakpointCalculation = { width: number; previous: number | null };
-
-const isXLBreakpoint = ({ width, previous: previousBreakpoint }: BreakpointCalculation) =>
-    previousBreakpoint !== BREAKPOINTS.XL && width >= BREAKPOINTS.XL;
-const isLGBreakpoint = ({ width, previous: previousBreakpoint }: BreakpointCalculation) =>
-    previousBreakpoint !== BREAKPOINTS.LG && width >= BREAKPOINTS.LG && width < BREAKPOINTS.XL;
-const isMDBreakpoint = ({ width, previous: previousBreakpoint }: BreakpointCalculation) =>
-    previousBreakpoint !== BREAKPOINTS.MD && width >= BREAKPOINTS.MD && width < BREAKPOINTS.LG;
-const isXSBreakpoint = ({ width, previous: previousBreakpoint }: BreakpointCalculation) =>
-    previousBreakpoint !== BREAKPOINTS.XS && width >= BREAKPOINTS.XS && width < BREAKPOINTS.MD;
+import { useMediaQuery } from '@/hooks';
 
 export const NFStudioList = ({ collections }: { collections: CollectionConfiguration[] }) => {
-    const { width } = useWindowWidth();
-    const previous = useRef<number | null>(null);
-    const [numberOfCollectionsToShow, setNumberOfCollectionsToShow] = useState<number | null>(null);
-
-    useLayoutEffect(() => {
-        if (isXLBreakpoint({ width: width ?? window.innerWidth, previous: previous.current })) {
-            previous.current = BREAKPOINTS.XL;
-            setNumberOfCollectionsToShow(COLLECTIONS_PER_BREAKPOINT[BREAKPOINTS.XL]);
-        } else if (
-            isLGBreakpoint({ width: width ?? window.innerWidth, previous: previous.current })
-        ) {
-            previous.current = BREAKPOINTS.LG;
-            setNumberOfCollectionsToShow(COLLECTIONS_PER_BREAKPOINT[BREAKPOINTS.LG]);
-        } else if (
-            isMDBreakpoint({ width: width ?? window.innerWidth, previous: previous.current })
-        ) {
-            previous.current = BREAKPOINTS.MD;
-            setNumberOfCollectionsToShow(COLLECTIONS_PER_BREAKPOINT[BREAKPOINTS.MD]);
-        } else if (
-            isXSBreakpoint({ width: width ?? window.innerWidth, previous: previous.current })
-        ) {
-            previous.current = BREAKPOINTS.XS;
-            setNumberOfCollectionsToShow(COLLECTIONS_PER_BREAKPOINT[BREAKPOINTS.XS]);
-        }
-    }, [width]);
-
-    return (
-        numberOfCollectionsToShow && (
-            <CollectionsList collections={collections.slice(0, numberOfCollectionsToShow)} />
-        )
+    const isXSBreakpoint = useMediaQuery(
+        'only screen and (min-width : 290px) and (max-width : 767px)'
     );
+    const isMDBreakpoint = useMediaQuery(
+        'only screen and (min-width : 768px) and (max-width : 1023px)'
+    );
+    const isLGBreakpoint = useMediaQuery(
+        'only screen and (min-width : 1024px) and (max-width : 1279px)'
+    );
+    const isXLBreakpoint = useMediaQuery('only screen and (min-width : 1280px)');
+
+    const numberToShow = useMemo(
+        () =>
+            isXLBreakpoint ? 12 : isLGBreakpoint ? 10 : isMDBreakpoint ? 8 : isXSBreakpoint ? 6 : 3,
+        [isXSBreakpoint, isMDBreakpoint, isLGBreakpoint, isXLBreakpoint]
+    );
+
+    return <CollectionsList collections={collections.slice(0, numberToShow)} />;
 };

@@ -55,10 +55,7 @@ export const Image = ({
     height
 }: ImageProps) => (
     <div
-        className={cn(
-            'relative flex w-full items-center justify-center overflow-hidden',
-            className
-        )}
+        className={cn('relative flex items-center justify-center overflow-hidden', className)}
         onClick={onClick}
     >
         <NextImage

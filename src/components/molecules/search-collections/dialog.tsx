@@ -4,8 +4,9 @@ import {
     CommandList,
     CommandEmpty,
     CommandGroup,
-    CommandItem
-} from '@/components/atoms/command';
+    CommandItem,
+    Image
+} from '@/components/atoms';
 
 interface SearchDialogProps {
     open: boolean;
@@ -13,8 +14,8 @@ interface SearchDialogProps {
     onSelect: (value: string) => void;
     data: Array<{ value: string; name: string; imgSrc?: string }>;
 }
-
-// TODO: add image in item. add chain bar
+const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
+// TODO: add chain bar
 export const SearchDialog = ({ open, onOpenChange, onSelect, data }: SearchDialogProps) => (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
         <CommandInput placeholder="Search collections on NFStudio" />
@@ -23,6 +24,17 @@ export const SearchDialog = ({ open, onOpenChange, onSelect, data }: SearchDialo
             <CommandGroup>
                 {data.map(({ value, name, imgSrc }) => (
                     <CommandItem key={value} value={value} onSelect={onSelect}>
+                        {imgSrc && (
+                            <Image
+                                optimizedWidth={50}
+                                alt={name}
+                                className="rounded-sm"
+                                src={getSrc(imgSrc)}
+                                useCustomLoader={false}
+                                width={35}
+                                height={45.8465}
+                            />
+                        )}
                         <span>{name}</span>
                     </CommandItem>
                 ))}

@@ -78,7 +78,7 @@ const CollectionsSection = async () => {
     });
 
     return (
-        <section className="flex w-full flex-col items-center justify-center gap-y-6 sm:gap-y-10">
+        <section className="flex w-full min-w-[226px] flex-col items-center justify-center gap-y-6 sm:gap-y-10">
             <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
                 COLLECTIONS
             </h3>

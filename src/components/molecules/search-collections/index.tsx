@@ -45,9 +45,10 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
                     open={open}
                     onOpenChange={setOpen}
                     onSelect={onSelect}
-                    data={collections.map(({ _id }) => ({
+                    data={collections.map(({ _id, presentation }) => ({
                         name: toValue(_id),
-                        value: toValue(_id)
+                        value: toValue(_id),
+                        imgSrc: presentation
                     }))}
                 />
             )}
