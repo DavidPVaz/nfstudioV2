@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     CommandInput,
     CommandList,
@@ -11,8 +12,8 @@ import { Chain, CHAIN_ICON_MAP } from '@/shared/enums';
 
 export interface SearchDialogContentProps {
     onSelect: (value: string) => void;
-    onChain: (chain: Chain) => void;
-    data: Array<{ value: string; name: string; imgSrc?: string; chain: Chain }>;
+    onChain: (chain: Chain | null) => void;
+    data: Array<{ value: string; imgSrc: string }>;
     selectedChain: Chain | null;
 }
 const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
@@ -24,42 +25,71 @@ export const DialogContent = ({
     selectedChain
 }: SearchDialogContentProps) => (
     <>
-        <CommandInput placeholder="Search collections on NFStudio" autoFocus />
-        <ChainFilter onChain={onChain} />
+        <CommandInput
+            aria-label="Search collections"
+            placeholder="Search collections on NFStudio"
+            autoFocus
+        />
+        <ChainFilter onChain={onChain} selectedChain={selectedChain} />
         <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>No collections found.</CommandEmpty>
             <CommandGroup>
-                {data
-                    .filter(({ chain }) => chain === selectedChain || true)
-                    .map(({ value, name, imgSrc }) => (
-                        <CommandItem key={value} value={value} onSelect={onSelect}>
-                            {imgSrc && (
-                                <Image
-                                    optimizedWidth={50}
-                                    alt={name}
-                                    className="rounded-sm"
-                                    src={getSrc(imgSrc)}
-                                    useCustomLoader={false}
-                                    width={35}
-                                    height={45.8465}
-                                />
-                            )}
-                            <span>{name}</span>
-                        </CommandItem>
-                    ))}
+                {data.map(({ value, imgSrc }) => (
+                    <CommandItem key={value} value={value} onSelect={onSelect}>
+                        <Image
+                            optimizedWidth={50}
+                            alt={value}
+                            className="rounded-sm"
+                            src={getSrc(imgSrc)}
+                            useCustomLoader={false}
+                            width={35}
+                            height={45.8465}
+                        />
+                        <span>{value}</span>
+                    </CommandItem>
+                ))}
             </CommandGroup>
         </CommandList>
     </>
 );
 
-const ChainFilter = ({ onChain }: { onChain: (chain: Chain) => void }) => (
+const ChainFilter = ({
+    onChain,
+    selectedChain
+}: {
+    onChain: (chain: Chain | null) => void;
+    selectedChain: Chain | null;
+}) => (
     <div className="h-11 w-full border-b">
-        <div className="relative flex h-full w-full items-stretch justify-center gap-x-2 md:gap-x-0">
-            {Object.entries(CHAIN_ICON_MAP).map(([chain, Icon]) => (
-                <Button variant={'outline'} onClick={() => onChain(chain as Chain)}>
-                    <Icon className="h-full fill-foreground" />
-                </Button>
-            ))}
+        <div className="relative flex h-full w-full items-center justify-center">
+            <Button
+                aria-label={`Select all chains`}
+                variant={'ghost'}
+                className={`${selectedChain === null ? 'bg-accent' : ''} w-full gap-x-2 rounded-none hover:bg-accent/${selectedChain === null ? '100' : '50'}`}
+                onClick={() => onChain(null)}
+            >
+                <p className="hidden text-sm text-foreground sm:inline">All chains</p>
+            </Button>
+
+            {Object.entries(CHAIN_ICON_MAP).map(([chain, Icon]) => {
+                const chainIsSelected = selectedChain === chain;
+
+                return (
+                    <Button
+                        aria-label={`Filter by ${chain} chain`}
+                        variant={'ghost'}
+                        className={`${chainIsSelected ? 'bg-accent' : ''} w-full gap-x-2 rounded-none hover:bg-accent/${chainIsSelected ? '100' : '50'}`}
+                        onClick={() => onChain(chain as Chain)}
+                    >
+                        <Icon
+                            className={`${chainIsSelected ? 'fill-foreground' : 'fill-foreground/70'} h-full group-hover:fill-foreground`}
+                        />
+                        {chainIsSelected && (
+                            <p className="hidden text-sm text-foreground sm:inline">{chain}</p>
+                        )}
+                    </Button>
+                );
+            })}
         </div>
     </div>
 );

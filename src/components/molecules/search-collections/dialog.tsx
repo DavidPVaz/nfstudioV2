@@ -1,3 +1,4 @@
+import React from 'react';
 import dynamic from 'next/dynamic';
 import { CommandDialog } from '@/components/atoms';
 import { Chain } from '@/shared/enums';
@@ -7,8 +8,8 @@ export interface SearchDialogProps {
     open: boolean;
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
     onSelect: (value: string) => void;
-    onChain: (chain: Chain) => void;
-    data: Array<{ value: string; name: string; imgSrc?: string; chain: Chain }>;
+    onChain: (chain: Chain | null) => void;
+    data: Array<{ value: string; imgSrc: string }>;
     selectedChain: Chain | null;
 }
 

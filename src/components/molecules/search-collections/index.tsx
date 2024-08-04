@@ -8,9 +8,6 @@ import { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Chain } from '@/shared/enums';
 import { SearchDialog } from './dialog';
 
-const toValue = (id: string) => `${id.replace('_', ' ')}`;
-const toUrl = (id: string) => `${id.replace(' ', '_')}`;
-
 export const SearchCollections = ({ collections }: { collections: CollectionConfiguration[] }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
@@ -30,17 +27,31 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
 
     const onSelect = useCallback((collection: string) => {
         setOpen(false);
-        push(`collections/${toUrl(collection)}`);
+        push(`collections/${collection.replace(' ', '_')}`);
     }, []);
+
     const onChain = useCallback((chain: Chain | null) => {
-        console.log('CHain: ', chain);
         setSelectedChain(chain);
     }, []);
-    console.log('SELECTED CHAIN: ', selectedChain);
+
+    const data = useMemo(
+        () =>
+            collections
+                .filter(({ chain }) => selectedChain === null || selectedChain === chain)
+                .map(({ _id, presentation }) => ({
+                    value: `${_id.replace('_', ' ')}`,
+                    imgSrc: presentation
+                })),
+        [selectedChain]
+    );
 
     return (
         <>
-            <Button onClick={() => setOpen(true)} variant={'outline'}>
+            <Button
+                aria-label="Search collections"
+                onClick={() => setOpen(true)}
+                variant={'outline'}
+            >
                 <span className="hidden md:inline-flex">Search collections...</span>
                 <span className="inline-flex md:hidden">Search...</span>
                 <CommandShortcut>⌘K</CommandShortcut>
@@ -50,13 +61,8 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
                 onOpenChange={setOpen}
                 onSelect={onSelect}
                 onChain={onChain}
+                data={data}
                 selectedChain={selectedChain}
-                data={collections.map(({ _id, presentation, chain }) => ({
-                    name: toValue(_id),
-                    value: toValue(_id),
-                    imgSrc: presentation,
-                    chain
-                }))}
             />
         </>
     );
