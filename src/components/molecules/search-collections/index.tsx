@@ -2,13 +2,11 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import { CommandShortcut } from '@/components/atoms/command';
 import { Button } from '@/components/atoms';
 import { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Chain } from '@/shared/enums';
-
-const SearchDialog = dynamic(() => import('./dialog').then(module => module.SearchDialog));
+import { SearchDialog } from './dialog';
 
 const toValue = (id: string) => `${id.replace('_', ' ')}`;
 const toUrl = (id: string) => `${id.replace(' ', '_')}`;
@@ -47,21 +45,19 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
                 <span className="inline-flex md:hidden">Search...</span>
                 <CommandShortcut>⌘K</CommandShortcut>
             </Button>
-            {open && (
-                <SearchDialog
-                    open={open}
-                    onOpenChange={setOpen}
-                    onSelect={onSelect}
-                    onChain={onChain}
-                    selectedChain={selectedChain}
-                    data={collections.map(({ _id, presentation, chain }) => ({
-                        name: toValue(_id),
-                        value: toValue(_id),
-                        imgSrc: presentation,
-                        chain
-                    }))}
-                />
-            )}
+            <SearchDialog
+                open={open}
+                onOpenChange={setOpen}
+                onSelect={onSelect}
+                onChain={onChain}
+                selectedChain={selectedChain}
+                data={collections.map(({ _id, presentation, chain }) => ({
+                    name: toValue(_id),
+                    value: toValue(_id),
+                    imgSrc: presentation,
+                    chain
+                }))}
+            />
         </>
     );
 };

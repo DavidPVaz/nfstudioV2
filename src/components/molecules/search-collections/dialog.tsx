@@ -1,16 +1,9 @@
-import {
-    CommandDialog,
-    CommandInput,
-    CommandList,
-    CommandEmpty,
-    CommandGroup,
-    CommandItem,
-    Image,
-    Button
-} from '@/components/atoms';
-import { Chain, CHAIN_ICON_MAP } from '@/shared/enums';
+import dynamic from 'next/dynamic';
+import { CommandDialog } from '@/components/atoms';
+import { Chain } from '@/shared/enums';
+import { DialogContentSkeleton } from './dialog-content-skeleton';
 
-interface SearchDialogProps {
+export interface SearchDialogProps {
     open: boolean;
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
     onSelect: (value: string) => void;
@@ -18,7 +11,13 @@ interface SearchDialogProps {
     data: Array<{ value: string; name: string; imgSrc?: string; chain: Chain }>;
     selectedChain: Chain | null;
 }
-const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
+
+const DialogContent = dynamic(
+    () => import('./dialog-content').then(module => module.DialogContent),
+    {
+        loading: DialogContentSkeleton
+    }
+);
 
 export const SearchDialog = ({
     open,
@@ -29,45 +28,13 @@ export const SearchDialog = ({
     selectedChain
 }: SearchDialogProps) => (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
-        <CommandInput placeholder="Search collections on NFStudio" />
-        <ChainFilter onChain={onChain} />
-        <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-                {data
-                    .filter(({ chain }) => chain === selectedChain || true)
-                    .map(({ value, name, imgSrc }) => (
-                        <CommandItem key={value} value={value} onSelect={onSelect}>
-                            {imgSrc && (
-                                <Image
-                                    optimizedWidth={50}
-                                    alt={name}
-                                    className="rounded-sm"
-                                    src={getSrc(imgSrc)}
-                                    useCustomLoader={false}
-                                    width={35}
-                                    height={45.8465}
-                                />
-                            )}
-                            <span>{name}</span>
-                        </CommandItem>
-                    ))}
-            </CommandGroup>
-        </CommandList>
+        {open && (
+            <DialogContent
+                onSelect={onSelect}
+                onChain={onChain}
+                data={data}
+                selectedChain={selectedChain}
+            />
+        )}
     </CommandDialog>
 );
-
-// iterate over the contents of chain icon map
-const ChainFilter = ({ onChain }: { onChain: (chain: Chain) => void }) => {
-    return (
-        <div className="h-11 w-full border-b">
-            <div className="relative flex h-full w-full items-stretch justify-center gap-x-2 md:gap-x-0">
-                {Object.entries(CHAIN_ICON_MAP).map(([chain, Icon]) => (
-                    <Button variant={'outline'} onClick={() => onChain(chain as Chain)}>
-                        <Icon className="h-full fill-primary-brand" />
-                    </Button>
-                ))}
-            </div>
-        </div>
-    );
-};
