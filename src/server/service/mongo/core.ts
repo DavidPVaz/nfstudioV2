@@ -28,7 +28,7 @@ const ACCESS_KEY = {
 };
 
 /**
- * Performs a POST request to MongoDB api.
+ * Performs a POST request to MongoDB data api.
  *
  * @param {MongoApiRequest} data - mongo api request data
  * @param {MongoApiRequest['action']} data.action - action type to perform in this request

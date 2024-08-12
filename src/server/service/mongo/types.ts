@@ -70,7 +70,7 @@ export type TransactionData = {
 };
 
 export type MongoDocument = Record<string, unknown>;
-export type MongoFilter = Record<string, Record<string, boolean | number[]>>;
+export type MongoFilter = Record<string, Record<string, boolean | number[] | string>>;
 export type MongoSort = Record<string, number | string>;
 export type MongoLimit = number | null;
 export type MongoProjection<T> = Record<keyof T, 0 | 1> | {};

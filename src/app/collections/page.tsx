@@ -1,7 +1,6 @@
 import React from 'react';
 import { Collections, CollectionsList } from '@/components/organisms';
 import { SearchCollections } from '@/components/molecules';
-
 import { queryCollectionsData } from '@/server/service/mongo';
 
 const CollectionsPage = async () => {

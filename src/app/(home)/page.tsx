@@ -6,7 +6,6 @@ import { Gallery, Collections } from '@/components/organisms';
 import { Button, Image } from '@/components/atoms';
 import { CreateButton } from './create-button';
 import { NFStudioList } from './nfstudio-list';
-
 import { queryCollectionsData } from '@/server/service/mongo';
 
 const { MOBILE } = GALLERY_IMAGES;
