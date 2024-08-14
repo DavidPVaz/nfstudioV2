@@ -18,8 +18,8 @@ export const PAGES = {
     HOME: '/',
     FAQ: '/faq',
     COLLECTIONS: '/collections',
-    TERMS_OF_SERVICE: '/terms-of-service.pdf',
-    PRIVACY_POLICY: '/privacy-policy.pdf'
+    TERMS_OF_SERVICE: '/terms-of-service',
+    PRIVACY_POLICY: '/privacy-policy'
 } as const;
 export type Page = (typeof PAGES)[keyof typeof PAGES];
 

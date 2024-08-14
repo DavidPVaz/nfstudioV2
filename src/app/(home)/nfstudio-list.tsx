@@ -17,11 +17,11 @@ export const NFStudioList = ({ collections }: { collections: CollectionConfigura
     );
     const isXLBreakpoint = useMediaQuery('only screen and (min-width : 1280px)');
 
-    const numberToShow = useMemo(
+    const numberOfCollectionsToShow = useMemo(
         () =>
             isXLBreakpoint ? 12 : isLGBreakpoint ? 10 : isMDBreakpoint ? 8 : isXSBreakpoint ? 6 : 3,
         [isXSBreakpoint, isMDBreakpoint, isLGBreakpoint, isXLBreakpoint]
     );
 
-    return <CollectionsList collections={collections.slice(0, numberToShow)} />;
+    return <CollectionsList collections={collections.slice(0, numberOfCollectionsToShow)} />;
 };

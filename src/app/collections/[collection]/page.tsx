@@ -15,7 +15,6 @@ const CollectionPage = async ({ params: { collection } }: { params: { collection
         projection: { config: 1 }
     });
 
-    // No active `selectedCollection` -> no page for it
     if (!selectedCollection) {
         return redirect('/collections');
     }

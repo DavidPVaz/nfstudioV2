@@ -63,8 +63,8 @@ const ChainFilter = ({
     <div className="h-11 w-full border-b">
         <div className="relative flex h-full w-full items-center justify-center">
             <Button
-                aria-label={`Select all chains`}
-                variant={'ghost'}
+                aria-label="Select all chains"
+                variant="ghost"
                 className={`${selectedChain === null ? 'bg-accent' : ''} w-full gap-x-2 rounded-none hover:bg-accent/${selectedChain === null ? '100' : '50'}`}
                 onClick={() => onChain(null)}
             >
@@ -77,7 +77,7 @@ const ChainFilter = ({
                 return (
                     <Button
                         aria-label={`Filter by ${chain} chain`}
-                        variant={'ghost'}
+                        variant="ghost"
                         className={`${chainIsSelected ? 'bg-accent' : ''} w-full gap-x-2 rounded-none hover:bg-accent/${chainIsSelected ? '100' : '50'}`}
                         onClick={() => onChain(chain as Chain)}
                     >

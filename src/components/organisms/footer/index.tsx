@@ -9,7 +9,7 @@ export const Footer = () => (
         <div className="container flex flex-col items-center justify-center gap-4">
             <div className="flex w-full flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-1">
-                    <NFStudioIcon className="fill-primary-brand h-[2.5rem] w-auto sm:h-[4rem]" />
+                    <NFStudioIcon className="h-[2.5rem] w-auto fill-primary-brand sm:h-[4rem]" />
                     <NFStudioLettersIcon className="hidden w-auto fill-current 2xs:flex 2xs:h-[2.5rem] sm:h-[4rem]" />
                 </div>
 
@@ -19,10 +19,7 @@ export const Footer = () => (
                         variant="link"
                         asChild
                     >
-                        <Link
-                            aria-label="Go to frequently asked questions"
-                            href={PAGES.COLLECTIONS}
-                        >
+                        <Link aria-label="Go to frequently asked questions" href={PAGES.FAQ}>
                             FAQ
                         </Link>
                     </Button>
@@ -31,11 +28,7 @@ export const Footer = () => (
                         variant="link"
                         asChild
                     >
-                        <Link
-                            target="_blank"
-                            aria-label="Consult terms of service"
-                            href={PAGES.TERMS_OF_SERVICE}
-                        >
+                        <Link aria-label="Go to terms of service" href={PAGES.TERMS_OF_SERVICE}>
                             TERMS OF SERVICE
                         </Link>
                     </Button>
@@ -44,11 +37,7 @@ export const Footer = () => (
                         variant="link"
                         asChild
                     >
-                        <Link
-                            target="_blank"
-                            aria-label="Consult privacy policy"
-                            href={PAGES.PRIVACY_POLICY}
-                        >
+                        <Link aria-label="Go to privacy policy" href={PAGES.PRIVACY_POLICY}>
                             PRIVACY POLICY
                         </Link>
                     </Button>

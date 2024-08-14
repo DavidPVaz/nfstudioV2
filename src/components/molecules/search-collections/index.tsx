@@ -47,11 +47,7 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
 
     return (
         <>
-            <Button
-                aria-label="Search collections"
-                onClick={() => setOpen(true)}
-                variant={'outline'}
-            >
+            <Button aria-label="Search collections" onClick={() => setOpen(true)} variant="outline">
                 <span className="hidden md:inline-flex">Search collections...</span>
                 <span className="inline-flex md:hidden">Search...</span>
                 <CommandShortcut>⌘K</CommandShortcut>
