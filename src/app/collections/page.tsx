@@ -11,11 +11,11 @@ const CollectionsPage = async () => {
     return (
         <div className="relative flex w-full flex-col items-start justify-start gap-y-12 md:gap-y-20">
             <section className="relative flex w-full flex-col 2xs:w-fit">
-                <PageTitle title="PICK A COLLECTION" />
+                <PageTitle title="PICK A COLLECTION" className="2xs:text-start" />
                 <SearchCollections collections={collections} />
             </section>
 
-            <section className="relative w-full 2xs:w-fit">
+            <section className="relative w-full">
                 <Collections>
                     <CollectionsList collections={collections} />
                 </Collections>

@@ -69,6 +69,7 @@ const ChainFilter = ({
                 onClick={() => onChain(null)}
             >
                 <p className="hidden text-sm text-foreground sm:inline">All chains</p>
+                <p className="inline text-sm text-foreground sm:hidden">All</p>
             </Button>
 
             {Object.entries(CHAIN_ICON_MAP).map(([chain, Icon]) => {
