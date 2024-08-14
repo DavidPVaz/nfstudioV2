@@ -9,7 +9,7 @@ const FaqPage = () => (
         </section>
 
         <section className="relative flex w-fit flex-col 2xs:w-full">
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="single" collapsible className="flex w-full flex-col gap-y-3">
                 {FAQS.map(({ question, answer }) => (
                     <AccordionItem key={question} value={question}>
                         <AccordionTrigger>{question}</AccordionTrigger>
