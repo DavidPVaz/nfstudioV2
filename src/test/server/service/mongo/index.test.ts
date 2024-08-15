@@ -7,20 +7,16 @@ const { mongoApiRequestMock } = vi.hoisted(() => ({
 
 vi.mock('server-only', () => ({}));
 
-vi.mock('@/server/service/mongo/core', async importOriginal => {
-    const actual: object = await importOriginal();
-    return {
-        ...actual,
-        mongoApiRequest: mongoApiRequestMock
-    };
-});
+vi.mock('@/server/service/mongo/core', () => ({
+    mongoApiRequest: mongoApiRequestMock
+}));
+
+const documents = [
+    { _id: '1', presentation: 'src1' },
+    { _id: '2', presentation: 'src2' }
+];
 
 describe('server/service/mongo/index', () => {
-    const documents = [
-        { _id: '1', presentation: 'src1' },
-        { _id: '2', presentation: 'src2' }
-    ];
-
     afterEach(() => {
         vi.clearAllMocks();
     });
