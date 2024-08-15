@@ -42,7 +42,7 @@ describe('lib/utils', () => {
         expect(twMergeMock).toHaveBeenNthCalledWith(1, expectedTwMergeArgument);
     });
 
-    it('should build a query string', () => {
+    it('should build a query string and remove invalid values while constructing it one level deep if a value is an object', () => {
         // setup
         const queryArgs = {
             potato: null,
@@ -51,14 +51,15 @@ describe('lib/utils', () => {
             size: 2,
             include: 0,
             glass: false,
-            extra: ['banana', 2, 0, true],
+            extra: ['banana', 2, 0, true, undefined],
             basket: {
                 pear: null,
                 grapes: undefined,
                 juice: 'lemon',
                 sugar: 0,
                 water: true,
-                components: ['wood', 'thread']
+                components: ['wood', 'thread', null],
+                unnecessary: {}
             }
         };
         const expectedQueryString =
