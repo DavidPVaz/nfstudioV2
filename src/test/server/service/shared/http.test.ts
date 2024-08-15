@@ -1,4 +1,4 @@
-import { describe, expect, vi, afterEach, it } from 'vitest';
+import { describe, expect, vi, afterEach, beforeEach, it } from 'vitest';
 import { customFetch, NFStudioRequestError } from '@/server/service/shared/http';
 
 const { fetchMock } = vi.hoisted(() => ({
@@ -69,6 +69,7 @@ describe('server/service/shared/http', () => {
 
     it('should retry a HTTP request', async () => {
         // setup
+        vi.useFakeTimers();
         const retries = 3;
         const url = 'url';
         const method = 'POST';
@@ -92,7 +93,10 @@ describe('server/service/shared/http', () => {
         ); // third retry
 
         // exercise
+        const start = Date.now();
+        vi.runAllTimersAsync();
         const result = await customFetch(requestData);
+        const timeElapsed = Date.now() - start;
 
         // verify
         expect(result).toEqual(responseData);
@@ -105,10 +109,16 @@ describe('server/service/shared/http', () => {
                 data
             })
         );
+        expect(timeElapsed).toEqual(retries * 1000);
+
+        // cleanup
+        vi.useRealTimers();
     });
 
     it('should throw NFStudioRequestError on failed request', async () => {
         // setup
+        vi.useFakeTimers();
+        const retryDelay = 5000;
         const retries = 1;
         const url = 'url';
         const method = 'POST';
@@ -118,6 +128,7 @@ describe('server/service/shared/http', () => {
         const status = 500;
 
         const requestData = {
+            retryDelay,
             retries,
             options: {
                 url,
@@ -129,9 +140,13 @@ describe('server/service/shared/http', () => {
         fetchMock.mockImplementationOnce(() => Promise.resolve({ ok: false, statusText, status })); // first retry
 
         // exercise && verify
+        const start = Date.now();
+        vi.runAllTimersAsync();
         await expect(customFetch(requestData)).rejects.toThrowError(
             new NFStudioRequestError(statusText, status)
         );
+        const timeElapsed = Date.now() - start;
+
         expect(fetchMock).toHaveBeenNthCalledWith(
             retries + 1,
             ...getExpectedFetchArguments({
@@ -141,6 +156,10 @@ describe('server/service/shared/http', () => {
                 data
             })
         );
+        expect(timeElapsed).toEqual(retries * retryDelay);
+
+        // cleanup
+        vi.useRealTimers();
     });
 
     it('should not retry if first response status is a client error', async () => {

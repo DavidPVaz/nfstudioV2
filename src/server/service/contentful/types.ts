@@ -24,3 +24,14 @@ export type NFStudioCMSQueryArgs = {
     content_type: Content;
     fields: DocumentSearchParams;
 };
+
+export type ItemData<T> = {
+    fields: T;
+    metadata: {};
+    sys: {
+        id: number;
+        createdAt: string;
+        updatedAt: string;
+        contentType: { sys: { id: Content } };
+    };
+};

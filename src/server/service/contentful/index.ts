@@ -3,7 +3,8 @@ import 'server-only';
 import {
     CONTENT_TYPES,
     type DocumentTitle,
-    type NFStudioDocument
+    type NFStudioDocument,
+    type ItemData
 } from '@/server/service/contentful/types';
 import {
     contentfulApiGETRequest,
@@ -20,7 +21,7 @@ import {
  */
 export const queryDocument = async ({ title }: { title: DocumentTitle }) => {
     const {
-        items: [document]
+        items: [{ fields: document } = {} as ItemData<NFStudioDocument>]
     } = await contentfulApiGETRequest<NFStudioDocument>({
         queryArgs: {
             include: 0,
@@ -33,5 +34,5 @@ export const queryDocument = async ({ title }: { title: DocumentTitle }) => {
         throw new ContentfulApiRequestError(`Document with the title ${title} was not found.`, 404);
     }
 
-    return document.fields;
+    return document;
 };

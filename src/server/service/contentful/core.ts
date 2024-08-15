@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { buildQueryString } from '@/lib/utils';
-import { NFStudioCMSQueryArgs, Content } from '@/server/service/contentful/types';
+import { NFStudioCMSQueryArgs, ItemData } from '@/server/service/contentful/types';
 import { NFStudioRequestError, customFetch } from '@/server/service/shared/http';
 export class ContentfulApiRequestError extends NFStudioRequestError {
     constructor(message: string, code: number) {
@@ -11,18 +11,7 @@ export class ContentfulApiRequestError extends NFStudioRequestError {
 }
 
 type ContentfulResponse<T> = {
-    items: [
-        {
-            fields: T;
-            metadata: {};
-            sys: {
-                id: number;
-                createdAt: string;
-                updatedAt: string;
-                contentType: { sys: { id: Content } };
-            };
-        }
-    ];
+    items: ItemData<T>[];
 };
 
 interface ContentfulApiGetRequest {
