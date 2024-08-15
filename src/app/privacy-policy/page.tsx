@@ -8,13 +8,13 @@ const PrivacyPolicyPage = async () => {
     const { content } = await queryDocument({ title: DOCUMENTS.PRIVACY_POLICY });
 
     return (
-        <div className="relative flex w-full flex-col items-center justify-start gap-y-12 md:gap-y-20">
+        <div className="relative flex w-full flex-col items-center justify-start gap-y-4">
             <section className="relative flex w-full flex-col">
                 <PageTitle title="PRIVACY POLICY" />
             </section>
             <section className="relative flex w-full flex-col">
-                <div className="hyphens-auto text-pretty break-words text-left text-base 2xs:text-justify 2xs:text-lg [&_a]:underline">
-                    {documentToReactComponents(content)}
+                <div className="relative inline-block hyphens-auto text-pretty break-words text-left text-base 2xs:text-justify 2xs:text-lg [&_a]:underline [&_p]:my-4">
+                    {documentToReactComponents(content, { preserveWhitespace: true })}
                 </div>
             </section>
         </div>
