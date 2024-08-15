@@ -7,7 +7,13 @@ export const cn = (...inputs: ClassValue[]) => {
 
 export type QueryStringProps = Record<
     string,
-    string | number | number[] | boolean | { [key: string]: string | number } | undefined
+    | string
+    | number
+    | any[]
+    | boolean
+    | { [key: string]: string | number | null | undefined | boolean | any[] }
+    | undefined
+    | null
 >;
 
 /**
