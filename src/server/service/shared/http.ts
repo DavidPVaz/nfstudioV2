@@ -8,7 +8,7 @@ export class NFStudioRequestError extends Error {
 }
 
 type RequestOptions = {
-    url: string;
+    url: string | URL;
     init: RequestInit;
     data?: Record<string, unknown>;
 };

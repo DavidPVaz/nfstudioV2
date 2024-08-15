@@ -10,7 +10,7 @@ export class MongoDataApiRequestError extends NFStudioRequestError {
 }
 
 type MongoResponse<T> = {
-    documents: Array<T>;
+    documents: T[];
 };
 
 interface MongoApiRequest<T> {

@@ -4,11 +4,11 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/
 
 const FaqPage = () => (
     <div className="relative flex w-full flex-col items-center justify-start gap-y-12 md:gap-y-20">
-        <section className="relative flex w-fit flex-col 2xs:w-full">
+        <section className="relative flex w-full flex-col">
             <PageTitle title="FREQUENTLY ASKED QUESTIONS" />
         </section>
 
-        <section className="relative flex w-fit flex-col 2xs:w-full">
+        <section className="relative flex w-full flex-col">
             <Accordion type="single" collapsible className="flex w-full flex-col gap-y-3">
                 {FAQS.map(({ question, answer }) => (
                     <AccordionItem key={question} value={question}>
@@ -20,6 +20,7 @@ const FaqPage = () => (
         </section>
     </div>
 );
+
 export default FaqPage;
 
 const FAQS = [

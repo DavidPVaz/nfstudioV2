@@ -20,6 +20,7 @@ const HomePage = () => (
         <ShowcaseSection />
     </div>
 );
+
 export default HomePage;
 
 const TopSection = () => (

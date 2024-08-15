@@ -23,4 +23,5 @@ const CollectionsPage = async () => {
         </div>
     );
 };
+
 export default CollectionsPage;

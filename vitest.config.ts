@@ -7,7 +7,7 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             reporter: ['text', 'lcov', 'json'],
-            include: ['src/server/service/**/**'],
+            include: ['src/server/service/**/**', 'src/lib/**/**'],
             exclude: ['src/server/service/**/types.*']
         },
         testTimeout: 30000,
