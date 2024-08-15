@@ -13,7 +13,9 @@ const PrivacyPolicyPage = async () => {
                 <PageTitle title="PRIVACY POLICY" />
             </section>
             <section className="relative flex w-full flex-col">
-                {documentToReactComponents(content)}
+                <div className="hyphens-auto text-pretty break-words text-left text-base 2xs:text-justify 2xs:text-lg [&_a]:underline">
+                    {documentToReactComponents(content)}
+                </div>
             </section>
         </div>
     );
