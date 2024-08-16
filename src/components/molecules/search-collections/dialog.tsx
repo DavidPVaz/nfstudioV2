@@ -4,7 +4,7 @@ import { CommandDialog } from '@/components/atoms';
 import { Chain } from '@/shared/enums';
 import { DialogContentSkeleton } from './dialog-content-skeleton';
 
-export interface SearchDialogProps {
+interface SearchDialogProps {
     open: boolean;
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
     onSelect: (value: string) => void;
