@@ -10,25 +10,27 @@ import {
 } from '@/server/service/mongo/types';
 import { mongoApiRequest } from '@/server/service/mongo/core';
 
+interface CollectionsDataProps {
+    filter?: MongoFilter;
+    projection?: MongoProjection<CollectionConfiguration>;
+    limit?: MongoLimit;
+}
+
 /**
  * Performs a query to mongodb NFStudio database to fetch available collections data.
  *
- * @param {object} options - options to query collection
- * @param {MongoFilter} [options.filter] - filters to apply to the query
- * @param {MongoProjection} [options.projection] - projection info to add/remove from request
- * @param {MongoLimit} [options.limit] - max number of entries to query
+ * @param {CollectionsDataProps} options - options to query collection
+ * @param {CollectionsDataProps['filter']} [options.filter] - filters to apply to the query
+ * @param {CollectionsDataProps['projection']} [options.projection] - projection info to add/remove from request
+ * @param {CollectionsDataProps['limit']} [options.limit] - max number of entries to query
  *
- * @throws {Error | MongoDataApiRequestError} error if request failed
+ * @throws {Error | MongoDataApiRequestError} if request failed
  */
 export const queryCollectionsData = async ({
     filter = {},
     projection = {},
     limit = null
-}: {
-    filter?: MongoFilter;
-    projection?: MongoProjection<CollectionConfiguration>;
-    limit?: MongoLimit;
-} = {}) => {
+}: CollectionsDataProps = {}) => {
     const { documents: collections } = await mongoApiRequest<CollectionConfiguration>({
         action: ACTIONS.FIND,
         data: {

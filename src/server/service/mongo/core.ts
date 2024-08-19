@@ -35,7 +35,7 @@ const ACCESS_KEY = {
  * @param {MongoApiRequest['data']} data.data - the request data
  * @param {MongoApiRequest['retries']} [data.retries] - number of times to retry this request
  *
- * @throws {Error | MongoDataApiRequestError} error if request failed
+ * @throws {Error | MongoDataApiRequestError} if request failed
  */
 export async function mongoApiRequest<T>({ action, data, retries = 1 }: MongoApiRequest<T>) {
     try {

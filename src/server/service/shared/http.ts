@@ -29,7 +29,7 @@ const NON_RETRIABLE_CLIENT_ERROR_CODES = [400, 401, 403, 404, 409];
  * @param {HttpRequest['retries']} data.retries - the number of times to retry the request
  * @param {HttpRequest['options']} data.options - the request options
  *
- * @throws {Error | NFStudioRequestError} error if request failed
+ * @throws {Error | NFStudioRequestError} if request failed
  */
 export function customFetch<T>({
     retryDelay = 1000,

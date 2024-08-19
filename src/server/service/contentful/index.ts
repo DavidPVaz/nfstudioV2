@@ -17,7 +17,7 @@ import {
  * @param {object} options - options to query document
  * @param {DocumentTitle} options.title - document title
  *
- * @throws {Error | ContentfulApiRequestError} error if request failed
+ * @throws {Error | ContentfulApiRequestError} if request failed
  */
 export const queryDocument = async ({ title }: { title: DocumentTitle }) => {
     const {

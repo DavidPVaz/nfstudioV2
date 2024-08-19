@@ -29,7 +29,7 @@ interface ContentfulApiGetRequest {
  * @param {ContentfulApiGetRequest['queryArgs']} data.queryArgs.fields - key value pairs of search parameters to append on query in format `fields.<property>=value`
  * @param {ContentfulApiGetRequest['retries']} [data.retries] - number of times to retry this request
  *
- * @throws {Error | ContentfulApiRequestError} error if request failed
+ * @throws {Error | ContentfulApiRequestError} if request failed
  */
 export async function contentfulApiGETRequest<T>({
     retries = 1,

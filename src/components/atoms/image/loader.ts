@@ -1,5 +1,5 @@
 import { buildQueryString } from '@/lib/utils';
-import { type ImageLoaderProps, type ImageLoader } from 'next/image';
+import type { ImageLoaderProps, ImageLoader } from 'next/image';
 
 interface LoaderProps extends ImageLoaderProps {
     maxAge?: number | string;
@@ -16,12 +16,12 @@ interface LoaderProps extends ImageLoaderProps {
  * @param {LoaderProps['maxAge']} [data.maxAge] number of seconds of browser cache
  * @param {LoaderProps['sMaxAge']} [data.sMaxAge] number of seconds of server cache
  */
-export default ({ src, width: w, quality: q, maxAge, sMaxAge }: LoaderProps): ImageLoader =>
+export default ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>
     () =>
         `${process.env.NEXT_PUBLIC_API_ENDPOINT}/loader?${buildQueryString({
             src,
-            w,
-            q,
+            width,
+            quality,
             maxAge,
             sMaxAge
         })}`;
