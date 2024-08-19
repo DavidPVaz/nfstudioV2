@@ -25,7 +25,8 @@
             "@/*": [
                 "./src/*"
             ]
-        }
+        },
+        "noImplicitAny": false
     },
     "include": [
         "svgr.d.ts",

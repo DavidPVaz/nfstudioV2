@@ -7,8 +7,8 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             reporter: ['text', 'lcov', 'json'],
-            include: ['src/server/service/**/**', 'src/lib/**/**'],
-            exclude: ['src/server/service/**/types.*']
+            include: ['src/server/service/**/**', 'src/lib/**/**', 'src/server/middleware/**'],
+            exclude: ['src/server/service/**/types.*', 'src/server/middleware/index.js']
         },
         testTimeout: 30000,
         setupFiles: ['dotenv/config'],
