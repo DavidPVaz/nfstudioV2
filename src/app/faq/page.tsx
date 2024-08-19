@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageTitle } from '@/components/molecules';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/atoms';
-// TODO: review colors. too bright on dark. maybe use ghost colors
+
 const FaqPage = () => (
     <div className="relative flex w-full flex-col items-center justify-start gap-y-4 md:gap-y-8">
         <section className="relative flex w-full flex-col">
