@@ -10,8 +10,6 @@ import { queryCollectionsData } from '@/server/service/mongo';
 
 const { MOBILE } = GALLERY_IMAGES;
 
-const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
-
 const HomePage = () => (
     <div className="relative flex w-full flex-col items-center justify-start gap-y-24 md:gap-y-36">
         <TopSection />
@@ -128,7 +126,7 @@ const CLASS_PER_COLUMN_MINI_GALLERY = [
 
 const constructMiniGalleryData = () => {
     const IMAGE_PER_COLUMN = 4;
-    const miniGalleryData = [];
+    const miniGalleryData: string[][] = [];
 
     for (let index = 0; index < MOBILE.length; index += IMAGE_PER_COLUMN) {
         const slice =
@@ -147,11 +145,11 @@ const ShowcaseSectionMiniGallery = () => (
                 {columnData.map(imgSrc => (
                     <div key={imgSrc} className="w-full p-1">
                         <Image
-                            optimizedWidth={500}
+                            quality={20}
+                            optimizedWidth={340}
                             alt="gallery"
                             className="rounded-lg"
-                            src={getSrc(imgSrc)}
-                            useCustomLoader={false}
+                            src={imgSrc}
                             width={337.16}
                             height={394.79}
                         />

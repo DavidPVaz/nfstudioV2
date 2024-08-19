@@ -39,7 +39,7 @@ describe('server/service/image-loader', () => {
 
     it('should optimize an image', async () => {
         // setup
-        const query = { url: 'some-url', width: '100', quality: '50' };
+        const query = { src: 'some-url', width: '100', quality: '50' };
         const decodedUrl = 'decoded-url';
         const expectedUrl = `${process.env.CONTENTFUL_ASSET_ENDPOINT}/${decodedUrl}`;
         const imageBuffer = Buffer.from('image');
@@ -55,7 +55,7 @@ describe('server/service/image-loader', () => {
 
         // verify
         expect(result).toEqual(optimized);
-        expect(decodeURIMock).toHaveBeenCalledWith(query.url);
+        expect(decodeURIMock).toHaveBeenCalledWith(query.src);
         expect(decodeURIMock).toHaveBeenCalledOnce();
         expect(fetchMock).toHaveBeenCalledWith(expectedUrl);
         expect(fetchMock).toHaveBeenCalledOnce();
@@ -75,7 +75,7 @@ describe('server/service/image-loader', () => {
 
     it('should optimize an image with default width and quality', async () => {
         // setup
-        const query = { url: 'some-url' };
+        const query = { src: 'some-url' };
         const decodedUrl = 'https://decoded-url';
         const imageBuffer = Buffer.from('image');
         const optimized = Buffer.from('optimized');
@@ -90,7 +90,7 @@ describe('server/service/image-loader', () => {
 
         // verify
         expect(result).toEqual(optimized);
-        expect(decodeURIMock).toHaveBeenCalledWith(query.url);
+        expect(decodeURIMock).toHaveBeenCalledWith(query.src);
         expect(decodeURIMock).toHaveBeenCalledOnce();
         expect(fetchMock).toHaveBeenCalledWith(decodedUrl);
         expect(fetchMock).toHaveBeenCalledOnce();
@@ -110,7 +110,7 @@ describe('server/service/image-loader', () => {
 
     it('should optimize an image identified as CMS resource', async () => {
         // setup
-        const query = { url: 'some-url' };
+        const query = { src: 'some-url' };
         const decodedUrl = 'some-relative-cms-url-id';
         const imageBuffer = Buffer.from('image');
         const optimized = Buffer.from('optimized');
@@ -125,7 +125,7 @@ describe('server/service/image-loader', () => {
 
         // verify
         expect(result).toEqual(optimized);
-        expect(decodeURIMock).toHaveBeenCalledWith(query.url);
+        expect(decodeURIMock).toHaveBeenCalledWith(query.src);
         expect(decodeURIMock).toHaveBeenCalledOnce();
         expect(fetchMock).toHaveBeenCalledWith(
             `${process.env.CONTENTFUL_ASSET_ENDPOINT}/${decodedUrl}`

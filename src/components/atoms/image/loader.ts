@@ -10,7 +10,7 @@ interface LoaderProps extends ImageLoaderProps {
  * Create a custom image loader to use in image optimization.
  *
  * @param {LoaderProps} data data to compose custom loader query
- * @param {LoaderProps['src']} data.src image src
+ * @param {LoaderProps['src']} data.src image source
  * @param {LoaderProps['width']} data.width intended image width
  * @param {LoaderProps['quality']} [data.quality] intended image quality
  * @param {LoaderProps['maxAge']} [data.maxAge] number of seconds of browser cache
@@ -18,7 +18,7 @@ interface LoaderProps extends ImageLoaderProps {
  */
 export default ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>
     () =>
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/loader?${buildQueryString({
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/image-loader?${buildQueryString({
             src,
             width,
             quality,

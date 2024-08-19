@@ -5,9 +5,6 @@ import { GALLERY_IMAGES } from '@/shared/enums';
 
 const { MOBILE, DESKTOP, BANNER } = GALLERY_IMAGES;
 
-// TODO: will be removed
-const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
-
 export const Gallery = ({ className }: { className: string }) => (
     <div className={cn('relative flex overflow-hidden', className)}>
         <div className="absolute left-0 z-10 h-full w-1/6 bg-gradient-to-r from-background to-65%" />
@@ -76,33 +73,33 @@ const LeftPage = ({ mobileSrcOne, mobileSrcTwo, desktopSrc }: LeftPageData) => (
     <div className="flex w-1/2 flex-wrap">
         <div className="w-1/2 p-1 md:p-2">
             <Image
-                optimizedWidth={279}
+                quality={20}
+                optimizedWidth={340}
                 alt="gallery"
                 className="rounded-lg"
-                src={getSrc(mobileSrcOne)}
-                useCustomLoader={false}
+                src={mobileSrcOne}
                 width={278.4}
                 height={391.94}
             />
         </div>
         <div className="w-1/2 p-1 md:p-2">
             <Image
-                optimizedWidth={279}
+                quality={20}
+                optimizedWidth={340}
                 alt="gallery"
                 className="rounded-lg"
-                src={getSrc(mobileSrcTwo)}
-                useCustomLoader={false}
+                src={mobileSrcTwo}
                 width={278.4}
                 height={391.94}
             />
         </div>
         <div className="w-full p-1 md:p-2">
             <Image
+                quality={20}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"
-                src={getSrc(desktopSrc)}
-                useCustomLoader={false}
+                src={desktopSrc}
                 width={572.8}
                 height={322.2}
             />
@@ -114,33 +111,33 @@ const RightPage = ({ bannerSrcOne, bannerSrcTwo, desktopSrc }: RightPageData) =>
     <div className="flex w-1/2 flex-wrap">
         <div className="w-full p-1 md:p-2">
             <Image
+                quality={20}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"
-                src={getSrc(bannerSrcOne)}
-                useCustomLoader={false}
+                src={bannerSrcOne}
                 width={572.8}
                 height={190.93}
             />
         </div>
         <div className="w-full p-1 md:p-2">
             <Image
+                quality={20}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"
-                src={getSrc(desktopSrc)}
-                useCustomLoader={false}
+                src={desktopSrc}
                 width={572.8}
                 height={322.2}
             />
         </div>
         <div className="w-full p-1 md:p-2">
             <Image
+                quality={20}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"
-                src={getSrc(bannerSrcTwo)}
-                useCustomLoader={false}
+                src={bannerSrcTwo}
                 width={572.8}
                 height={190.93}
             />

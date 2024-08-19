@@ -1,7 +1,7 @@
 import sharp from 'sharp';
 
 interface ImageOptimizationProps {
-    url: string;
+    src: string;
     width?: string;
     quality?: string;
 }
@@ -16,12 +16,12 @@ const isCMSStaticAsset = (url: string) => !url.startsWith('https://');
  * Performs image optimization for browser usage.
  *
  * @param {ImageOptimizationProps} query - Nextjs request query search parameters
- * @param {ImageOptimizationProps['url']} query.url - image source url
+ * @param {ImageOptimizationProps['src']} query.src - image source
  * @param {ImageOptimizationProps['width']} [query.width] - image optimization width
  * @param {ImageOptimizationProps['quality']} [query.quality] - image optimization quality
  */
-export const optimize = async ({ url, width = '1000', quality = '75' }: ImageOptimizationProps) => {
-    const decoded = decodeURI(url);
+export const optimize = async ({ src, width = '1000', quality = '75' }: ImageOptimizationProps) => {
+    const decoded = decodeURI(src);
     const buffer = await fetch(
         isCMSStaticAsset(decoded) ? `${process.env.CONTENTFUL_ASSET_ENDPOINT}/${decoded}` : decoded
     ).then(response => response.arrayBuffer());

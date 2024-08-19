@@ -38,7 +38,7 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
                 src={imgSrc}
                 alt={imgAlt}
                 optimizedWidth={300}
-                useCustomLoader={false}
+                quality={20}
             />
             <CardTitle className="text-center">{`${name.replace('_', ' ')}`}</CardTitle>
         </Link>

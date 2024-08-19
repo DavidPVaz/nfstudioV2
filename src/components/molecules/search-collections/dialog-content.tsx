@@ -16,7 +16,6 @@ export interface SearchDialogContentProps {
     data: Array<{ value: string; imgSrc: string }>;
     selectedChain: Chain | null;
 }
-const getSrc = (src: string) => `https://images.ctfassets.net/ze23ubzzqb1s/${src}`;
 
 export const DialogContent = ({
     onSelect,
@@ -37,11 +36,11 @@ export const DialogContent = ({
                 {data.map(({ value, imgSrc }) => (
                     <CommandItem key={value} value={value} onSelect={onSelect}>
                         <Image
-                            optimizedWidth={50}
+                            optimizedWidth={300}
+                            quality={20}
                             alt={value}
                             className="rounded-sm"
-                            src={getSrc(imgSrc)}
-                            useCustomLoader={false}
+                            src={imgSrc}
                             width={35}
                             height={45.8465}
                         />
