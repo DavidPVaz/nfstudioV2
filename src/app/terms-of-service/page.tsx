@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document } from '@/components/organisms';
+import { Document } from '@/components/organisms/document';
 import { queryDocument } from '@/server/service/contentful';
 import { DOCUMENTS } from '@/server/service/contentful/types';
 
