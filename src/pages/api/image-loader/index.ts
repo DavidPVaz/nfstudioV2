@@ -1,6 +1,7 @@
 import { optimize } from '@/server/service/image-loader';
 import type { NextApiRequest, NextApiResponse } from 'next';
 //import { userAgent } from 'next/server';
+//console.log(userAgent({ headers: new Headers(headers as HeadersInit) }).browser);
 
 /**
  * API endpoint to perform image optimization.
@@ -9,19 +10,13 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  * @param {NextApiResponse} response - Nextjs response
  */
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-    // TODO: authorization middleware (referer && browser call && isFromVercel || isAdmin) + rate limit middleware + params validation with zod
+    // TODO: authorization middleware (referer && browser call && isFromVercel || isAdmin) in here or middleware ? + rate limit middleware + params validation with zod
     const {
-        query: { src, width, quality, maxAge = 31536000, sMaxAge = 31536000 },
-        headers
+        query: { src, width, quality, maxAge = 31536000, sMaxAge = 31536000 }
     } = request;
-    //console.log(userAgent({ headers: new Headers(headers as HeadersInit) }).browser);
-    //console.log('Headers: ', headers);
+
     try {
-        const optimized = await optimize({
-            src: src as string,
-            width: width as string | undefined,
-            quality: quality as string | undefined
-        });
+        const optimized = await optimize({ src, width, quality });
 
         response.setHeader(
             'Cache-Control',
