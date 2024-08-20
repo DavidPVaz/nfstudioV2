@@ -2,8 +2,8 @@
 
 import React, { useMemo } from 'react';
 import { type CollectionConfiguration } from '@/server/service/mongo/types';
-import { CollectionsList } from '@/components/organisms/collections';
-import { useMediaQuery } from '@/hooks/use-media-query';
+import { CollectionsList } from '@/components/organisms';
+import { useMediaQuery } from '@/hooks';
 
 export const NFStudioList = ({ collections }: { collections: CollectionConfiguration[] }) => {
     const isXSBreakpoint = useMediaQuery(

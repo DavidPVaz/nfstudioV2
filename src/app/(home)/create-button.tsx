@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/atoms/button';
+import { Button } from '@/components/atoms';
 
 export const CreateButton = ({ className }: { className: string }) => (
     <Button
