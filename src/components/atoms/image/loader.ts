@@ -18,7 +18,7 @@ interface LoaderProps extends ImageLoaderProps {
  */
 export default ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>
     () =>
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/image-loader?${buildQueryString({
+        `/api/image-loader?${buildQueryString({
             src,
             width,
             quality,

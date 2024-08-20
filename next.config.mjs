@@ -11,6 +11,7 @@ export default {
                 use: [{ loader: '@svgr/webpack' }]
             },
             {
+                // https://github.com/vercel/next.js/issues/12557
                 // https://stackoverflow.com/questions/74442696/webpack-doesnt-split-a-huge-vendor-bundle-when-using-barrel-files
                 test: [
                     /src\/components\/atoms\/index.ts/i,
