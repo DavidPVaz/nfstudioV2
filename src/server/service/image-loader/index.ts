@@ -23,7 +23,7 @@ const isCMSStaticAsset = (url: string) => !url.startsWith('https://');
  */
 const getDataCacheSettings = ({ ttl, tag }: { ttl?: string; tag: string }): RequestInit => {
     if (ttl) {
-        return { next: { revalidate: Number.parseInt(ttl, 10) } };
+        return { next: { revalidate: Number.parseInt(ttl, 10), tags: [tag] } };
     }
 
     return { cache: 'force-cache', next: { tags: [tag] } };

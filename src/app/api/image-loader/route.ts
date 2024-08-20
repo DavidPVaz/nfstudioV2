@@ -13,8 +13,8 @@ export async function GET(request: NextRequest) {
             status: 200,
             headers: {
                 // TODO: verify this approach - check if works after deployed, otherwise need to move to pages router api
-                // Control the Edge Cache
-                'Cache-Control': `max-age=${maxAge ?? 31536000}, s-maxage=${sMaxAge ?? 31536000}, public, stale-while-revalidate=60`,
+                // Control the Edge/CDN Cache
+                'CDN-Cache-Control': `max-age=${maxAge ?? 31536000}, s-maxage=${sMaxAge ?? 31536000}, public, stale-while-revalidate=60`,
                 'Content-Type': 'image/webp'
             }
         });
