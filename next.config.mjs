@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
-export default {
-    images: {
-        loader: 'custom',
-        loaderFile: './src/components/atoms/image/loader.ts'
-    },
+import Analyzer from '@next/bundle-analyzer';
+const withBundleAnalyzer = Analyzer({ enabled: process.env.ANALYZE === 'true' });
+
+const config = {
     webpack: config => {
         config.module.rules.push(
             {
@@ -26,3 +25,5 @@ export default {
         return config;
     }
 };
+
+export default withBundleAnalyzer(config);
