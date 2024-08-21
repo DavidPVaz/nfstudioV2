@@ -9,9 +9,9 @@ type QueryStringProps = Record<
     string,
     | string
     | number
-    | any[]
+    | unknown[]
     | boolean
-    | { [key: string]: string | number | null | undefined | boolean | any[] | {} }
+    | Record<string, string | number | null | undefined | boolean | unknown[] | object>
     | undefined
     | null
 >;

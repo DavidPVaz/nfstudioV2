@@ -102,7 +102,7 @@ const ShowcaseSection = () => (
                     Want to create your own?
                 </span>
                 <span className="text-xl font-semibold text-primary-brand 2xs:text-3xl md:text-4xl">
-                    Let's get started!
+                    Let&#39;s get started!
                 </span>
             </div>
 

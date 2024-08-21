@@ -24,9 +24,7 @@ type RightPageData = {
     bannerSrcTwo: string;
     desktopSrc: string;
 };
-type GallerySrcData = {
-    [page: string]: { left: LeftPageData; right: RightPageData };
-};
+type GallerySrcData = Record<string, { left: LeftPageData; right: RightPageData }>;
 const NUMBER_OF_GALLERY_PAGES = 4;
 
 const gallery_src_data = Array.from(

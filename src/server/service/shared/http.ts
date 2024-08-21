@@ -1,5 +1,5 @@
 export class NFStudioRequestError extends Error {
-    code;
+    code: number;
 
     constructor(message: string, code: number) {
         super(message);

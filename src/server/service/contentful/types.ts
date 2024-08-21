@@ -27,7 +27,7 @@ export type NFStudioCMSQueryArgs = {
 
 export type ItemData<T> = {
     fields: T;
-    metadata: {};
+    metadata: object;
     sys: {
         id: number;
         createdAt: string;

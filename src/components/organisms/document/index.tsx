@@ -3,7 +3,7 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { PageTitle } from '@/components/molecules';
 import { NFStudioDocument } from '@/server/service/contentful/types';
 
-export const Document = async ({ title, content }: NFStudioDocument) => (
+export const Document = ({ title, content }: NFStudioDocument) => (
     <div className="relative flex w-full flex-col items-center justify-start gap-y-4">
         <section className="relative flex w-full flex-col">
             <PageTitle title={title} />

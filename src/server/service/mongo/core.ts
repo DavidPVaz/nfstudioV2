@@ -23,8 +23,8 @@ interface MongoApiRequest<T> {
  * Maps Access type with an api key.
  */
 const ACCESS_KEY = {
-    APP: process.env.MONGO_API_KEY_READ as string,
-    ADMIN: process.env.MONGO_API_KEY_WRITE as string
+    APP: process.env.MONGO_API_KEY_READ!,
+    ADMIN: process.env.MONGO_API_KEY_WRITE!
 };
 
 /**

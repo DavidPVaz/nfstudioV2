@@ -1,4 +1,5 @@
-import { describe, expect, vi, afterEach, beforeEach, it } from 'vitest';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import { describe, expect, vi, afterEach, it } from 'vitest';
 import { customFetch, NFStudioRequestError } from '@/server/service/shared/http';
 
 const { fetchMock } = vi.hoisted(() => ({

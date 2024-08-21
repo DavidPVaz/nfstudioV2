@@ -25,10 +25,13 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
         return () => document.removeEventListener('keydown', down);
     }, []);
 
-    const onSelect = useCallback((collection: string) => {
-        setOpen(false);
-        push(`collections/${collection.replace(' ', '_')}`);
-    }, []);
+    const onSelect = useCallback(
+        (collection: string) => {
+            setOpen(false);
+            push(`collections/${collection.replace(' ', '_')}`);
+        },
+        [push]
+    );
 
     const onChain = useCallback((chain: Chain | null) => {
         setSelectedChain(chain);
@@ -42,7 +45,7 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
                     value: `${_id.replace('_', ' ')}`,
                     imgSrc: presentation
                 })),
-        [selectedChain]
+        [collections, selectedChain]
     );
 
     return (

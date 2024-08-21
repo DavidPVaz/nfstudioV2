@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { describe, expect, vi, afterEach, it } from 'vitest';
 import { runMiddleware, getIP, isFromVercel } from '@/server/middleware/shared';
+import type { NextRequest, NextResponse } from 'next/server';
 
-const buildRequest = (header: { [key: string]: string }) =>
+const buildRequest = (header: Record<string, string>) =>
     ({
         headers: {
             ...header,
@@ -10,7 +13,7 @@ const buildRequest = (header: { [key: string]: string }) =>
                 return this[header];
             }
         }
-    }) as any;
+    }) as NextRequest;
 
 describe('server/middleware/shared', () => {
     afterEach(() => {
@@ -20,8 +23,8 @@ describe('server/middleware/shared', () => {
     it('should run middleware and resolve', async () => {
         // setup
         const middleware = vi.fn().mockImplementation((req, resp, callback) => callback(true));
-        const request = { test: 'request' } as any;
-        const response = { test: 'response' } as any;
+        const request = { ip: 'request' } as NextRequest;
+        const response = { headers: {} } as NextResponse;
 
         // exercise && verify
         expect(await runMiddleware(request, response, middleware)).toEqual(true);
@@ -34,8 +37,8 @@ describe('server/middleware/shared', () => {
     it('should run middleware and reject', async () => {
         // setup
         const middleware = vi.fn().mockImplementation((req, resp, callback) => callback(Error()));
-        const request = { test: 'request' } as any;
-        const response = { test: 'response' } as any;
+        const request = { ip: 'request' } as NextRequest;
+        const response = { headers: {} } as NextResponse;
 
         // exercise && verify
         await expect(runMiddleware(request, response, middleware)).rejects.toThrowError(Error);
@@ -47,7 +50,7 @@ describe('server/middleware/shared', () => {
 
     it('should get the request ip', () => {
         // exercise && verify
-        expect(getIP({ ip: 'ip' } as any)).toEqual('ip');
+        expect(getIP({ ip: 'ip' } as NextRequest)).toEqual('ip');
         expect(
             getIP(
                 buildRequest({
@@ -73,7 +76,7 @@ describe('server/middleware/shared', () => {
         expect(
             isFromVercel(
                 buildRequest({
-                    'x-vercel-deployment-url': process.env.VERCEL_URL as string
+                    'x-vercel-deployment-url': process.env.VERCEL_URL!
                 })
             )
         ).toEqual(true);

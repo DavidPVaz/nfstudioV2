@@ -25,7 +25,7 @@ export const runMiddleware = (
     );
 
 export const getIP = (request: NextRequest) =>
-    request.ip || request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip');
+    request.ip ?? request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip');
 
 export const isFromVercel = (request: NextRequest) =>
     process.env.VERCEL_ENV === 'development' ||

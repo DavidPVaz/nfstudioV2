@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /** @type {import('next').NextConfig} */
 import Analyzer from '@next/bundle-analyzer';
 const withBundleAnalyzer = Analyzer({ enabled: process.env.ANALYZE === 'true' });

@@ -27,9 +27,9 @@ export type CollectionConfiguration = {
     createdAt?: string;
     active?: boolean;
     config?: {
-        cacheStrategy: { sMaxAge: number; maxAge: number } | {};
-        logos: Array<string>;
-        unsupportedTraits: { [key: string]: Array<string> } | {};
+        cacheStrategy: { sMaxAge: number; maxAge: number } | object;
+        logos: string[];
+        unsupportedTraits: Record<string, string[]> | object;
         paylinkId: string;
     };
 };
@@ -73,7 +73,7 @@ export type MongoDocument = Record<string, unknown>;
 export type MongoFilter = Record<string, Record<string, boolean | number[] | string>>;
 export type MongoSort = Record<string, number | string>;
 export type MongoLimit = number | null;
-export type MongoProjection<T> = Record<keyof T, 0 | 1> | {};
+export type MongoProjection<T> = Record<keyof T, 0 | 1> | object;
 export type MongoUpdate = Record<string, Record<string, unknown>>;
 export type MongoPostData<T> = {
     database: NFStudioDatabase;

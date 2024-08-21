@@ -16,7 +16,8 @@ interface LoaderProps extends ImageLoaderProps {
  * @param {LoaderProps['maxAge']} [data.maxAge] number of seconds of browser cache
  * @param {LoaderProps['sMaxAge']} [data.sMaxAge] number of seconds of server cache
  */
-export default ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>
+export const getLoader =
+    ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>
     () =>
         `/api/image-loader?${buildQueryString({
             src,

@@ -3,7 +3,7 @@
 import React from 'react';
 import { default as NextImage } from 'next/image';
 import { cva, type VariantProps } from 'class-variance-authority';
-import getLoader from './loader';
+import { getLoader } from './loader';
 import { generatePlaceholder } from './placeholder';
 import { cn } from '@/lib/utils';
 

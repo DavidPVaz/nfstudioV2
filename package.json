@@ -10,6 +10,7 @@
         "analyze": "ANALYZE=true next build",
         "start": "next start",
         "lint": "next lint",
+        "lint:fix": "next lint --fix --ext .ts,.tsx .",
         "test": "vitest run --coverage",
         "test:grep": "vitest run -t $1"
     },

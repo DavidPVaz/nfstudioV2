@@ -13,7 +13,7 @@ import { Chain, CHAIN_ICON_MAP } from '@/shared/enums';
 export interface SearchDialogContentProps {
     onSelect: (value: string) => void;
     onChain: (chain: Chain | null) => void;
-    data: Array<{ value: string; imgSrc: string }>;
+    data: { value: string; imgSrc: string }[];
     selectedChain: Chain | null;
 }
 
@@ -76,6 +76,7 @@ const ChainFilter = ({
 
                 return (
                     <Button
+                        key={chain}
                         aria-label={`Filter by ${chain} chain`}
                         variant="ghost"
                         className={`${chainIsSelected ? 'bg-accent' : ''} w-full gap-x-2 rounded-none hover:bg-accent/${chainIsSelected ? '100' : '50'}`}
