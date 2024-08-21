@@ -8,6 +8,7 @@ export default defineConfig({
             provider: 'v8',
             reporter: ['text', 'lcov', 'json'],
             include: [
+                'src/middleware.ts',
                 'src/server/service/**/**',
                 'src/server/middleware/**',
                 'src/lib/**/**',

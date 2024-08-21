@@ -32,13 +32,30 @@ export const isFromVercel = (request: NextRequest) =>
     request.headers.get('x-vercel-deployment-url') === process.env.VERCEL_URL;
 
 export const isFromBrowser = (request: NextRequest) => {
-    const {
-        browser: { name, version },
-        isBot
-    } = userAgent(request);
+    const { browser, engine, os, device } = userAgent(request);
 
-    return !!name && !!version && !isBot;
+    return (
+        !!browser.name &&
+        !!browser.version &&
+        !!engine.name &&
+        !!engine.version &&
+        !!os.name &&
+        !!os.version &&
+        !!device.vendor &&
+        !!device.model
+    );
+};
+
+export const isAdmin = (request: NextRequest) => {
+    const authHeader = request.headers.get('authorization');
+    const secretSearchParam = request.nextUrl.searchParams.get('secret');
+
+    return (
+        authHeader === `Bearer ${process.env.SECRET}` ||
+        authHeader === `Bearer ${process.env.CRON_SECRET}` ||
+        secretSearchParam === process.env.SECRET
+    );
 };
 
 export const isAuthorized = (request: NextRequest) =>
-    isFromVercel(request) && isFromBrowser(request);
+    isAdmin(request) || (isFromVercel(request) && isFromBrowser(request));

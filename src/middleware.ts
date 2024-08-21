@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { isAuthorized } from '@/server/middleware/shared';
 
-export function middleware(req: NextRequest) {
-    if (!isAuthorized(req)) {
-        return new Response('Unauthorized', { status: 401 });
+export function middleware(request: NextRequest) {
+    if (!isAuthorized(request)) {
+        return new Response(null, { status: 401 });
     }
 
     return NextResponse.next();
@@ -14,9 +14,10 @@ export const config = {
         /*
          * Match all request paths except for the ones starting with:
          * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
+         * - favicon.ico, sitemap.xml, robots.txt (metadata files)
          */
-        '/((?!_next/static|_next/image|favicon.ico).*)'
+        {
+            source: '/((?!_next/static|favicon.ico|sitemap.xml|robots.txt).*)'
+        }
     ]
 };
