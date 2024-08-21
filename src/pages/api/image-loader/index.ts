@@ -18,9 +18,6 @@ const QueryParamsSchema = v.object({
     )
 });
 
-//import { userAgent } from 'next/server';
-//console.log(userAgent({ headers: new Headers(headers as HeadersInit) }).browser);
-
 /**
  * API endpoint to perform image optimization.
  *

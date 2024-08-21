@@ -1,4 +1,4 @@
-import type { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, type NextResponse, userAgent } from 'next/server';
 
 type Middleware = (
     request: NextRequest,
@@ -30,3 +30,15 @@ export const getIP = (request: NextRequest) =>
 export const isFromVercel = (request: NextRequest) =>
     process.env.VERCEL_ENV === 'development' ||
     request.headers.get('x-vercel-deployment-url') === process.env.VERCEL_URL;
+
+export const isFromBrowser = (request: NextRequest) => {
+    const {
+        browser: { name, version },
+        isBot
+    } = userAgent(request);
+
+    return !!name && !!version && !isBot;
+};
+
+export const isAuthorized = (request: NextRequest) =>
+    isFromVercel(request) && isFromBrowser(request);
