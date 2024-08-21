@@ -39,7 +39,7 @@ describe('server/service/image-loader/index', () => {
 
     it('should optimize an image', async () => {
         // setup
-        const query = { src: 'some-url', width: '100', quality: '50' };
+        const query = { src: 'some-url', width: 100, quality: 50 };
         const decodedUrl = 'https://decoded-url';
         const imageBuffer = Buffer.from('image');
         const optimized = Buffer.from('optimized');
@@ -59,10 +59,10 @@ describe('server/service/image-loader/index', () => {
         expect(constructorMock).toHaveBeenNthCalledWith(1, new Uint8Array(imageBuffer));
         expect(resizeMock).toHaveBeenNthCalledWith(1, {
             withoutEnlargement: true,
-            width: Number.parseInt(query.width, 10)
+            width: query.width
         });
         expect(webpMock).toHaveBeenNthCalledWith(1, {
-            quality: Number.parseInt(query.quality, 10)
+            quality: query.quality
         });
         expect(toBufferMock).toHaveBeenNthCalledWith(1);
     });
@@ -89,15 +89,15 @@ describe('server/service/image-loader/index', () => {
         expect(constructorMock).toHaveBeenNthCalledWith(1, new Uint8Array(imageBuffer));
         expect(resizeMock).toHaveBeenNthCalledWith(1, {
             withoutEnlargement: true,
-            width: Number.parseInt('1000', 10)
+            width: 1000
         });
-        expect(webpMock).toHaveBeenNthCalledWith(1, { quality: Number.parseInt('75', 10) });
+        expect(webpMock).toHaveBeenNthCalledWith(1, { quality: 75 });
         expect(toBufferMock).toHaveBeenNthCalledWith(1);
     });
 
     it('should optimize an image identified as CMS resource with its own image optimization API', async () => {
         // setup
-        const query = { src: 'some-url', width: '100', quality: '50' };
+        const query = { src: 'some-url', width: 100, quality: 20 };
         const decodedUrl = 'some-relative-cms-url-id';
         const imageBuffer = Buffer.from('image');
         const optimized = Buffer.from(imageBuffer);

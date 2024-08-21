@@ -1,9 +1,11 @@
+/* IMPORTANT NOTICE! NO DATA CACHE IN FETCH - USED IN PAGES ROUTER */
+
 import sharp from 'sharp';
 
 interface ImageOptimizationProps {
     src: string;
-    width?: string;
-    quality?: string;
+    width?: number;
+    quality?: number;
 }
 
 /**
@@ -17,8 +19,8 @@ const isCMSStaticAsset = (url: string) => !url.startsWith('https://');
  *
  * @param {ImageOptimizationProps} query - Nextjs request query search parameters
  * @param {ImageOptimizationProps['src']} query.src - image source
- * @param {ImageOptimizationProps['width']} [query.width] - image optimization width
- * @param {ImageOptimizationProps['quality']} [query.quality] - image optimization quality
+ * @param {ImageOptimizationProps['width']} query.width - image optimization width
+ * @param {ImageOptimizationProps['quality']} query.quality - image optimization quality
  */
 const optimizationWithCMSImageApi = async ({ src, width, quality }: ImageOptimizationProps) => {
     const imageData = await fetch(
@@ -36,7 +38,7 @@ const optimizationWithCMSImageApi = async ({ src, width, quality }: ImageOptimiz
  * @param {ImageOptimizationProps['width']} [query.width] - image optimization width
  * @param {ImageOptimizationProps['quality']} [query.quality] - image optimization quality
  */
-export const optimize = async ({ src, width = '1000', quality = '75' }: ImageOptimizationProps) => {
+export const optimize = async ({ src, width = 1000, quality = 75 }: ImageOptimizationProps) => {
     const decoded = decodeURI(src);
 
     if (isCMSStaticAsset(decoded)) {
@@ -48,8 +50,8 @@ export const optimize = async ({ src, width = '1000', quality = '75' }: ImageOpt
     return sharp(new Uint8Array(imageData))
         .resize({
             withoutEnlargement: true,
-            width: Number.parseInt(width, 10)
+            width
         })
-        .webp({ quality: Number.parseInt(quality, 10) })
+        .webp({ quality })
         .toBuffer();
 };

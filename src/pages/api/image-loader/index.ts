@@ -1,5 +1,23 @@
-import { optimize } from '@/server/service/image-loader';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import * as v from 'valibot';
+import { optimize } from '@/server/service/image-loader';
+
+const QueryParamsSchema = v.object({
+    src: v.string(),
+    width: v.optional(
+        v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(50), v.maxValue(1000))
+    ),
+    quality: v.optional(
+        v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(10), v.maxValue(100))
+    ),
+    maxAge: v.optional(
+        v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(0), v.maxValue(31536000))
+    ),
+    sMaxAge: v.optional(
+        v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(0), v.maxValue(31536000))
+    )
+});
+
 //import { userAgent } from 'next/server';
 //console.log(userAgent({ headers: new Headers(headers as HeadersInit) }).browser);
 
@@ -11,12 +29,18 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  */
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
     // TODO: authorization middleware (referer && browser call && isFromVercel || isAdmin) in here or middleware ? + rate limit middleware + params validation with zod
-    const {
-        query: { src, width, quality, maxAge = 31536000, sMaxAge = 31536000 }
-    } = request;
+    let query: v.InferOutput<typeof QueryParamsSchema>;
 
     try {
-        const optimized = await optimize({ src, width, quality });
+        query = v.parse(QueryParamsSchema, request.query);
+    } catch {
+        return response.status(400).send('Bad request');
+    }
+
+    const { maxAge = 31536000, sMaxAge = 31536000 } = query;
+
+    try {
+        const optimized = await optimize(query);
 
         response.setHeader(
             'Cache-Control',
