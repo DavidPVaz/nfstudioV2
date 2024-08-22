@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { describe, expect, vi, afterEach, it } from 'vitest';
 import type { NextRequest } from 'next/server';
 import { middleware } from '@/middleware';
@@ -35,11 +37,13 @@ describe('middleware', () => {
         // setup
         const request = {} as NextRequest;
         isAuthorizedMock.mockImplementationOnce(() => true);
+        NextResponseMock.next.mockImplementationOnce(() => 'response');
 
         // exercise
-        middleware(request);
+        const result = middleware(request);
 
         // verify
+        expect(result).toEqual('response');
         expect(isAuthorizedMock).toHaveBeenNthCalledWith(1, request);
         expect(NextResponseMock.args).not.toBeDefined();
         expect(NextResponseMock.next).toHaveBeenNthCalledWith(1);
@@ -51,9 +55,10 @@ describe('middleware', () => {
         isAuthorizedMock.mockImplementationOnce(() => false);
 
         // exercise
-        middleware(request);
+        const result = middleware(request);
 
         // verify
+        expect(result).toBeInstanceOf(NextResponseMock);
         expect(isAuthorizedMock).toHaveBeenNthCalledWith(1, request);
         expect(NextResponseMock.args).toEqual([null, { status: 401 }]);
         expect(NextResponseMock.next).not.toHaveBeenCalled();

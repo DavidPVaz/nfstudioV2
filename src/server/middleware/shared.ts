@@ -1,6 +1,6 @@
 import { type NextRequest, type NextResponse, userAgent } from 'next/server';
 
-type Middleware = (
+export type Middleware = (
     request: NextRequest,
     response: NextResponse,
     callback: (result: Error | boolean) => void
@@ -9,8 +9,8 @@ type Middleware = (
 /**
  * Executes a specific middleware and throws on error.
  *
- * @param {NextRequest} request - Nextjs request object
- * @param {NextResponse} response - Nextjs response object
+ * @param {NextApiRequest} request - Nextjs request object
+ * @param {NextApiResponse} response - Nextjs response object
  * @param {Middleware} middleware - the middleware function
  */
 export const runMiddleware = (
