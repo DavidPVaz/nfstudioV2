@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { isAuthorized } from '@/server/middleware/shared';
 
 export function middleware(request: NextRequest) {
+    console.log('REQ: ', request);
     if (!isAuthorized(request)) {
         return new Response(null, { status: 401 });
     }
