@@ -1,17 +1,16 @@
 import { describe, expect, vi, afterEach, it } from 'vitest';
-//import { middleware, config } from '@/middleware';
+import type { NextRequest } from 'next/server';
+import { middleware } from '@/middleware';
 
-const { NextResponseMock, nextMock, constructorMock, isAuthorizedMock } = vi.hoisted(() => ({
+const { NextResponseMock, isAuthorizedMock } = vi.hoisted(() => ({
     NextResponseMock: class {
-        static next = nextMock;
+        static next = vi.fn();
+        static args: unknown[];
 
-        constructor(args: unknown) {
-            constructorMock(args);
+        constructor(...args: unknown[]) {
+            NextResponseMock.args = args;
         }
     },
-    nextMock: vi.fn(),
-    constructorMock: vi.fn(),
-
     isAuthorizedMock: vi.fn()
 }));
 
@@ -27,12 +26,36 @@ vi.mock('next/server', async importOriginal => {
     };
 });
 
-describe.todo('middleware', () => {
+describe('middleware', () => {
     afterEach(() => {
         vi.clearAllMocks();
     });
 
-    it('should ', () => {
-        expect(1).toEqual(1);
+    it('should allow the request to proceed', () => {
+        // setup
+        const request = {} as NextRequest;
+        isAuthorizedMock.mockImplementationOnce(() => true);
+
+        // exercise
+        middleware(request);
+
+        // verify
+        expect(isAuthorizedMock).toHaveBeenNthCalledWith(1, request);
+        expect(NextResponseMock.args).not.toBeDefined();
+        expect(NextResponseMock.next).toHaveBeenNthCalledWith(1);
+    });
+
+    it('should deny the request to proceed', () => {
+        // setup
+        const request = {} as NextRequest;
+        isAuthorizedMock.mockImplementationOnce(() => false);
+
+        // exercise
+        middleware(request);
+
+        // verify
+        expect(isAuthorizedMock).toHaveBeenNthCalledWith(1, request);
+        expect(NextResponseMock.args).toEqual([null, { status: 401 }]);
+        expect(NextResponseMock.next).not.toHaveBeenCalled();
     });
 });
