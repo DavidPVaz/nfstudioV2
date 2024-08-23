@@ -1,68 +1,93 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import RateLimit, { type ValueDeterminingMiddleware } from 'express-rate-limit';
+import type { NextRequest } from 'next/server';
+import { isAdmin } from '@/server/middleware/shared';
 
 interface RateLimitProps {
-    request: NextApiRequest;
-    response: NextApiResponse;
+    keyGenerator: (request: NextRequest) => string;
     limit?: number;
     windowMs?: number;
 }
 
-type Middleware = (
-    request: NextApiRequest,
-    response: NextApiResponse,
-    callback: (result: Error | boolean) => void
-) => void;
+export const RateLimit = ({ keyGenerator, limit = 5, windowMs = 60000 }: RateLimitProps) => {
+    const map = new Map<string, { requestTimestamp: string; requestCount: number }>();
 
-export const getIP = (request: NextApiRequest) =>
-    request.headers['x-forwarded-for'] ??
-    request.headers['x-real-ip'] ??
-    request.socket.remoteAddress;
+    const middleware = (request: NextRequest) => {
+        if (isAdmin(request)) {
+            return { success: true };
+        }
 
-/**
- * Executes a specific middleware and throws on error.
- *
- * @param {NextApiRequest} request - Nextjs request object
- * @param {NextApiResponse} response - Nextjs response object
- * @param {Middleware} middleware - the middleware function
- */
-const runMiddleware = (
-    request: NextApiRequest,
-    response: NextApiResponse,
-    middleware: Middleware
-) =>
-    new Promise((resolve, reject) =>
-        middleware(request, response, result =>
-            result instanceof Error ? reject(result) : resolve(result)
-        )
-    );
+        const key = keyGenerator(request);
+        const user = map.get(key);
+        const currentRequestTime = new Date().toISOString();
+        const timeToReset = new Date(
+            new Date(currentRequestTime).getTime() + windowMs
+        ).toISOString();
 
-const map = new Map<string, Middleware>();
+        if (!user) {
+            map.set(key, {
+                requestTimestamp: currentRequestTime,
+                requestCount: 1
+            });
 
-const getMiddleware = ({ limit, windowMs }: { limit: number; windowMs: number }) => {
-    const key = `${limit}:${windowMs}`;
+            return {
+                limit,
+                remaining: limit - 1,
+                timeToReset,
+                success: true
+            };
+        }
 
-    return (map.get(key) ??
-        map
-            .set(
-                `${limit}:${windowMs}`,
-                RateLimit({
-                    keyGenerator: getIP as ValueDeterminingMiddleware<string>,
-                    windowMs,
-                    max: limit
-                }) as Middleware
-            )
-            .get(key))!;
+        // if record is found, calculate number of requests users has made within the last window
+        const currentWindowStart = new Date(
+            new Date(currentRequestTime).getTime() - windowMs
+        ).toISOString();
+
+        if (user.requestCount >= limit) {
+            // keep incrementing and throttle in case of abuse?
+            return {
+                limit,
+                remaining: 0,
+                timeToReset,
+                success: false,
+                code: 429,
+                message: 'Too many requests.'
+            };
+        }
+
+        // if its still within current window, increment counter
+        if (user.requestTimestamp > currentWindowStart) {
+            return {
+                limit,
+                remaining: limit - ++user.requestCount,
+                timeToReset,
+                success: true
+            };
+        }
+
+        // a new window has began, delete previous entry and setup a new one
+        // this only happens when user requests again after window has reset - need to have a way of clearing user entry after a certain time interval
+        map.set(key, {
+            requestTimestamp: currentRequestTime,
+            requestCount: 1
+        });
+
+        return {
+            limit,
+            remaining: limit - 1,
+            timeToReset,
+            success: true
+        };
+    };
+
+    return middleware;
 };
 
-/**
- * Executes rate limit middleware.
- *
- * @param {RateLimitProps} options
- * @param {RateLimitProps['request']} options.request - Nextjs request object
- * @param {RateLimitProps['response']} options.response - Nextjs response object
- * @param {RateLimitProps['limit']} [options.limit] - The maximum number of connections to allow during the `window` before rate limiting the client.
- * @param {RateLimitProps['windowMs']} [options.windowMs] - the time window in ms to evaluate the rate limiting
- */
-export const rateLimit = ({ request, response, limit = 5, windowMs = 60000 }: RateLimitProps) =>
-    runMiddleware(request, response, getMiddleware({ limit, windowMs }));
+/*
+ response.setHeader("X-RateLimit-Limit", info.limit.toString());
+  response.setHeader("X-RateLimit-Remaining", info.remaining.toString());
+  if (info.resetTime instanceof Date) {
+    response.setHeader("Date", ( new Date()).toUTCString());
+    response.setHeader(
+        "X-RateLimit-Reset",
+        Math.ceil(info.resetTime.getTime() / 1e3).toString()
+
+*/
