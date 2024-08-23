@@ -19,10 +19,10 @@ interface LoaderProps extends ImageLoaderProps {
 export const getLoader =
     ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>
     () =>
-        `https://nfstudio.xyz/api/loader?${buildQueryString({
-            url: src,
-            w: width,
-            q: quality,
+        `/api/image-loader?${buildQueryString({
+            src,
+            width,
+            quality,
             maxAge,
             sMaxAge
         })}`;
