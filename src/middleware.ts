@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { isAuthorized, getIP } from '@/server/middleware/shared';
-import { RateLimit } from './server/middleware/rate-limit';
+import { RateLimit } from '@/server/middleware/rate-limit';
 
 const isApiEndpoint = (request: NextRequest) => request.nextUrl.pathname.startsWith('/api');
 const isImageLoaderEndpoint = (request: NextRequest) =>

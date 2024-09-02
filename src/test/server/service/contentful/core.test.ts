@@ -46,7 +46,7 @@ const expectedFetchArguments = {
 
 describe('server/service/contentful/core', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should perform a Contentful API GET request', async () => {

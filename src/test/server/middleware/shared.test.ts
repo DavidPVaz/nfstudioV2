@@ -28,7 +28,7 @@ const buildRequest = (
 
 describe('server/middleware/shared', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should get the request ip', () => {

@@ -34,7 +34,7 @@ describe('server/service/image-loader/index', () => {
     global.decodeURI = decodeURIMock;
 
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should optimize an image', async () => {
