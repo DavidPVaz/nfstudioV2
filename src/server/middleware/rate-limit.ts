@@ -7,87 +7,122 @@ interface RateLimitProps {
     windowMs?: number;
 }
 
+type RequestIdentifier = {
+    requestTimestamp: number;
+    requestCount: number;
+};
+
+const getXRateLimitHeaders = ({
+    limit,
+    remaining,
+    reset
+}: {
+    limit: number;
+    remaining: number;
+    reset: number;
+}) => ({
+    'X-RateLimit-Limit': limit.toString(),
+    'X-RateLimit-Remaining': remaining.toString(),
+    'X-RateLimit-Reset': reset.toString()
+});
+
+const Store = (windowMs: number) => {
+    const requests = new Map<string, RequestIdentifier>();
+    const timers = new Map<string, NodeJS.Timeout>();
+
+    const get = (key: string) => {
+        return requests.get(key);
+    };
+
+    const add = (key: string, requestIdentifier: RequestIdentifier) => {
+        const currentTimeoutForRequest = timers.get(key);
+
+        if (currentTimeoutForRequest) {
+            clearTimeout(currentTimeoutForRequest);
+        }
+
+        requests.set(key, requestIdentifier);
+
+        const timerID = setTimeout(() => {
+            requests.delete(key);
+            timers.delete(key);
+        }, windowMs);
+
+        timers.set(key, timerID);
+    };
+
+    return { get, add };
+};
+
 export const RateLimit = ({ keyGenerator, limit = 5, windowMs = 60000 }: RateLimitProps) => {
-    const map = new Map<string, { requestTimestamp: string; requestCount: number }>();
+    const store = Store(windowMs);
 
     const middleware = (request: NextRequest) => {
         if (isAdmin(request)) {
-            return { success: true };
+            return { limited: false, headers: {} };
         }
 
         const key = keyGenerator(request);
-        const user = map.get(key);
-        const currentRequestTime = new Date().toISOString();
-        const timeToReset = new Date(
-            new Date(currentRequestTime).getTime() + windowMs
-        ).toISOString();
+        const requestIdentifier = store.get(key);
 
-        if (!user) {
-            map.set(key, {
+        const currentRequestTime = new Date().getTime();
+        const timeToReset = new Date(
+            (requestIdentifier?.requestTimestamp ?? currentRequestTime) + windowMs
+        ).getTime();
+
+        if (!requestIdentifier) {
+            store.add(key, {
                 requestTimestamp: currentRequestTime,
                 requestCount: 1
             });
 
             return {
-                limit,
-                remaining: limit - 1,
-                timeToReset,
-                success: true
+                limited: false,
+                headers: getXRateLimitHeaders({
+                    limit,
+                    remaining: limit - 1,
+                    reset: timeToReset
+                })
             };
         }
 
-        // if record is found, calculate number of requests users has made within the last window
-        const currentWindowStart = new Date(
-            new Date(currentRequestTime).getTime() - windowMs
-        ).toISOString();
+        const currentWindowStart = new Date(currentRequestTime - windowMs).getTime();
+        const isStillInCurrentWindow =
+            requestIdentifier.requestTimestamp > currentWindowStart &&
+            requestIdentifier.requestTimestamp < timeToReset;
 
-        if (user.requestCount >= limit) {
-            // keep incrementing and throttle in case of abuse?
+        if (isStillInCurrentWindow) {
+            const hasReachedLimit = requestIdentifier.requestCount >= limit;
+
             return {
-                limit,
-                remaining: 0,
-                timeToReset,
-                success: false,
-                code: 429,
-                message: 'Too many requests.'
+                limited: hasReachedLimit,
+                code: hasReachedLimit ? 429 : null,
+                message: hasReachedLimit ? 'Too many requests.' : null,
+                headers: getXRateLimitHeaders({
+                    limit,
+                    remaining: hasReachedLimit ? 0 : limit - ++requestIdentifier.requestCount,
+                    reset: timeToReset
+                })
             };
         }
 
-        // if its still within current window, increment counter
-        if (user.requestTimestamp > currentWindowStart) {
-            return {
-                limit,
-                remaining: limit - ++user.requestCount,
-                timeToReset,
-                success: true
-            };
-        }
-
-        // a new window has began, delete previous entry and setup a new one
-        // this only happens when user requests again after window has reset - need to have a way of clearing user entry after a certain time interval
-        map.set(key, {
+        // Reaching here, the timer has failed to delete this request identifier from store when the window
+        // ended after the `windowMs`. This means there is still a request identifier for this `key`.
+        // A new window has began, add a new request identifier and clear previous timer.
+        store.add(key, {
             requestTimestamp: currentRequestTime,
             requestCount: 1
         });
 
         return {
-            limit,
-            remaining: limit - 1,
-            timeToReset,
-            success: true
+            limited: false,
+            headers: getXRateLimitHeaders({
+                limit,
+                remaining: limit - 1,
+                reset: timeToReset
+            })
         };
     };
 
     return middleware;
 };
-
-/*
- response.setHeader("X-RateLimit-Limit", info.limit.toString());
-  response.setHeader("X-RateLimit-Remaining", info.remaining.toString());
-  if (info.resetTime instanceof Date) {
-    response.setHeader("Date", ( new Date()).toUTCString());
-    response.setHeader(
-        "X-RateLimit-Reset",
-        Math.ceil(info.resetTime.getTime() / 1e3).toString()
-
-*/
