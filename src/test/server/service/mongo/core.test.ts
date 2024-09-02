@@ -18,7 +18,7 @@ vi.mock('@/server/service/shared/http', async importOriginal => {
 
 describe('server/service/mongo/core', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should perform a Mongo Api Request and resolve APP key', async () => {

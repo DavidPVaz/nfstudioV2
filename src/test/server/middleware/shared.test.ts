@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import type { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { NextURL } from 'next/dist/server/web/next-url';
 import { describe, expect, vi, afterEach, it } from 'vitest';
 import {
-    runMiddleware,
     getIP,
     isFromVercel,
     isFromBrowser,
@@ -29,35 +28,7 @@ const buildRequest = (
 
 describe('server/middleware/shared', () => {
     afterEach(() => {
-        vi.clearAllMocks();
-    });
-
-    it('should run middleware and resolve', async () => {
-        // setup
-        const middleware = vi.fn().mockImplementation((req, resp, callback) => callback(true));
-        const request = { ip: 'request' } as NextRequest;
-        const response = { headers: {} } as NextResponse;
-
-        // exercise && verify
-        expect(await runMiddleware(request, response, middleware)).toEqual(true);
-
-        expect(middleware.mock.lastCall?.[0]).toEqual(request);
-        expect(middleware.mock.lastCall?.[1]).toEqual(response);
-        expect(middleware.mock.lastCall?.[2]).toBeTypeOf('function');
-    });
-
-    it('should run middleware and reject', async () => {
-        // setup
-        const middleware = vi.fn().mockImplementation((req, resp, callback) => callback(Error()));
-        const request = { ip: 'request' } as NextRequest;
-        const response = { headers: {} } as NextResponse;
-
-        // exercise && verify
-        await expect(runMiddleware(request, response, middleware)).rejects.toThrowError(Error);
-
-        expect(middleware.mock.lastCall?.[0]).toEqual(request);
-        expect(middleware.mock.lastCall?.[1]).toEqual(response);
-        expect(middleware.mock.lastCall?.[2]).toBeTypeOf('function');
+        vi.resetAllMocks();
     });
 
     it('should get the request ip', () => {

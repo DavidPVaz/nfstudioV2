@@ -29,7 +29,7 @@ describe('server/service/shared/http', () => {
     global.fetch = fetchMock;
 
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should perform a HTTP request and retrieve the JSON response', async () => {

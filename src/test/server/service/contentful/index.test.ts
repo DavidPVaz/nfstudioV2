@@ -18,7 +18,7 @@ vi.mock('@/server/service/contentful/core', async importOriginal => {
 
 describe('server/service/contentful/index', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should query a document', async () => {

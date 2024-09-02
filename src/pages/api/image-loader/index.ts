@@ -25,7 +25,6 @@ const QueryParamsSchema = v.object({
  * @param {NextApiResponse} response - Nextjs response
  */
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-    // TODO: authorization middleware (referer && browser call && isFromVercel || isAdmin) in here or middleware ? + rate limit middleware + params validation with zod
     let query: v.InferOutput<typeof QueryParamsSchema>;
 
     try {

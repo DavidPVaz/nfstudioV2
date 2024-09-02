@@ -20,7 +20,7 @@ vi.mock('clsx', async importOriginal => {
 
 describe('lib/utils', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should use all className inputs and merge them', () => {

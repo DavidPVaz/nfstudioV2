@@ -18,7 +18,7 @@ const documents = [
 
 describe('server/service/mongo/index', () => {
     afterEach(() => {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
     });
 
     it('should query collections data with defaults', async () => {
