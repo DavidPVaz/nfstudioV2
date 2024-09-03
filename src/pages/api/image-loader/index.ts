@@ -31,7 +31,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     try {
         query = v.parse(QueryParamsSchema, request.query);
     } catch {
-        return response.status(400).send('Bad request');
+        return response.status(400).send('Bad request.');
     }
 
     const { maxAge = 31536000, sMaxAge = 31536000 } = query;
