@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 import { optimize } from '@/server/service/image-loader';
+import { captureException } from '@sentry/nextjs';
 
 const QueryParamsSchema = v.object({
     src: v.string(),
@@ -46,6 +47,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
         return response.status(200).send(optimized);
     } catch (error) {
+        captureException(error);
+
         return response.status(500).send('An error occurred while optimizing the image.');
     }
 }
