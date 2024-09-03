@@ -7,9 +7,9 @@ interface RateLimitProps {
     windowMs?: number;
 }
 
-type RequestIdentifier = {
-    requestTimestamp: number;
-    requestCount: number;
+type Request = {
+    timestamp: number;
+    count: number;
 };
 
 const getXRateLimitHeaders = ({
@@ -27,21 +27,21 @@ const getXRateLimitHeaders = ({
 });
 
 const Store = (windowMs: number) => {
-    const requests = new Map<string, RequestIdentifier>();
+    const requests = new Map<string, Request>();
     const timers = new Map<string, NodeJS.Timeout>();
 
     const get = (key: string) => {
         return requests.get(key);
     };
 
-    const add = (key: string, requestIdentifier: RequestIdentifier) => {
+    const add = (key: string, request: Request) => {
         const currentTimeoutForRequest = timers.get(key);
 
         if (currentTimeoutForRequest) {
             clearTimeout(currentTimeoutForRequest);
         }
 
-        requests.set(key, requestIdentifier);
+        requests.set(key, request);
 
         const timerID = setTimeout(() => {
             requests.delete(key);
@@ -57,27 +57,29 @@ const Store = (windowMs: number) => {
 export const RateLimit = ({ keyGenerator, limit = 5, windowMs = 60000 }: RateLimitProps) => {
     const store = Store(windowMs);
 
-    const middleware = (request: NextRequest) => {
-        if (isAdmin(request)) {
+    const middleware = (incomingRequest: NextRequest) => {
+        if (isAdmin(incomingRequest)) {
             return { limited: false, headers: {} };
         }
 
-        const key = keyGenerator(request);
-        const requestIdentifier = store.get(key);
+        const key = keyGenerator(incomingRequest);
+        const request = store.get(key);
 
         const currentRequestTime = new Date().getTime();
         const timeToReset = new Date(
-            (requestIdentifier?.requestTimestamp ?? currentRequestTime) + windowMs
+            (request?.timestamp ?? currentRequestTime) + windowMs
         ).getTime();
 
-        if (!requestIdentifier) {
+        if (!request) {
             store.add(key, {
-                requestTimestamp: currentRequestTime,
-                requestCount: 1
+                timestamp: currentRequestTime,
+                count: 1
             });
 
             return {
                 limited: false,
+                code: null,
+                message: null,
                 headers: getXRateLimitHeaders({
                     limit,
                     remaining: limit - 1,
@@ -88,11 +90,10 @@ export const RateLimit = ({ keyGenerator, limit = 5, windowMs = 60000 }: RateLim
 
         const currentWindowStart = new Date(currentRequestTime - windowMs).getTime();
         const isStillInCurrentWindow =
-            requestIdentifier.requestTimestamp > currentWindowStart &&
-            requestIdentifier.requestTimestamp < timeToReset;
+            request.timestamp > currentWindowStart && request.timestamp < timeToReset;
 
         if (isStillInCurrentWindow) {
-            const hasReachedLimit = requestIdentifier.requestCount >= limit;
+            const hasReachedLimit = ++request.count > limit;
 
             return {
                 limited: hasReachedLimit,
@@ -100,7 +101,7 @@ export const RateLimit = ({ keyGenerator, limit = 5, windowMs = 60000 }: RateLim
                 message: hasReachedLimit ? 'Too many requests.' : null,
                 headers: getXRateLimitHeaders({
                     limit,
-                    remaining: hasReachedLimit ? 0 : limit - ++requestIdentifier.requestCount,
+                    remaining: hasReachedLimit ? 0 : limit - request.count,
                     reset: timeToReset
                 })
             };
@@ -110,16 +111,18 @@ export const RateLimit = ({ keyGenerator, limit = 5, windowMs = 60000 }: RateLim
         // ended after the `windowMs`. This means there is still a request identifier for this `key`.
         // A new window has began, add a new request identifier and clear previous timer.
         store.add(key, {
-            requestTimestamp: currentRequestTime,
-            requestCount: 1
+            timestamp: currentRequestTime,
+            count: 1
         });
 
         return {
             limited: false,
+            code: null,
+            message: null,
             headers: getXRateLimitHeaders({
                 limit,
                 remaining: limit - 1,
-                reset: timeToReset
+                reset: new Date(currentRequestTime + windowMs).getTime()
             })
         };
     };
