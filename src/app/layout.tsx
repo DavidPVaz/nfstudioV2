@@ -30,11 +30,6 @@ export const metadata: Metadata = {
         'max-snippet': -1,
         index: process.env.VERCEL_ENV === 'production',
         follow: process.env.VERCEL_ENV === 'production'
-    },
-    twitter: {
-        card: 'summary_large_image',
-        description,
-        title
     }
 };
 
