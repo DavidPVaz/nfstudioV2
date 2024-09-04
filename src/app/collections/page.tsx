@@ -7,10 +7,7 @@ import { queryCollectionsData } from '@/server/service/mongo';
 const title = 'Collections | NFStudio';
 
 export const metadata: Metadata = {
-    title,
-    twitter: {
-        title
-    }
+    title
 };
 
 const CollectionsPage = async () => {

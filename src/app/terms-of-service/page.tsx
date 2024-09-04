@@ -7,10 +7,7 @@ import { DOCUMENTS } from '@/server/service/contentful/types';
 const title = 'Terms of Service | NFStudio';
 
 export const metadata: Metadata = {
-    title,
-    twitter: {
-        title
-    }
+    title
 };
 
 const TermsOfServicePage = async () => {

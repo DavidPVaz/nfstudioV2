@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { queryCollectionsData } from '@/server/service/mongo';
+import { PAGES } from '@/shared/enums';
 
 type Slug = {
     params: { collection: string };
@@ -11,8 +12,8 @@ export function generateMetadata({ params: { collection } }: Slug): Metadata {
 
     return {
         title,
-        twitter: {
-            title
+        alternates: {
+            canonical: PAGES.COLLECTIONS
         }
     };
 }
@@ -32,7 +33,7 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
     });
 
     if (!selectedCollection) {
-        return redirect('/collections');
+        return redirect(PAGES.COLLECTIONS);
     }
 
     return <div>{JSON.stringify(selectedCollection)}</div>;

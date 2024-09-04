@@ -6,10 +6,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/
 const title = 'FAQ | NFStudio';
 
 export const metadata: Metadata = {
-    title,
-    twitter: {
-        title
-    }
+    title
 };
 
 const FaqPage = () => (

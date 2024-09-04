@@ -7,10 +7,7 @@ import { DOCUMENTS } from '@/server/service/contentful/types';
 const title = 'Privacy Policy | NFStudio';
 
 export const metadata: Metadata = {
-    title,
-    twitter: {
-        title
-    }
+    title
 };
 
 const PrivacyPolicyPage = async () => {

@@ -13,6 +13,7 @@ const description =
     'Effortlessly create stunning social media banners, desktop and mobile wallpapers from your favorite NFTs in seconds!';
 
 export const metadata: Metadata = {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
     title,
     description,
     keywords: [
@@ -27,14 +28,13 @@ export const metadata: Metadata = {
     robots: {
         noarchive: true,
         'max-snippet': -1,
-        index: process.env.NEXT_PUBLIC_VERCEL_ENV === 'production',
-        follow: process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
+        index: process.env.VERCEL_ENV === 'production',
+        follow: process.env.VERCEL_ENV === 'production'
     },
     twitter: {
         card: 'summary_large_image',
-        title,
         description,
-        images: 'https://bafkreif5ejpwwz4q3tihtasm7woa6v6zad7ym5lw4t5oda232tprcawk3i.ipfs.nftstorage.link/'
+        title
     }
 };
 
