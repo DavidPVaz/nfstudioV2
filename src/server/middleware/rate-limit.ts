@@ -1,11 +1,11 @@
 import type { NextRequest } from 'next/server';
 import { isAdmin } from '@/server/middleware/shared';
 
-interface RateLimitProps {
+type RateLimitProps = {
     keyGenerator: (request: NextRequest) => string;
     limit?: number;
     windowMs?: number;
-}
+};
 
 type Request = {
     timestamp: number;

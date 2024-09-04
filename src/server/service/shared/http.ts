@@ -13,11 +13,11 @@ type RequestOptions = {
     data?: Record<string, unknown>;
 };
 
-interface HttpRequest {
+type HttpRequest = {
     retryDelay?: number;
     retries: number;
     options: RequestOptions;
-}
+};
 
 const NON_RETRIABLE_CLIENT_ERROR_CODES = [400, 401, 403, 404, 409];
 

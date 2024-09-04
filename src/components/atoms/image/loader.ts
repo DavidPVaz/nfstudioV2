@@ -1,10 +1,10 @@
 import { buildQueryString } from '@/lib/utils';
 import type { ImageLoaderProps, ImageLoader } from 'next/image';
 
-interface LoaderProps extends ImageLoaderProps {
+type LoaderProps = ImageLoaderProps & {
     maxAge?: number | string;
     sMaxAge?: number | string;
-}
+};
 
 /**
  * Create a custom image loader to use in image optimization.

@@ -1,6 +1,16 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import { PageTitle } from '@/components/molecules';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/atoms';
+
+const title = 'FAQ | NFStudio';
+
+export const metadata: Metadata = {
+    title,
+    twitter: {
+        title
+    }
+};
 
 const FaqPage = () => (
     <div className="relative flex w-full flex-col items-center justify-start gap-y-4 md:gap-y-8">

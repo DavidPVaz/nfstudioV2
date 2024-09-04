@@ -14,10 +14,10 @@ type ContentfulResponse<T> = {
     items: ItemData<T>[];
 };
 
-interface ContentfulApiGetRequest {
+type ContentfulApiGetRequest = {
     queryArgs: NFStudioCMSQueryArgs;
     retries?: number;
-}
+};
 
 /**
  * Performs a GET request to Contentful delivery api.

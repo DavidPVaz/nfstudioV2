@@ -4,14 +4,14 @@ import { CommandDialog } from '@/components/atoms';
 import { Chain } from '@/shared/enums';
 import { DialogContentSkeleton } from './dialog-content-skeleton';
 
-interface SearchDialogProps {
+type SearchDialogProps = {
     open: boolean;
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
     onSelect: (value: string) => void;
     onChain: (chain: Chain | null) => void;
     data: { value: string; imgSrc: string }[];
     selectedChain: Chain | null;
-}
+};
 
 const DialogContent = dynamic(
     () => import('./dialog-content').then(module => module.DialogContent),

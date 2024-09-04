@@ -10,11 +10,11 @@ import {
 } from '@/server/service/mongo/types';
 import { mongoApiRequest } from '@/server/service/mongo/core';
 
-interface CollectionsDataProps {
+type CollectionsDataProps = {
     filter?: MongoFilter;
     projection?: MongoProjection<CollectionConfiguration>;
     limit?: MongoLimit;
-}
+};
 
 /**
  * Performs a query to mongodb NFStudio database to fetch available collections data.

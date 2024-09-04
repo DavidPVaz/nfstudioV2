@@ -10,12 +10,12 @@ import {
 } from '@/components/atoms';
 import { Chain, CHAIN_ICON_MAP } from '@/shared/enums';
 
-export interface SearchDialogContentProps {
+type SearchDialogContentProps = {
     onSelect: (value: string) => void;
     onChain: (chain: Chain | null) => void;
     data: { value: string; imgSrc: string }[];
     selectedChain: Chain | null;
-}
+};
 
 export const DialogContent = ({
     onSelect,

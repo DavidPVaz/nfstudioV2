@@ -13,11 +13,11 @@ type MongoResponse<T> = {
     documents: T[];
 };
 
-interface MongoApiRequest<T> {
+type MongoApiRequest<T> = {
     action: Action;
     data: MongoPostData<T>;
     retries?: number;
-}
+};
 
 /**
  * Maps Access type with an api key.

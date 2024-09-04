@@ -21,22 +21,21 @@ const imageVariants = cva('pointer-events-none object-center', {
     }
 });
 
-export interface ImageProps
-    extends React.ImgHTMLAttributes<HTMLImageElement>,
-        VariantProps<typeof imageVariants> {
-    src: string;
-    alt: string;
-    width?: number | `${number}` | undefined;
-    height?: number | `${number}` | undefined;
+type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> &
+    VariantProps<typeof imageVariants> & {
+        src: string;
+        alt: string;
+        width?: number | `${number}` | undefined;
+        height?: number | `${number}` | undefined;
 
-    priority?: boolean;
-    useCustomLoader?: boolean;
-    usePlaceholder?: boolean;
-    optimizedWidth: number;
-    quality?: number;
-    maxAge?: number;
-    sMaxAge?: number;
-}
+        priority?: boolean;
+        useCustomLoader?: boolean;
+        usePlaceholder?: boolean;
+        optimizedWidth: number;
+        quality?: number;
+        maxAge?: number;
+        sMaxAge?: number;
+    };
 
 export const Image = ({
     className,

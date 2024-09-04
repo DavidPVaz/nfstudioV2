@@ -13,7 +13,7 @@ export const CollectionsList = ({ collections }: { collections: CollectionConfig
         <CollectionCard
             imgAlt={`${_id} card`}
             key={_id}
-            imgSrc={`https://images.ctfassets.net/ze23ubzzqb1s/${presentation}`}
+            imgSrc={presentation}
             href={`/collections/${_id}`}
             chain={chain}
             name={_id}

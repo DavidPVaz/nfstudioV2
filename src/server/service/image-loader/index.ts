@@ -2,11 +2,11 @@
 
 import sharp from 'sharp';
 
-interface ImageOptimizationProps {
+type ImageOptimizationProps = {
     src: string;
     width?: number;
     quality?: number;
-}
+};
 
 /**
  * Evaluates wether a resource is from NFStudio CMS store.

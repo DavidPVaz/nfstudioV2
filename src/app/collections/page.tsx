@@ -1,7 +1,17 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import { Collections, CollectionsList } from '@/components/organisms';
 import { SearchCollections, PageTitle } from '@/components/molecules';
 import { queryCollectionsData } from '@/server/service/mongo';
+
+const title = 'Collections | NFStudio';
+
+export const metadata: Metadata = {
+    title,
+    twitter: {
+        title
+    }
+};
 
 const CollectionsPage = async () => {
     const collections = await queryCollectionsData({
