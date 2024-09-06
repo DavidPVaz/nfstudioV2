@@ -1,7 +1,10 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { queryCollectionsData } from '@/server/service/mongo';
 import { PAGES } from '@/shared/enums';
+import { StudioContextProvider } from '@/app/collections/[collection]/studio/context';
+import { Studio } from '@/app/collections/[collection]/studio';
 
 type Slug = {
     params: { collection: string };
@@ -29,14 +32,25 @@ export async function generateStaticParams() {
 const CollectionPage = async ({ params: { collection } }: Slug) => {
     const [selectedCollection] = await queryCollectionsData({
         filter: { _id: { $eq: collection } },
-        projection: { config: 1 }
+        projection: {
+            config: 1,
+            marketplace: 1,
+            discord: 1,
+            twitter: 1,
+            website: 1
+        }
     });
 
     if (!selectedCollection) {
         return redirect(PAGES.COLLECTIONS);
     }
+    const { _id, marketplace, discord, twitter, website } = selectedCollection;
 
-    return <div>{JSON.stringify(selectedCollection)}</div>;
+    return (
+        <StudioContextProvider collectionConfiguration={selectedCollection}>
+            <Studio collection={_id} links={{ marketplace, discord, twitter, website }} />
+        </StudioContextProvider>
+    );
 };
 
 export default CollectionPage;

@@ -26,7 +26,7 @@ export type CollectionConfiguration = {
     website?: string;
     createdAt?: string;
     active?: boolean;
-    config?: {
+    config: {
         cacheStrategy: { sMaxAge: number; maxAge: number } | object;
         logos: string[];
         unsupportedTraits: Record<string, string[]> | object;
