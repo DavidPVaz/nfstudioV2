@@ -4,6 +4,12 @@ import React, { useEffect, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
 
+type NFT = {
+    id: number;
+    src: string;
+    selected: boolean;
+};
+
 export const StudioClientContent = () => {
     const { id } = useStudioContext();
     const [collection, setCollection] = useLocalStorage<string[]>(id, null);
