@@ -1,7 +1,15 @@
 'use client';
 
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import type { CollectionConfiguration } from '@/server/service/mongo/types';
+
+type StudioContext = {
+    id: CollectionConfiguration['_id'];
+    cacheStrategy: CollectionConfiguration['config']['cacheStrategy'];
+    logos: CollectionConfiguration['config']['logos'];
+    unsupportedTraits: CollectionConfiguration['config']['unsupportedTraits'];
+    paylinkId: CollectionConfiguration['config']['paylinkId'];
+};
 
 const Context = createContext({});
 
@@ -13,10 +21,12 @@ const StudioContextProvider = ({
     children: React.ReactNode;
 }) => {
     const {
+        _id,
         config: { logos, unsupportedTraits, cacheStrategy, paylinkId }
     } = collectionConfiguration;
 
     const context = {
+        id: _id,
         cacheStrategy,
         logos,
         unsupportedTraits,
@@ -29,5 +39,6 @@ const StudioContextProvider = ({
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };
 
-export default Context;
-export { StudioContextProvider };
+const useStudioContext = () => useContext(Context) as StudioContext;
+
+export { StudioContextProvider, useStudioContext };

@@ -85,12 +85,17 @@ const config = {
                 'loop-scroll': {
                     from: { transform: 'translateX(0)' },
                     to: { transform: 'translateX(-400%)' }
+                },
+                show: {
+                    from: { opacity: '0' },
+                    to: { opacity: '1' }
                 }
             },
             animation: {
                 'loop-scroll': 'loop-scroll 120s linear infinite',
                 'accordion-down': 'accordion-down 0.2s ease-out',
-                'accordion-up': 'accordion-up 0.2s ease-out'
+                'accordion-up': 'accordion-up 0.2s ease-out',
+                show: 'show 0.3s 0.2s linear forwards'
             },
             boxShadow: {
                 'border-extension': '0 0 0 1px hsl(var(--border))'

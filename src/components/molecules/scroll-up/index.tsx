@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/atoms';
 import { ArrowUp } from 'lucide-react';
-import { useWindowScroll } from '@/hooks';
+import { useWindowScroll } from '@/hooks/use-window-scroll';
 
 export const ScrollUp = () => {
     const { yPosition, scrollToTop } = useWindowScroll();

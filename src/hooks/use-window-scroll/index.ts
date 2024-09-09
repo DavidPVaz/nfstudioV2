@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useLayoutEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export const useWindowScroll = () => {
     const [yPosition, setYPosition] = useState<number | null>(null);
@@ -15,7 +15,7 @@ export const useWindowScroll = () => {
         []
     );
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const handler = () => setYPosition(window.scrollY);
         window.addEventListener('scroll', handler);
 

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { queryCollectionsData } from '@/server/service/mongo';
 import { PAGES } from '@/shared/enums';
-import { StudioContextProvider } from '@/app/collections/[collection]/studio/context';
+import { StudioContextProvider } from '@/app/collections/[collection]/studio/client/context';
 import { Studio } from '@/app/collections/[collection]/studio';
 
 type Slug = {
