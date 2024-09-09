@@ -31,7 +31,6 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
                 <ChainIcon chain={chain} className={'fill-primary-brand'} />
             </div>
             <Image
-                variant={'contain'}
                 width={201.33}
                 height={263.73}
                 className="rounded-lg"

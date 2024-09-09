@@ -44,11 +44,10 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
     if (!selectedCollection) {
         return redirect(PAGES.COLLECTIONS);
     }
-    const { _id, marketplace, discord, twitter, website } = selectedCollection;
 
     return (
         <StudioContextProvider collectionConfiguration={selectedCollection}>
-            <Studio collection={_id} links={{ marketplace, discord, twitter, website }} />
+            <Studio collectionConfiguration={selectedCollection} />
         </StudioContextProvider>
     );
 };

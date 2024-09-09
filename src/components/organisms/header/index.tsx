@@ -13,7 +13,7 @@ export const Header = () => (
                 <Button className="px-0 py-0" variant="link" asChild>
                     <Link className="flex flex-row items-center gap-1" href={PAGES.HOME}>
                         <NFStudioIcon className="h-[2.5rem] w-auto fill-primary-brand" />
-                        <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-foreground xs:flex" />
+                        <NFStudioLettersIcon className="hidden h-[2.5rem] w-auto fill-foreground 2xs:flex" />
                         <span className="sr-only">Go to main page</span>
                     </Link>
                 </Button>
