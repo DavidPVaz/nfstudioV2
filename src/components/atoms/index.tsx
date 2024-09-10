@@ -5,3 +5,5 @@ export * from '@/components/atoms/command';
 export * from '@/components/atoms/dialog';
 export * from '@/components/atoms/skeleton';
 export * from '@/components/atoms/accordion';
+export * from '@/components/atoms/input';
+export * from '@/components/atoms/label';

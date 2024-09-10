@@ -6,7 +6,7 @@ const dispatchStorageEvent = (key: string, newValue: string | null) => {
     window.dispatchEvent(new StorageEvent('storage', { key, newValue }));
 };
 
-const setLocalStorageItem = (key: string, value: object | null) => {
+const setLocalStorageItem = <T>(key: string, value: T | null) => {
     const stringifiedValue = JSON.stringify(value);
     window.localStorage.setItem(key, stringifiedValue);
     dispatchStorageEvent(key, stringifiedValue);
@@ -25,8 +25,8 @@ type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefine
 
 export function useLocalStorage<T>(
     key: string,
-    initialValue?: T | null
-): [T | null | undefined, (value: SetStateArgs<T>) => void] {
+    initialValue: T
+): [T, (value: SetStateArgs<T>) => void] {
     const subscribe = useCallback((callback: () => void) => {
         window.addEventListener('storage', callback);
         return () => window.removeEventListener('storage', callback);
@@ -50,8 +50,8 @@ export function useLocalStorage<T>(
     );
 
     useEffect(() => {
-        if (getLocalStorageItem(key) === null && typeof initialValue !== 'undefined') {
-            setLocalStorageItem(key, initialValue);
+        if (getLocalStorageItem(key) === null && initialValue !== undefined) {
+            setLocalStorageItem<T>(key, initialValue);
         }
     }, [key, initialValue]);
 
