@@ -15,7 +15,7 @@ type NFT = {
 
 export const StudioClientContent = () => {
     const { id } = useStudioContext();
-    const [collection, setCollection] = useLocalStorage<NFT[]>(id, []);
+    const [collection] = useLocalStorage<NFT[]>(id, []);
 
     const Component = useMemo(
         () => () =>

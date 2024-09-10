@@ -8,18 +8,9 @@ export const isFromVercel = (request: NextRequest) =>
     request.headers.get('x-vercel-deployment-url') === process.env.VERCEL_URL;
 
 export const isFromBrowser = (request: NextRequest) => {
-    const { browser, engine, os, device } = userAgent(request);
+    const { browser } = userAgent(request);
 
-    return (
-        !!browser.name &&
-        !!browser.version &&
-        !!engine.name &&
-        !!engine.version &&
-        !!os.name &&
-        !!os.version &&
-        !!device.vendor &&
-        !!device.model
-    );
+    return !!browser.name && !!browser.version;
 };
 
 export const isAdmin = (request: NextRequest) => {

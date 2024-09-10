@@ -15,6 +15,14 @@
     "rules": {
         "@typescript-eslint/consistent-type-definitions": "off",
         "@typescript-eslint/unbound-method": "off",
-        "react/display-name": "off"
+        "react/display-name": "off",
+        "@typescript-eslint/no-misused-promises": [
+            2,
+            {
+                "checksVoidReturn": {
+                    "attributes": false
+                }
+            }
+        ]
     }
 }
