@@ -13,7 +13,7 @@ export const Studio = ({
     const name = _id.replace('_', ' ');
 
     return (
-        <div className="relative flex min-w-full animate-show flex-col items-center justify-start gap-y-5 opacity-0 md:gap-y-8">
+        <div className="relative flex min-w-full flex-col items-center justify-start gap-y-5 duration-300 animate-in fade-in-0 md:gap-y-8">
             <section className="relative mt-2 flex w-full flex-row flex-wrap justify-between gap-1 xs:items-center 2xs:justify-start 2xs:gap-3 sm:w-4/5">
                 <h2 className="text-start text-2xl leading-none text-foreground sm:text-3xl">
                     {name}
@@ -21,7 +21,7 @@ export const Studio = ({
                 <div className="relative flex flex-row">
                     <Button variant="ghost" size="icon" asChild>
                         <a href={marketplace} rel="noopener noreferrer" target={'_blank'}>
-                            <MarketplaceIcon className="h-[1.3rem] w-[1.3rem] fill-current sm:h-[1.4rem] sm:w-[1.4rem]" />
+                            <MarketplaceIcon className="h-[1.3rem] w-[1.3rem] fill-current sm:h-[1.6rem] sm:w-[1.6rem]" />
                             <span className="sr-only">{`Buy ${name} NFTs`}</span>
                         </a>
                     </Button>
@@ -40,7 +40,7 @@ export const Studio = ({
                     {website && (
                         <Button variant="ghost" size="icon" asChild>
                             <a href={website} rel="noopener noreferrer" target={'_blank'}>
-                                <WebsiteIcon className="h-[1.4rem] w-[1.4rem] fill-current sm:h-[1.6rem] sm:w-[1.6rem]" />
+                                <WebsiteIcon className="h-[1.3rem] w-[1.3rem] fill-current sm:h-[1.6rem] sm:w-[1.6rem]" />
                                 <span className="sr-only">{`Go to ${name} website`}</span>
                             </a>
                         </Button>

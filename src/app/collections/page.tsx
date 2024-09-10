@@ -16,7 +16,7 @@ const CollectionsPage = async () => {
     });
 
     return (
-        <div className="relative flex w-full flex-col items-start justify-start gap-y-12 md:gap-y-20">
+        <div className="relative flex w-full flex-col items-start justify-start gap-y-12 duration-300 animate-in fade-in-0 md:gap-y-20">
             <section className="relative flex w-full flex-col 2xs:w-fit">
                 <PageTitle title="PICK A COLLECTION" className="2xs:text-start" />
                 <SearchCollections collections={collections} />

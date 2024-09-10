@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const FaqPage = () => (
-    <div className="relative flex w-full flex-col items-center justify-start gap-y-4 md:gap-y-8">
+    <div className="relative flex w-full flex-col items-center justify-start gap-y-4 duration-300 animate-in fade-in-0 md:gap-y-8">
         <section className="relative flex w-full flex-col">
             <PageTitle title="FREQUENTLY ASKED QUESTIONS" />
         </section>

@@ -11,7 +11,7 @@ import { queryCollectionsData } from '@/server/service/mongo';
 const { MOBILE } = GALLERY_IMAGES;
 
 const HomePage = () => (
-    <div className="relative flex w-full flex-col items-center justify-start gap-y-24 md:gap-y-36">
+    <div className="relative flex w-full flex-col items-center justify-start gap-y-24 duration-300 animate-in fade-in-0 md:gap-y-36">
         <TopSection />
         <IntroSection />
         <CollectionsSection />

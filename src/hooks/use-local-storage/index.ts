@@ -18,7 +18,7 @@ const removeLocalStorageItem = (key: string) => {
 };
 
 const getLocalStorageItem = (key: string) => {
-    return window.localStorage.getItem(key) ?? 'null';
+    return window.localStorage.getItem(key);
 };
 
 type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefined);
@@ -39,18 +39,12 @@ export function useLocalStorage<T>(
 
     const setState = useCallback(
         (value: SetStateArgs<T>) => {
-            try {
-                const nextState =
-                    value instanceof Function && store ? value(JSON.parse(store) as T) : value;
+            const nextState =
+                value instanceof Function && store ? value(JSON.parse(store) as T) : value;
 
-                if (nextState === undefined || nextState === null) {
-                    removeLocalStorageItem(key);
-                } else {
-                    setLocalStorageItem(key, nextState);
-                }
-            } catch (e) {
-                console.warn(e);
-            }
+            nextState === undefined || nextState === null
+                ? removeLocalStorageItem(key)
+                : setLocalStorageItem(key, nextState);
         },
         [key, store]
     );

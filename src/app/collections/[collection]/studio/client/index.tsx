@@ -3,6 +3,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
+import { Skeleton } from '@/components/atoms/skeleton';
+import { LoadNfts } from '@/app/collections/[collection]/studio/client/load-nfts';
+import { NftsBoard } from '@/app/collections/[collection]/studio/client/nfts-board';
 
 type NFT = {
     id: number;
@@ -20,10 +23,12 @@ export const StudioClientContent = () => {
 
     const Component = useMemo(
         () => () =>
-            collection === null ? null : Array.isArray(collection) && collection.length === 0 ? (
-                <>empty collection</>
+            !collection ? (
+                <Skeleton className="min-h-full w-full" />
+            ) : collection?.length === 0 ? (
+                <LoadNfts />
             ) : (
-                <>{JSON.stringify(collection)}</>
+                <NftsBoard />
             ),
         [collection]
     );
