@@ -2,9 +2,8 @@
 
 import { useSyncExternalStore, useCallback, useEffect } from 'react';
 
-const dispatchStorageEvent = (key: string, newValue: string | null) => {
+const dispatchStorageEvent = (key: string, newValue: string | null) =>
     window.dispatchEvent(new StorageEvent('storage', { key, newValue }));
-};
 
 const setLocalStorageItem = <T>(key: string, value: T | null) => {
     const stringifiedValue = JSON.stringify(value);
@@ -17,9 +16,7 @@ const removeLocalStorageItem = (key: string) => {
     dispatchStorageEvent(key, null);
 };
 
-const getLocalStorageItem = (key: string) => {
-    return window.localStorage.getItem(key);
-};
+const getLocalStorageItem = (key: string) => window.localStorage.getItem(key);
 
 type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefined);
 

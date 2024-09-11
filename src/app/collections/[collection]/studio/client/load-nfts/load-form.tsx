@@ -12,6 +12,7 @@ import {
     FormLabel,
     FormMessage
 } from '@/components/atoms/form';
+import type { LoadIncompleteNFTs } from '@/app/collections/[collection]/studio/client';
 
 const LoadFormSchema = v.object({
     ids: v.pipe(
@@ -27,11 +28,11 @@ const LoadFormSchema = v.object({
             /^([0-9]{1,5})(,[0-9]{1,5}){0,19}$/,
             'You can only provide a maximum of 20 NFT IDs.'
         ),
-        v.transform(ids => ids.split(',').map(Number))
+        v.transform(ids => ids.split(',').map((id: string) => ({ id: Number(id) })))
     )
 });
 
-export const LoadForm = ({ onSubmit }: { onSubmit: ({ ids }: { ids: number[] }) => void }) => {
+export const LoadForm = ({ onSubmit }: { onSubmit: LoadIncompleteNFTs }) => {
     const form = useForm<
         v.InferInput<typeof LoadFormSchema>,
         unknown,
