@@ -18,7 +18,7 @@ const removeLocalStorageItem = (key: string) => {
 
 const getLocalStorageItem = (key: string) => window.localStorage.getItem(key);
 
-type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefined);
+export type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefined);
 
 export function useLocalStorage<T>(
     key: string,
