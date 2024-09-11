@@ -1,5 +1,5 @@
 import { describe, expect, vi, afterEach, it } from 'vitest';
-import { queryCollectionsData } from '@/server/service/mongo';
+import { queryCollectionsData, queryMetadata } from '@/server/service/mongo';
 
 const { mongoApiRequestMock } = vi.hoisted(() => ({
     mongoApiRequestMock: vi.fn()
@@ -104,5 +104,31 @@ describe('server/service/mongo/index', () => {
 
         // cleanup
         vi.unstubAllEnvs();
+    });
+
+    it('should query a collection metadata', async () => {
+        // setup
+        const collection = 'Name';
+        const ids = [1, 2, 3];
+        const expectedOptions = {
+            action: 'find',
+            data: {
+                database: 'metadata',
+                collection: 'name',
+                filter: {
+                    _id: {
+                        $in: ids
+                    }
+                }
+            }
+        };
+        mongoApiRequestMock.mockImplementationOnce(() => Promise.resolve({ documents }));
+
+        // exercise
+        const metadata = await queryMetadata({ collection, ids });
+
+        // verify
+        expect(metadata).toEqual(documents);
+        expect(mongoApiRequestMock).toHaveBeenNthCalledWith(1, expectedOptions);
     });
 });

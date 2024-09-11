@@ -6,7 +6,8 @@ import {
     type MongoFilter,
     type MongoProjection,
     type MongoLimit,
-    type CollectionConfiguration
+    type CollectionConfiguration,
+    type CollectionMetadata
 } from '@/server/service/mongo/types';
 import { mongoApiRequest } from '@/server/service/mongo/core';
 
@@ -19,7 +20,7 @@ type CollectionsDataProps = {
 /**
  * Performs a query to mongodb NFStudio database to fetch available collections data.
  *
- * @param {CollectionsDataProps} options - options to query collection
+ * @param {CollectionsDataProps} options
  * @param {CollectionsDataProps['filter']} [options.filter] - filters to apply to the query
  * @param {CollectionsDataProps['projection']} [options.projection] - projection info to add/remove from request
  * @param {CollectionsDataProps['limit']} [options.limit] - max number of entries to query
@@ -49,4 +50,35 @@ export const queryCollectionsData = async ({
     });
 
     return collections;
+};
+
+type MetadataProps = {
+    collection: string;
+    ids: number[];
+};
+
+/**
+ * Performs a query to mongodb NFStudio database to fetch a set of nfts metadata from a specific collection.
+ *
+ * @param {MetadataProps} options
+ * @param {MetadataProps['collection']} options.collection - name of the collection to query
+ * @param {MetadataProps['ids']} options.ids - id(s) to fetch from `collection`
+ *
+ * @throws {Error | MongoDataApiRequestError} if request failed
+ */
+export const queryMetadata = async ({ collection, ids }: MetadataProps) => {
+    const { documents: metadata } = await mongoApiRequest<CollectionMetadata>({
+        action: ACTIONS.FIND,
+        data: {
+            database: DATABASES.METADATA,
+            collection: collection.toLowerCase(),
+            filter: {
+                _id: {
+                    $in: ids
+                }
+            }
+        }
+    });
+
+    return metadata;
 };
