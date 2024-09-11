@@ -9,9 +9,9 @@ export const NftsBoard = () => {
     const { collection } = useStudioContext();
 
     return (
-        <div className="relative flex">
+        <div className="relative flex w-full">
             <div className="container relative overflow-y-auto">{JSON.stringify(collection)}</div>
-            <div className="absolute bottom-0">Toolbar</div>
+            <div className="absolute bottom-0 w-full">Toolbar</div>
         </div>
     );
 };
