@@ -63,8 +63,9 @@ export const loadMetadata = async ({ collection, ids, unsupportedTraits }: LoadM
                   .filter(
                       ({ traits }) =>
                           !Object.entries(traits).find(([trait, value]) =>
-                              // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-                              unsupportedTraits[trait]?.includes(value)
+                              (unsupportedTraits as Record<string, string[]>)[trait]?.includes(
+                                  value
+                              )
                           )
                   )
                   .map(({ id, src }) => ({ id, src, selected: false }))
