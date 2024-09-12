@@ -37,11 +37,11 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
 
     const metadata = (await response.json()) as CollectionMetadata[];
 
-    if (!metadata || metadata.length === 0) {
+    if (metadata.length === 0) {
         throw Error('No Collection.');
     }
 
-    return Promise.all(
+    const withoutUnsupportedTraits = (await Promise.all(
         metadata.map(async ({ _id: id, uri }) => {
             const { image: src, attributes } = await fetch(uri).then(
                 response => response.json() as Promise<TokenMetadata>
@@ -52,22 +52,26 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
                 {}
             );
 
-            return { id, src, traits };
+            // this collection does not have any unsupported traits or
+            // it did not find any unsupported trait in this nft
+            if (
+                Object.keys(unsupportedTraits).length === 0 ||
+                !Object.entries(traits).find(([trait, value]) =>
+                    unsupportedTraits[trait]?.includes(value)
+                )
+            ) {
+                return { id, src, selected: false };
+            }
+
+            return null;
         })
     ).then(collection =>
-        // this collection has no unsupported traits, get all loaded nfts
-        Object.keys(unsupportedTraits).length === 0
-            ? collection.map(({ id, src }) => ({ id, src, selected: false }))
-            : // get only the loaded nfts without unsupported traits
-              collection
-                  .filter(
-                      ({ traits }) =>
-                          !Object.entries(traits).find(([trait, value]) =>
-                              (unsupportedTraits as Record<string, string[]>)[trait]?.includes(
-                                  value
-                              )
-                          )
-                  )
-                  .map(({ id, src }) => ({ id, src, selected: false }))
-    ) as Promise<NFT[]>;
+        collection.filter(nft => !!nft).sort(({ id: first }, { id: second }) => first - second)
+    )) as NFT[];
+
+    if (withoutUnsupportedTraits.length === 0) {
+        throw Error('No Collection.');
+    }
+
+    return withoutUnsupportedTraits;
 };
