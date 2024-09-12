@@ -5,16 +5,15 @@ import { Card, CardTitle, Image } from '@/components/atoms';
 import { cn } from '@/lib/utils';
 import { ChainIcon } from './chain-icon';
 
-type CardProps = {
+type CollectionCardProps = {
     className?: string;
     imgSrc: string;
-    imgAlt: string;
     href: string;
     chain: Chain;
     name: string;
 };
 
-export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }: CardProps) => (
+export const CollectionCard = ({ className, imgSrc, href, chain, name }: CollectionCardProps) => (
     <Card
         className={cn(
             'min-w-full transition-all will-change-transform hover:-translate-y-1 hover:shadow-border-extension',
@@ -25,7 +24,7 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
         <Link
             className="relative flex flex-col gap-y-2 p-2 sm:p-4"
             href={href}
-            aria-label={`Go to ${`${name.replace('_', ' ')} collection page`}`}
+            aria-label={`Go to ${name.replace('_', ' ')} collection page`}
         >
             <div className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-primary-brand bg-white sm:left-6 sm:top-6 sm:h-10 sm:w-10">
                 <ChainIcon chain={chain} className={'fill-primary-brand'} />
@@ -35,11 +34,56 @@ export const CollectionCard = ({ className, imgSrc, href, imgAlt, chain, name }:
                 height={263.73}
                 className="rounded-lg"
                 src={imgSrc}
-                alt={imgAlt}
+                alt={`${name} card`}
                 optimizedWidth={300}
                 quality={20}
             />
             <CardTitle className="text-center">{`${name.replace('_', ' ')}`}</CardTitle>
         </Link>
+    </Card>
+);
+
+type NFTCardProps = {
+    className?: string;
+    imgSrc: string;
+    id: number;
+    selected: boolean;
+    onClick: (id: number) => void;
+    sMaxAge?: number;
+    maxAge?: number;
+};
+
+export const NFTCard = ({
+    className,
+    imgSrc,
+    id,
+    selected,
+    onClick,
+    maxAge,
+    sMaxAge
+}: NFTCardProps) => (
+    <Card
+        className={cn(
+            `min-w-full transition-all ${selected ? 'shadow-border-extension2 bg-accent' : ''} hover:shadow-border-extension`,
+            className
+        )}
+        aria-label={`Select nft with id ${id}`}
+        onClick={() => onClick(id)}
+        asChild
+    >
+        <button className="relative flex cursor-pointer flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
+            <Image
+                width={263.73}
+                height={263.73}
+                className="rounded-lg"
+                src={imgSrc}
+                alt={`NFT #${id}`}
+                optimizedWidth={800}
+                quality={50}
+                maxAge={maxAge}
+                sMaxAge={sMaxAge}
+            />
+            <CardTitle className="text-center">{`#${id}`}</CardTitle>
+        </button>
     </Card>
 );

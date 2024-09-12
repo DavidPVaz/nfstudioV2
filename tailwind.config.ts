@@ -98,7 +98,8 @@ const config = {
                 show: 'show 0.3s 0.2s linear forwards'
             },
             boxShadow: {
-                'border-extension': '0 0 0 1px hsl(var(--border))'
+                'border-extension': '0 0 0 1px hsl(var(--border))',
+                'border-extension2': '0 0 0 2px hsl(var(--border))'
             },
             rotate: {
                 '20': '20deg'

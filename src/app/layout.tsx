@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             <Footer />
                         </div>
                         <ScrollUp />
-                        <ReactQueryDevtools initialIsOpen={false} />
+                        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
                     </ReactQueryClientProvider>
                 </ColorThemeProvider>
             </body>

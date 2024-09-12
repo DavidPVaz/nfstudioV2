@@ -27,7 +27,7 @@ export type CollectionConfiguration = {
     createdAt?: string;
     active?: boolean;
     config: {
-        cacheStrategy: { sMaxAge: number; maxAge: number } | object;
+        cacheStrategy: { sMaxAge?: number; maxAge?: number } | object;
         logos: string[];
         unsupportedTraits: Record<string, string[]> | object;
         paylinkId: string;
