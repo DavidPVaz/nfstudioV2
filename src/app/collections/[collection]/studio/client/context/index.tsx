@@ -13,16 +13,16 @@ export type IncompleteNFT = {
     id: number;
 };
 export type LoadIncompleteNFTs = ({ ids }: { ids: IncompleteNFT[] }) => void;
-export type Collection = NFT[] | IncompleteNFT[];
+export type SelectedNFTs = NFT[] | IncompleteNFT[];
 
 type StudioContext = {
-    id: CollectionConfiguration['_id'];
+    selectedCollection: CollectionConfiguration['_id'];
     cacheStrategy: CollectionConfiguration['config']['cacheStrategy'];
     logos: CollectionConfiguration['config']['logos'];
     unsupportedTraits: CollectionConfiguration['config']['unsupportedTraits'];
     paylinkId: CollectionConfiguration['config']['paylinkId'];
-    collection: Collection;
-    setCollection: (value: SetStateArgs<Collection>) => void;
+    nfts: SelectedNFTs;
+    setNfts: (value: SetStateArgs<SelectedNFTs>) => void;
 };
 
 const Context = createContext({});
@@ -39,10 +39,10 @@ export const StudioContextProvider = ({
         config: { logos, unsupportedTraits, cacheStrategy, paylinkId }
     } = collectionConfiguration;
 
-    const [collection, setCollection] = useLocalStorage<Collection>(_id, []);
+    const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(_id, []);
 
     const context = {
-        id: _id,
+        selectedCollection: _id,
         cacheStrategy,
         logos,
         unsupportedTraits,
@@ -50,8 +50,8 @@ export const StudioContextProvider = ({
             process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
                 ? paylinkId
                 : process.env.NEXT_PUBLIC_PAYLINK_ID,
-        collection,
-        setCollection
+        nfts,
+        setNfts
     };
 
     return <Context.Provider value={context}>{children}</Context.Provider>;

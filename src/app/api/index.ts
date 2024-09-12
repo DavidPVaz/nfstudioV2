@@ -2,9 +2,9 @@ import { buildQueryString } from '@/lib/utils';
 import type { CollectionMetadata, CollectionConfiguration } from '@/server/service/mongo/types';
 import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/studio/client/context';
 
-type LoadMetadataProps = {
+export type LoadMetadataProps = {
     collection: string;
-    ids: IncompleteNFT[];
+    nfts: IncompleteNFT[];
     unsupportedTraits: CollectionConfiguration['config']['unsupportedTraits'];
 };
 
@@ -20,15 +20,15 @@ type TokenMetadata = {
  *
  * @param {LoadMetadataProps} options
  * @param {LoadMetadataProps['collection']} options.collection - the collection to query for metadata
- * @param {LoadMetadataProps['ids']} options.ids - the ID(s) of NFT to query for metadata
+ * @param {LoadMetadataProps['nfts']} options.nfts - the ID(s) of NFT to query for metadata
  * @param {LoadMetadataProps['unsupportedTraits']} options.unsupportedTraits - unsupported traits for this collection
  *
  * @throws {Error} if request failed
  */
-export const loadMetadata = async ({ collection, ids, unsupportedTraits }: LoadMetadataProps) => {
+export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: LoadMetadataProps) => {
     const response =
         (await fetch(
-            `api/metadata?${buildQueryString({ collection, ids: [...new Set(ids.map(({ id }) => id))] })}`
+            `/api/metadata?${buildQueryString({ collection, ids: [...new Set(nfts.map(({ id }) => id))] })}`
         )) ?? {};
 
     if (response.status !== 200) {

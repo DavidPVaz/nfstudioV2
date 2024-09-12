@@ -9,13 +9,13 @@ import {
 } from '@/app/collections/[collection]/studio/client/context';
 
 export const LoadNfts = () => {
-    const { setCollection } = useStudioContext();
+    const { setNfts } = useStudioContext();
 
     const onSubmit = useCallback(
         ({ ids }: { ids: IncompleteNFT[] }) => {
-            setCollection(ids);
+            setNfts(ids);
         },
-        [setCollection]
+        [setNfts]
     );
 
     return (

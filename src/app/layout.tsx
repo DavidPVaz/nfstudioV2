@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Chakra_Petch as FontSans } from 'next/font/google';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { cn } from '@/lib/utils';
 import { ColorThemeProvider } from '@/app/color-theme-provider';
+import { ReactQueryClientProvider } from '@/app/query-client-provider';
 import { Header, Footer } from '@/components/organisms';
 import { ScrollUp } from '@/components/molecules';
 import '@/styles/globals.css';
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
     }
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body
@@ -43,14 +45,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 )}
             >
                 <ColorThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-                    <div className="relative flex min-h-screen flex-col">
-                        <Header />
-                        <main className="flex-1 pb-10 sm:pb-20">
-                            <div className="container relative">{children}</div>
-                        </main>
-                        <Footer />
-                    </div>
-                    <ScrollUp />
+                    <ReactQueryClientProvider>
+                        <div className="relative flex min-h-screen flex-col">
+                            <Header />
+                            <main className="flex-1 pb-10 sm:pb-20">
+                                <div className="container relative">{children}</div>
+                            </main>
+                            <Footer />
+                        </div>
+                        <ScrollUp />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                    </ReactQueryClientProvider>
                 </ColorThemeProvider>
             </body>
         </html>

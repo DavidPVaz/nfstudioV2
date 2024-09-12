@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { NFStudioRequestError, customFetch } from '@/server/service/shared/http';
 import { type Action, MongoPostData, ACTIONS } from './types';
 export class MongoDataApiRequestError extends NFStudioRequestError {

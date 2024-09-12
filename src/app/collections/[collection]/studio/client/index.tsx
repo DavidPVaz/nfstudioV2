@@ -7,18 +7,18 @@ import { LoadNfts } from '@/app/collections/[collection]/studio/client/load-nfts
 import { NftsBoard } from '@/app/collections/[collection]/studio/client/nfts-board';
 
 export const StudioClientContent = () => {
-    const { collection } = useStudioContext();
+    const { nfts } = useStudioContext();
 
     const Component = useMemo(
         () => () =>
-            collection === undefined || collection === null ? (
+            nfts === undefined || nfts === null ? (
                 <Skeleton className="min-h-full w-full" />
-            ) : collection.length === 0 ? (
+            ) : nfts.length === 0 ? (
                 <LoadNfts />
             ) : (
                 <NftsBoard />
             ),
-        [collection]
+        [nfts]
     );
 
     return <Component />;
