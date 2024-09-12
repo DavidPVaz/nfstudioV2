@@ -53,37 +53,32 @@ type NFTCardProps = {
     maxAge?: number;
 };
 
-export const NFTCard = ({
-    className,
-    imgSrc,
-    id,
-    selected,
-    onClick,
-    maxAge,
-    sMaxAge
-}: NFTCardProps) => (
-    <Card
-        className={cn(
-            `min-w-full transition-all ${selected ? 'shadow-border-extension2 bg-accent' : ''} hover:shadow-border-extension`,
-            className
-        )}
-        aria-label={`Select nft with id ${id}`}
-        onClick={() => onClick(id)}
-        asChild
-    >
-        <button className="relative flex cursor-pointer flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
-            <Image
-                width={263.73}
-                height={263.73}
-                className="rounded-lg"
-                src={imgSrc}
-                alt={`NFT #${id}`}
-                optimizedWidth={800}
-                quality={50}
-                maxAge={maxAge}
-                sMaxAge={sMaxAge}
-            />
-            <CardTitle className="text-center">{`#${id}`}</CardTitle>
-        </button>
-    </Card>
+export const NFTCard = React.memo(
+    ({ className, imgSrc, id, selected, onClick, maxAge, sMaxAge }: NFTCardProps) => (
+        <Card
+            className={cn(
+                `min-w-full transition-all ${selected ? 'shadow-border-extension2 bg-accent' : ''} hover:shadow-border-extension2`,
+                className
+            )}
+            aria-label={`Select nft with id ${id}`}
+            onClick={() => onClick(id)}
+            asChild
+        >
+            <button className="relative flex cursor-pointer flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
+                <Image
+                    width={263.73}
+                    height={263.73}
+                    className="rounded-lg"
+                    src={imgSrc}
+                    alt={`NFT #${id}`}
+                    optimizedWidth={800}
+                    quality={50}
+                    maxAge={maxAge}
+                    sMaxAge={sMaxAge}
+                />
+                <CardTitle className="text-center">{`#${id}`}</CardTitle>
+            </button>
+        </Card>
+    ),
+    (previousProps, nextProps) => previousProps.selected === nextProps.selected
 );

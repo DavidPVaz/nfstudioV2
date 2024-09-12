@@ -2,18 +2,6 @@
 
 import React, { createContext, useContext } from 'react';
 import type { CollectionConfiguration } from '@/server/service/mongo/types';
-import { useLocalStorage, type SetStateArgs } from '@/hooks/use-local-storage';
-
-export type NFT = {
-    id: number;
-    src: string;
-    selected: boolean;
-};
-export type IncompleteNFT = {
-    id: number;
-};
-export type LoadIncompleteNFTs = ({ ids }: { ids: IncompleteNFT[] }) => void;
-export type SelectedNFTs = NFT[] | IncompleteNFT[];
 
 type StudioContext = {
     selectedCollection: CollectionConfiguration['_id'];
@@ -21,8 +9,6 @@ type StudioContext = {
     logos: CollectionConfiguration['config']['logos'];
     unsupportedTraits: CollectionConfiguration['config']['unsupportedTraits'];
     paylinkId: CollectionConfiguration['config']['paylinkId'];
-    nfts: SelectedNFTs;
-    setNfts: (value: SetStateArgs<SelectedNFTs>) => void;
 };
 
 const Context = createContext({});
@@ -39,8 +25,6 @@ export const StudioContextProvider = ({
         config: { logos, unsupportedTraits, cacheStrategy, paylinkId }
     } = collectionConfiguration;
 
-    const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(selectedCollection, []);
-
     const context = {
         selectedCollection,
         cacheStrategy,
@@ -49,9 +33,7 @@ export const StudioContextProvider = ({
         paylinkId:
             process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
                 ? paylinkId
-                : process.env.NEXT_PUBLIC_PAYLINK_ID,
-        nfts,
-        setNfts
+                : process.env.NEXT_PUBLIC_PAYLINK_ID
     };
 
     return <Context.Provider value={context}>{children}</Context.Provider>;

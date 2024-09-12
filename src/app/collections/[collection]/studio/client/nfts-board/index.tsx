@@ -1,12 +1,14 @@
-import React, { useEffect, useCallback } from 'react';
-import {
-    useStudioContext,
-    type SelectedNFTs,
-    type NFT
-} from '@/app/collections/[collection]/studio/client/context';
+import React, { useEffect } from 'react';
+import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
+import type {
+    SelectedNFTs,
+    NFT,
+    IncompleteNFT
+} from '@/app/collections/[collection]/studio/client';
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useApiRead } from '@/hooks/use-api';
 import { NFTCard } from '@/components/molecules/card';
+import { LoadNfts } from '../load-nfts';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
     Array.isArray(nfts) &&
@@ -20,12 +22,20 @@ const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
 const itDidFetchCompleteNFTsInfo = (fetchedNFTsInfo: NFT[] | undefined) =>
     fetchedNFTsInfo && areCompleteNFTs(fetchedNFTsInfo);
 
-export const NftsBoard = () => {
-    const { selectedCollection, nfts, unsupportedTraits, setNfts, cacheStrategy } =
-        useStudioContext();
+export const NftsBoard = ({
+    nfts,
+    onCompleteLoad,
+    onIncompleteLoad,
+    onNFTSelect
+}: {
+    nfts: SelectedNFTs;
+    onCompleteLoad: (nfts: NFT[]) => void;
+    onIncompleteLoad: ({ ids }: { ids: IncompleteNFT[] }) => void;
+    onNFTSelect: (selectedId: number) => void;
+}) => {
+    const { selectedCollection, unsupportedTraits, cacheStrategy } = useStudioContext();
 
     const { response, isLoading } = useApiRead<LoadMetadataProps, NFT[]>({
-        resources: [`${selectedCollection}-board`],
         method: loadMetadata,
         args: { collection: selectedCollection, nfts, unsupportedTraits },
         enabled: !areCompleteNFTs(nfts),
@@ -41,52 +51,35 @@ export const NftsBoard = () => {
         }
 
         if (itDidFetchCompleteNFTsInfo(response)) {
-            setNfts(response);
+            onCompleteLoad(response!);
         }
-    }, [nfts, response, setNfts]);
+    }, [nfts, response, onCompleteLoad]);
 
-    const onNFTCardClick = useCallback(
-        (selectedId: number) => {
-            const updatedNfts = (nfts as NFT[]).map(nft => {
-                const { id, selected, ...rest } = nft;
-
-                if (id === selectedId || (id !== selectedId && selected)) {
-                    return {
-                        id,
-                        selected: !selected,
-                        ...rest
-                    };
-                }
-
-                return nft;
-            });
-
-            setNfts(updatedNfts);
-        },
-        [nfts, setNfts]
-    );
+    if (nfts.length === 0) {
+        return <LoadNfts onIncompleteLoad={onIncompleteLoad} />;
+    }
 
     return (
-        <div className="relative flex w-full">
-            <div className="container relative overflow-y-auto">
-                {isLoading ? (
-                    'Loading...'
+        <div className="relative flex w-full flex-col">
+            <div className="container relative flex-1 overflow-y-auto">
+                {isLoading || !areCompleteNFTs(nfts) ? (
+                    'Loading... optimistically render skeleton with same number as user requested'
                 ) : (
-                    <div className="grid w-full grid-cols-1 gap-3 pt-8 xs:grid-cols-2 2xs:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                        {(nfts as NFT[]).map(({ id, src, selected }) => (
+                    <div className="grid w-full grid-cols-1 gap-3 pb-8 pt-8 xs:grid-cols-2 2xs:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                        {nfts.map(({ id, src, selected }) => (
                             <NFTCard
-                                key={`${selectedCollection}-${id}`}
+                                key={id}
                                 imgSrc={src}
                                 id={id}
                                 selected={selected}
-                                onClick={onNFTCardClick}
+                                onClick={onNFTSelect}
                                 {...cacheStrategy}
                             />
                         ))}
                     </div>
                 )}
             </div>
-            <div className="absolute bottom-0 w-full">Toolbar</div>
+            <div className="sticky bottom-0 h-20 w-full rounded-b-lg border-t">Toolbar</div>
         </div>
     );
 };

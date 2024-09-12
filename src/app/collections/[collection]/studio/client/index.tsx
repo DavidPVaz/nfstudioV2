@@ -1,25 +1,57 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
-import { Skeleton } from '@/components/atoms/skeleton';
-import { LoadNfts } from '@/app/collections/[collection]/studio/client/load-nfts';
 import { NftsBoard } from '@/app/collections/[collection]/studio/client/nfts-board';
+import { useLocalStorage } from '@/hooks/use-local-storage';
+
+export type NFT = {
+    id: number;
+    src: string;
+    selected: boolean;
+};
+export type IncompleteNFT = {
+    id: number;
+};
+export type LoadIncompleteNFTs = ({ ids }: { ids: IncompleteNFT[] }) => void;
+export type SelectedNFTs = NFT[] | IncompleteNFT[];
 
 export const StudioClientContent = () => {
-    const { nfts } = useStudioContext();
+    const { selectedCollection } = useStudioContext();
+    const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(selectedCollection, []);
 
-    const Component = useMemo(
-        () => () =>
-            nfts === undefined || nfts === null ? (
-                <Skeleton className="min-h-full w-full" />
-            ) : nfts.length === 0 ? (
-                <LoadNfts />
-            ) : (
-                <NftsBoard />
-            ),
-        [nfts]
+    const onCompleteNFTsLoad = useCallback((nfts: NFT[]) => setNfts(nfts), [setNfts]);
+    const onIncompleteNFTsLoad = useCallback(
+        ({ ids }: { ids: IncompleteNFT[] }) => setNfts(ids),
+        [setNfts]
+    );
+    const onNFTSelect = useCallback(
+        (selectedId: number) => {
+            setNfts(nfts =>
+                (nfts as NFT[]).map(nft => {
+                    const { id, selected, ...rest } = nft;
+
+                    if (id === selectedId || (id !== selectedId && selected)) {
+                        return {
+                            id,
+                            selected: !selected,
+                            ...rest
+                        };
+                    }
+
+                    return nft;
+                })
+            );
+        },
+        [setNfts]
     );
 
-    return <Component />;
+    return (
+        <NftsBoard
+            nfts={nfts}
+            onCompleteLoad={onCompleteNFTsLoad}
+            onIncompleteLoad={onIncompleteNFTsLoad}
+            onNFTSelect={onNFTSelect}
+        />
+    );
 };

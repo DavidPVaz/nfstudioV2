@@ -18,6 +18,7 @@ export const isAdmin = (request: NextRequest) => {
     const secretSearchParam = request.nextUrl.searchParams.get('secret');
 
     return (
+        process.env.VERCEL_ENV === 'development' ||
         authHeader === `Bearer ${process.env.SECRET}` ||
         authHeader === `Bearer ${process.env.CRON_SECRET}` ||
         secretSearchParam === process.env.SECRET

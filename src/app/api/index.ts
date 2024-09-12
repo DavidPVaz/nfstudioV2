@@ -1,6 +1,6 @@
 import { buildQueryString } from '@/lib/utils';
 import type { CollectionMetadata, CollectionConfiguration } from '@/server/service/mongo/types';
-import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/studio/client/context';
+import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/studio/client';
 
 export type LoadMetadataProps = {
     collection: string;
