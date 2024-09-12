@@ -19,7 +19,7 @@ type ApiReadProps<T extends Record<string, unknown>, R> = {
  * @param {ApiReadProps['onError']} [options.onError] - error handling function
  */
 export const useApiRead = <T extends Record<string, unknown>, R>({
-    resources = [],
+    resources,
     method,
     args,
     enabled = true,

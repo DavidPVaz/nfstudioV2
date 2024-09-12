@@ -35,14 +35,14 @@ export const StudioContextProvider = ({
     children: React.ReactNode;
 }) => {
     const {
-        _id,
+        _id: selectedCollection,
         config: { logos, unsupportedTraits, cacheStrategy, paylinkId }
     } = collectionConfiguration;
 
-    const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(_id, []);
+    const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(selectedCollection, []);
 
     const context = {
-        selectedCollection: _id,
+        selectedCollection,
         cacheStrategy,
         logos,
         unsupportedTraits,

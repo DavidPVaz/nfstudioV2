@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
+/**
+ * Allows to always know the current window Y scroll position and scroll to the top of the window.
+ */
 export const useWindowScroll = () => {
     const [yPosition, setYPosition] = useState<number | null>(null);
 

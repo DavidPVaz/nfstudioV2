@@ -20,6 +20,12 @@ const getLocalStorageItem = (key: string) => window.localStorage.getItem(key);
 
 export type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefined);
 
+/**
+ * Allows to sync react state with storage api.
+ *
+ * @param {string} key - identifier of the state to manage in store
+ * @param {T} initialValue - the initial state value
+ */
 export function useLocalStorage<T>(
     key: string,
     initialValue: T
@@ -37,11 +43,11 @@ export function useLocalStorage<T>(
     const setState = useCallback(
         (value: SetStateArgs<T>) => {
             const nextState =
-                value instanceof Function && store ? value(JSON.parse(store) as T) : value;
+                value instanceof Function && store ? value(JSON.parse(store) as T) : (value as T);
 
             nextState === undefined || nextState === null
                 ? removeLocalStorageItem(key)
-                : setLocalStorageItem(key, nextState);
+                : setLocalStorageItem<T>(key, nextState);
         },
         [key, store]
     );
