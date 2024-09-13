@@ -3,14 +3,17 @@ import { CircleHelp, RefreshCcw } from 'lucide-react';
 import type {
     SelectedNFTs,
     NFT,
-    IncompleteNFT
+    IncompleteNFT,
+    LoadCompleteNFTs,
+    LoadIncompleteNFTs
 } from '@/app/collections/[collection]/studio/client';
 import { NFTCard } from '@/components/molecules/card';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
-import { LoadNfts } from '@/app/collections/[collection]/studio/client/load-nfts';
+import { LoadNfts, LoadNftsInDialog } from '@/app/collections/[collection]/studio/client/load-nfts';
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useApiRead } from '@/hooks/use-api';
+import { useDialog } from '@/hooks/use-dialog';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
@@ -29,8 +32,8 @@ export const NftsBoard = ({
     onNFTSelect
 }: {
     nfts: SelectedNFTs;
-    onCompleteLoad: (nfts: NFT[]) => void;
-    onIncompleteLoad: ({ ids }: { ids: IncompleteNFT[] }) => void;
+    onCompleteLoad: LoadCompleteNFTs;
+    onIncompleteLoad: LoadIncompleteNFTs;
     onNFTSelect: (selectedId: number) => void;
 }) => {
     const { selectedCollection, unsupportedTraits, cacheStrategy } = useStudioContext();
@@ -90,41 +93,62 @@ export const NftsBoard = ({
                     </div>
                 )}
             </div>
-            <Toolbar canCreate={nftsLoadIsComplete} />
+            <Toolbar onRefresh={onIncompleteLoad} canCreate={nftsLoadIsComplete} />
         </div>
     );
 };
 
-const Toolbar = ({ canCreate }: { canCreate: boolean }) => (
-    <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
-        <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
-            <Tooltip content="Refresh NFT selection">
+const Toolbar = ({
+    canCreate,
+    onRefresh
+}: {
+    canCreate: boolean;
+    onRefresh: LoadIncompleteNFTs;
+}) => {
+    const refreshDialog = useDialog();
+
+    return (
+        <>
+            <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
+                <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
+                    <Tooltip content="Refresh NFT selection">
+                        <Button variant="ghost" size="icon2x" onClick={refreshDialog.open}>
+                            <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
+                            <span className="sr-only">Refresh NFT selection</span>
+                        </Button>
+                    </Tooltip>
+
+                    <Tooltip content="Get help">
+                        <Button
+                            variant="ghost"
+                            size="icon2x"
+                            onClick={() => console.log('Clicking help')}
+                        >
+                            <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
+                            <span className="sr-only">Get help</span>
+                        </Button>
+                    </Tooltip>
+                </div>
+
                 <Button
-                    variant="ghost"
-                    size="icon2x"
-                    onClick={() => console.log('Clicking refresh')}
+                    disabled={!canCreate}
+                    size="lg"
+                    onClick={() => {
+                        //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
+                    }}
                 >
-                    <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                    <span className="sr-only">Refresh NFT selection</span>
+                    CREATE
                 </Button>
-            </Tooltip>
+            </div>
 
-            <Tooltip content="Get help">
-                <Button variant="ghost" size="icon2x" onClick={() => console.log('Clicking help')}>
-                    <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                    <span className="sr-only">Get help</span>
-                </Button>
-            </Tooltip>
-        </div>
-
-        <Button
-            disabled={!canCreate}
-            size="lg"
-            onClick={() => {
-                //hasSelectedOneNft ? work : show notification if user tries to create without having any selected nft
-            }}
-        >
-            CREATE
-        </Button>
-    </div>
-);
+            <LoadNftsInDialog
+                open={refreshDialog.isOpen}
+                onOpenChange={refreshDialog.toggle}
+                onRefresh={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
+                    refreshDialog.close();
+                    onRefresh(incompleteNFTs);
+                }}
+            />
+        </>
+    );
+};

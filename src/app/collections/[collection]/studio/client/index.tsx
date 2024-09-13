@@ -14,7 +14,8 @@ export type NFT = {
 export type IncompleteNFT = {
     id: number;
 };
-export type LoadIncompleteNFTs = ({ ids }: { ids: IncompleteNFT[] }) => void;
+export type LoadIncompleteNFTs = (incompleteNFTs: { ids: IncompleteNFT[] }) => void;
+export type LoadCompleteNFTs = (nfts: NFT[]) => void;
 export type SelectedNFTs = NFT[] | IncompleteNFT[];
 
 export const StudioClientContent = () => {

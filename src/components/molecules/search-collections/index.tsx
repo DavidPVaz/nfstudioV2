@@ -7,9 +7,10 @@ import { Button } from '@/components/atoms';
 import { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Chain } from '@/shared/enums';
 import { SearchDialog } from './dialog';
+import { useDialog } from '@/hooks/use-dialog';
 
 export const SearchCollections = ({ collections }: { collections: CollectionConfiguration[] }) => {
-    const [open, setOpen] = useState<boolean>(false);
+    const { isOpen, open, close, toggle } = useDialog();
     const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
     const { push } = useRouter();
 
@@ -17,20 +18,20 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
         const down = (e: KeyboardEvent) => {
             if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();
-                setOpen(open => !open);
+                open();
             }
         };
         document.addEventListener('keydown', down);
 
         return () => document.removeEventListener('keydown', down);
-    }, []);
+    }, [open]);
 
     const onSelect = useCallback(
         (collection: string) => {
-            setOpen(false);
+            close();
             push(`collections/${collection.replace(' ', '_')}`);
         },
-        [push]
+        [push, close]
     );
 
     const onChain = useCallback((chain: Chain | null) => {
@@ -48,16 +49,17 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
         [collections, selectedChain]
     );
 
+    // TODO: mac ? ⌘ : Ctrl ; Make drawer below 2xs
     return (
         <>
-            <Button aria-label="Search collections" onClick={() => setOpen(true)} variant="outline">
+            <Button aria-label="Search collections" onClick={open} variant="outline">
                 <span className="hidden md:inline-flex">Search collections...</span>
                 <span className="inline-flex md:hidden">Search...</span>
                 <CommandShortcut>⌘K</CommandShortcut>
             </Button>
             <SearchDialog
-                open={open}
-                onOpenChange={setOpen}
+                open={isOpen}
+                onOpenChange={toggle}
                 onSelect={onSelect}
                 onChain={onChain}
                 data={data}
