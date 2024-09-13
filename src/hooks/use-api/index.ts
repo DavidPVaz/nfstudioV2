@@ -25,7 +25,7 @@ export const useApiRead = <T extends Record<string, unknown>, R>({
     enabled = true,
     onError
 }: ApiReadProps<T, R>) => {
-    const { isLoading, data, error } = useQuery<R>({
+    const { isLoading, data, error, fetchStatus } = useQuery<R>({
         queryKey: [...resources, ...Object.values(args)],
         queryFn: () => method(args),
         enabled,
@@ -39,6 +39,7 @@ export const useApiRead = <T extends Record<string, unknown>, R>({
     return {
         response: data,
         isLoading,
-        error
+        error,
+        noNetwork: fetchStatus === 'paused'
     };
 };
