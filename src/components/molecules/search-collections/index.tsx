@@ -49,7 +49,7 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
         [collections, selectedChain]
     );
 
-    // TODO: mac ? ⌘ : Ctrl ; Make drawer below 2xs
+    // TODO: mac ? ⌘ : Ctrl ; Make drawer below 2xs?
     return (
         <>
             <Button aria-label="Search collections" onClick={open} variant="outline">
