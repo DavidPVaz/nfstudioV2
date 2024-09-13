@@ -60,3 +60,16 @@ export function useLocalStorage<T>(
 
     return [store ? (JSON.parse(store) as T) : initialValue, setState];
 }
+
+/**
+ * Allows to select a piece of state from the synced storage.
+ *
+ * @param key - identifier of the store
+ * @param selector - the selector function
+ * @param defaultValue - the default value if store does not exist
+ */
+export const useSelector = <T, R>(key: string, selector: (store: T) => R, defaultValue = null) => {
+    const store = getLocalStorageItem(key);
+
+    return store === null ? defaultValue : selector(JSON.parse(store) as T);
+};

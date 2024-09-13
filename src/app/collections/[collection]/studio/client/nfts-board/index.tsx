@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { CircleHelp, RefreshCcw } from 'lucide-react';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
 import type {
@@ -9,21 +9,18 @@ import type {
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useApiRead } from '@/hooks/use-api';
 import { NFTCard } from '@/components/molecules/card';
-import { LoadNfts } from '../load-nfts';
+import { LoadNfts } from '@/app/collections/[collection]/studio/client/load-nfts';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
-    Array.isArray(nfts) &&
     nfts.every(
         nft =>
             typeof (nft as NFT).id === 'number' &&
             typeof (nft as NFT).selected === 'boolean' &&
             typeof (nft as NFT).src === 'string'
     );
-
-const itDidFetchCompleteNFTsInfo = (fetchedNFTsInfo: NFT[] | undefined) =>
-    fetchedNFTsInfo && areCompleteNFTs(fetchedNFTsInfo);
+const hasLoadedNFTs = (nfts: SelectedNFTs) => nfts.length > 0;
 
 export const NftsBoard = ({
     nfts,
@@ -38,10 +35,13 @@ export const NftsBoard = ({
 }) => {
     const { selectedCollection, unsupportedTraits, cacheStrategy } = useStudioContext();
 
-    const { response, isLoading } = useApiRead<LoadMetadataProps, NFT[]>({
+    const userHasLoadedNFTs = useMemo(() => hasLoadedNFTs(nfts), [nfts]);
+    const nftsLoadIsComplete = useMemo(() => areCompleteNFTs(nfts), [nfts]);
+
+    const { response } = useApiRead<LoadMetadataProps, NFT[]>({
         method: loadMetadata,
         args: { collection: selectedCollection, nfts, unsupportedTraits },
-        enabled: !areCompleteNFTs(nfts),
+        enabled: userHasLoadedNFTs && !nftsLoadIsComplete,
         onError: error => console.log(error)
     });
 
@@ -49,27 +49,27 @@ export const NftsBoard = ({
     // TODO: in case of error, rollback to showing previous complete nft data if any
 
     useEffect(() => {
-        if (areCompleteNFTs(nfts)) {
+        if (nftsLoadIsComplete) {
             return;
         }
 
-        if (itDidFetchCompleteNFTsInfo(response)) {
-            onCompleteLoad(response!);
+        if (response) {
+            onCompleteLoad(response);
         }
-    }, [nfts, response, onCompleteLoad]);
+    }, [nftsLoadIsComplete, response, onCompleteLoad]);
 
-    if (nfts.length === 0) {
+    if (!userHasLoadedNFTs) {
         return <LoadNfts onIncompleteLoad={onIncompleteLoad} />;
     }
 
     return (
         <div className="relative flex w-full flex-col">
             <div className="container relative flex-1 overflow-y-auto">
-                {isLoading || !areCompleteNFTs(nfts) ? (
+                {!nftsLoadIsComplete ? (
                     'Loading... optimistically render skeleton with same number as user requested'
                 ) : (
                     <div className="grid w-full grid-cols-1 gap-3 pb-8 pt-8 xs:grid-cols-2 2xs:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                        {nfts.map(({ id, src, selected }) => (
+                        {(nfts as NFT[]).map(({ id, src, selected }) => (
                             <NFTCard
                                 key={id}
                                 imgSrc={src}
@@ -107,7 +107,13 @@ export const NftsBoard = ({
                     </Tooltip>
                 </div>
 
-                <Button disabled={isLoading || !areCompleteNFTs(nfts)} size="lg">
+                <Button
+                    disabled={!nftsLoadIsComplete}
+                    size="lg"
+                    onClick={() => {
+                        //hasSelectedOneNft ? work : show notification if user tries to create without having any selected nft
+                    }}
+                >
                     CREATE
                 </Button>
             </div>
