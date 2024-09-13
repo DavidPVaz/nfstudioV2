@@ -11,6 +11,7 @@ import { useApiRead } from '@/hooks/use-api';
 import { NFTCard } from '@/components/molecules/card';
 import { LoadNfts } from '../load-nfts';
 import { Button } from '@/components/atoms/button';
+import { Tooltip } from '@/components/atoms/tooltip';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
     Array.isArray(nfts) &&
@@ -83,15 +84,29 @@ export const NftsBoard = ({
             </div>
             <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
                 <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
-                    <Button variant="ghost" size="icon2x">
-                        <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                        <span className="sr-only">Refresh selected NFTs</span>
-                    </Button>
-                    <Button variant="ghost" size="icon2x">
-                        <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                        <span className="sr-only">Consult help section</span>
-                    </Button>
+                    <Tooltip content="Refresh NFT selection">
+                        <Button
+                            variant="ghost"
+                            size="icon2x"
+                            onClick={() => console.log('Clicking refresh')}
+                        >
+                            <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
+                            <span className="sr-only">Refresh NFT selection</span>
+                        </Button>
+                    </Tooltip>
+
+                    <Tooltip content="Get help">
+                        <Button
+                            variant="ghost"
+                            size="icon2x"
+                            onClick={() => console.log('Clicking help')}
+                        >
+                            <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
+                            <span className="sr-only">Get help</span>
+                        </Button>
+                    </Tooltip>
                 </div>
+
                 <Button disabled={isLoading || !areCompleteNFTs(nfts)} size="lg">
                     CREATE
                 </Button>

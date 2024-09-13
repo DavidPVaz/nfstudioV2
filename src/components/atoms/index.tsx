@@ -8,3 +8,4 @@ export * from '@/components/atoms/accordion';
 export * from '@/components/atoms/input';
 export * from '@/components/atoms/label';
 export * from '@/components/atoms/form';
+export * from '@/components/atoms/tooltip';
