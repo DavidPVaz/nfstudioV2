@@ -5,7 +5,8 @@ import { type DialogProps } from '@radix-ui/react-dialog';
 import { Command as CommandPrimitive } from 'cmdk';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent } from '@/components/atoms/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/atoms/dialog';
+import { Hide } from '@/components/atoms/visually-hidden';
 
 const Command = React.forwardRef<
     React.ElementRef<typeof CommandPrimitive>,
@@ -22,11 +23,15 @@ const Command = React.forwardRef<
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-type CommandDialogProps = DialogProps;
+type CommandDialogProps = DialogProps & { title: string };
 
-const CommandDialog = ({ children, ...props }: CommandDialogProps) => (
+const CommandDialog = ({ children, title, ...props }: CommandDialogProps) => (
     <Dialog {...props}>
         <DialogContent className="overflow-hidden border-0 p-0 shadow-lg 2xs:rounded-lg 2xs:border">
+            <Hide>
+                <DialogTitle>{title}</DialogTitle>
+                <DialogDescription>{title}</DialogDescription>
+            </Hide>
             <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
                 {children}
             </Command>

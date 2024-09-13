@@ -28,7 +28,12 @@ export const SearchDialog = ({
     data,
     selectedChain
 }: SearchDialogProps) => (
-    <CommandDialog open={open} onOpenChange={onOpenChange}>
+    <CommandDialog
+        open={open}
+        onOpenChange={onOpenChange}
+        title={'Search available NFT collections'}
+        modal
+    >
         {open && (
             <DialogContent
                 onSelect={onSelect}

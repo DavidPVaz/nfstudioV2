@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Dialog, DialogContent } from '@/components/atoms/dialog';
+import { Hide } from '@/components/atoms/visually-hidden';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/atoms/dialog';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/atoms/card';
 import { LoadForm } from '@/app/collections/[collection]/studio/client/load-nfts/load-form';
 import { type LoadIncompleteNFTs } from '@/app/collections/[collection]/studio/client';
@@ -26,8 +27,12 @@ export const LoadNftsInDialog = ({
     onOpenChange: () => void;
     onRefresh: LoadIncompleteNFTs;
 }) => (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} modal>
         <DialogContent className="max-w-lg border-0 2xs:border">
+            <Hide>
+                <DialogTitle>{'Refresh NFT selection'}</DialogTitle>
+                <DialogDescription>{'Refresh NFT selection'}</DialogDescription>
+            </Hide>
             <Card className="relative h-full w-full border-0 bg-background">
                 <CardContent onSubmit={onRefresh} />
             </Card>
