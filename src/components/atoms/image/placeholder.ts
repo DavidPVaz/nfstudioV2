@@ -19,3 +19,5 @@ const toBase64 = (string: string) =>
 
 export const generatePlaceholder = (): PlaceholderValue =>
     `data:image/svg+xml;base64,${toBase64(shimmer())}`;
+
+// TODO: replace this with the skeleton pulse animation?

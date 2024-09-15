@@ -7,7 +7,7 @@ import type {
     LoadCompleteNFTs,
     LoadIncompleteNFTs
 } from '@/app/collections/[collection]/studio/client';
-import { NFTCard } from '@/components/molecules/card';
+import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
 import { LoadNfts, LoadNftsInDialog } from '@/app/collections/[collection]/studio/client/load-nfts';
@@ -76,79 +76,81 @@ export const NftsBoard = ({
     return (
         <div className="relative flex w-full flex-col">
             <div className="container relative flex-1 overflow-y-auto">
-                {!nftsLoadIsComplete ? (
-                    'Loading... optimistically render skeleton with same number as user requested'
-                ) : (
-                    <div className="grid w-full grid-cols-1 gap-3 pb-8 pt-8 xs:grid-cols-2 2xs:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                        {(nfts as NFT[]).map(({ id, src, selected }) => (
-                            <NFTCard
-                                key={id}
-                                imgSrc={src}
-                                id={id}
-                                selected={selected}
-                                onClick={onNFTSelect}
-                                {...cacheStrategy}
-                            />
-                        ))}
-                    </div>
-                )}
+                <div className="grid w-full grid-cols-1 gap-3 pb-8 pt-8 xs:grid-cols-2 2xs:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                    {!nftsLoadIsComplete
+                        ? Array.from({ length: nfts.length }, (_, i) => <NFTCardSkeleton key={i} />)
+                        : (nfts as NFT[]).map(({ id, src, selected }) => (
+                              <NFTCard
+                                  key={id}
+                                  imgSrc={src}
+                                  id={id}
+                                  selected={selected}
+                                  onClick={onNFTSelect}
+                                  {...cacheStrategy}
+                              />
+                          ))}
+                </div>
             </div>
             <Toolbar onRefresh={onIncompleteLoad} canCreate={nftsLoadIsComplete} />
         </div>
     );
 };
 
-const Toolbar = ({
-    canCreate,
-    onRefresh
-}: {
-    canCreate: boolean;
-    onRefresh: LoadIncompleteNFTs;
-}) => {
-    const refreshDialog = useDialog();
+const Toolbar = React.memo(
+    ({ canCreate, onRefresh }: { canCreate: boolean; onRefresh: LoadIncompleteNFTs }) => {
+        const refreshDialog = useDialog();
 
-    return (
-        <>
-            <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
-                <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
-                    <Tooltip content="Refresh NFT selection">
-                        <Button variant="ghost" size="icon2x" onClick={refreshDialog.open}>
-                            <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                            <span className="sr-only">Refresh NFT selection</span>
-                        </Button>
-                    </Tooltip>
+        return (
+            <>
+                <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
+                    <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
+                        <Tooltip content="Refresh NFT selection">
+                            <Button
+                                variant="ghost"
+                                size="icon2x"
+                                onClick={refreshDialog.open}
+                                disabled={refreshDialog.isOpen}
+                            >
+                                <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
+                                <span className="sr-only">Refresh NFT selection</span>
+                            </Button>
+                        </Tooltip>
 
-                    <Tooltip content="Get help">
-                        <Button
-                            variant="ghost"
-                            size="icon2x"
-                            onClick={() => console.log('Clicking help')}
-                        >
-                            <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                            <span className="sr-only">Get help</span>
-                        </Button>
-                    </Tooltip>
+                        <Tooltip content="Get help">
+                            <Button
+                                variant="ghost"
+                                size="icon2x"
+                                onClick={() => console.log('Clicking help')}
+                            >
+                                <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
+                                <span className="sr-only">Get help</span>
+                            </Button>
+                        </Tooltip>
+                    </div>
+
+                    <Button
+                        disabled={!canCreate}
+                        size="lg"
+                        onClick={() => {
+                            //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
+                        }}
+                    >
+                        CREATE
+                    </Button>
                 </div>
 
-                <Button
-                    disabled={!canCreate}
-                    size="lg"
-                    onClick={() => {
-                        //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
+                <LoadNftsInDialog
+                    open={refreshDialog.isOpen}
+                    onOpenChange={refreshDialog.toggle}
+                    onRefresh={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
+                        refreshDialog.close();
+                        onRefresh(incompleteNFTs);
                     }}
-                >
-                    CREATE
-                </Button>
-            </div>
-
-            <LoadNftsInDialog
-                open={refreshDialog.isOpen}
-                onOpenChange={refreshDialog.toggle}
-                onRefresh={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
-                    refreshDialog.close();
-                    onRefresh(incompleteNFTs);
-                }}
-            />
-        </>
-    );
-};
+                />
+            </>
+        );
+    },
+    (previousProps, nextProps) =>
+        previousProps.canCreate === nextProps.canCreate ||
+        previousProps.onRefresh === nextProps.onRefresh
+);

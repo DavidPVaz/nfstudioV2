@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { type Chain } from '@/shared/enums';
 import { Card, CardTitle, Image } from '@/components/atoms';
+import { Skeleton } from '@/components/atoms/skeleton';
 import { cn } from '@/lib/utils';
 import { ChainIcon } from './chain-icon';
 
@@ -57,7 +58,7 @@ export const NFTCard = React.memo(
     ({ className, imgSrc, id, selected, onClick, maxAge, sMaxAge }: NFTCardProps) => (
         <Card
             className={cn(
-                `min-w-full transition-all ${selected ? 'shadow-border-extension2 bg-accent' : ''} hover:shadow-border-extension2`,
+                `min-w-full transition-all ${selected ? 'bg-accent shadow-border-extension2' : ''} hover:shadow-border-extension2`,
                 className
             )}
             aria-label={`Select nft with id ${id}`}
@@ -81,4 +82,13 @@ export const NFTCard = React.memo(
         </Card>
     ),
     (previousProps, nextProps) => previousProps.selected === nextProps.selected
+);
+
+export const NFTCardSkeleton = () => (
+    <Card className="min-w-full border" asChild>
+        <div className="relative flex cursor-wait flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
+            <Skeleton className="relative h-0 w-full pb-[100%]" />
+            <Skeleton className="flex h-[16px] w-[48px] sm:h-[28px] sm:w-[54px]" />
+        </div>
+    </Card>
 );

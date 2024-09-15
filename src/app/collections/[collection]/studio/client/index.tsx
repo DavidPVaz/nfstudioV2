@@ -56,7 +56,7 @@ export const StudioClientContent = () => {
     );
 
     return !client ? (
-        <Skeleton className="min-h-full w-full bg-muted" />
+        <Skeleton className="min-h-full w-full" />
     ) : (
         <NftsBoard
             nfts={nfts}
