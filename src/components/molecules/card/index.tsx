@@ -58,7 +58,7 @@ export const NFTCard = React.memo(
     ({ className, imgSrc, id, selected, onClick, maxAge, sMaxAge }: NFTCardProps) => (
         <Card
             className={cn(
-                `min-w-full transition-all ${selected ? 'bg-accent shadow-border-extension2' : ''} hover:shadow-border-extension2`,
+                `min-w-full transition-all ${selected ? 'bg-accent shadow-border-extension2' : ''} animate-in fade-in-70 hover:shadow-border-extension2`,
                 className
             )}
             aria-label={`Select nft with id ${id}`}
@@ -85,8 +85,8 @@ export const NFTCard = React.memo(
 );
 
 export const NFTCardSkeleton = () => (
-    <Card className="min-w-full border" asChild>
-        <div className="relative flex cursor-wait flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
+    <Card className="min-w-full border animate-out fade-out-90" asChild>
+        <div className="relative flex cursor-default flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
             <Skeleton className="relative h-0 w-full pb-[100%]" />
             <Skeleton className="flex h-[16px] w-[48px] sm:h-[28px] sm:w-[54px]" />
         </div>
