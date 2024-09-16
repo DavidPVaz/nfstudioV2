@@ -11,6 +11,7 @@ import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
 import { LoadNfts, LoadNftsInDialog } from '@/app/collections/[collection]/studio/client/load-nfts';
+import { HelpInDialog } from '@/app/collections/[collection]/studio/client/help';
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useApiRead } from '@/hooks/use-api';
 import { useDialog } from '@/hooks/use-dialog';
@@ -99,6 +100,7 @@ export const NftsBoard = ({
 const Toolbar = React.memo(
     ({ canCreate, onRefresh }: { canCreate: boolean; onRefresh: LoadIncompleteNFTs }) => {
         const refreshDialog = useDialog();
+        const helpDialog = useDialog();
 
         return (
             <>
@@ -120,7 +122,8 @@ const Toolbar = React.memo(
                             <Button
                                 variant="ghost"
                                 size="icon2x"
-                                onClick={() => console.log('Clicking help')}
+                                onClick={helpDialog.open}
+                                disabled={helpDialog.isOpen}
                             >
                                 <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
                                 <span className="sr-only">Get help</span>
@@ -147,6 +150,8 @@ const Toolbar = React.memo(
                         onRefresh(incompleteNFTs);
                     }}
                 />
+
+                <HelpInDialog open={helpDialog.isOpen} onOpenChange={helpDialog.toggle} />
             </>
         );
     },
