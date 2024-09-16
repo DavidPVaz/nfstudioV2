@@ -15,8 +15,9 @@ import { HelpInDialog } from '@/app/collections/[collection]/studio/client/help'
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useApiRead } from '@/hooks/use-api';
 import { useDialog } from '@/hooks/use-dialog';
-import { notify } from '@/hooks/use-notification';
+import { useNotification } from '@/hooks/use-notification';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
+import { NOTIFICATION_TEMPLATE } from '@/shared/enums';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
     nfts.every(
@@ -102,6 +103,7 @@ const Toolbar = React.memo(
     ({ canCreate, onRefresh }: { canCreate: boolean; onRefresh: LoadIncompleteNFTs }) => {
         const refreshDialog = useDialog();
         const helpDialog = useDialog();
+        const { notify } = useNotification();
 
         return (
             <>
@@ -137,8 +139,7 @@ const Toolbar = React.memo(
                         size="lg"
                         onClick={() => {
                             notify({
-                                title: 'Test',
-                                description: 'test description'
+                                template: NOTIFICATION_TEMPLATE.FETCH_ERROR
                             });
                             //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
                         }}

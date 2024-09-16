@@ -101,3 +101,16 @@ export const GALLERY_IMAGES = {
         '12XSKpq47vXxX4jcPO0ks2/ab05eac0250c75e3849c19501ae9de91/mobile16.webp'
     ]
 } as const;
+
+export const NOTIFICATION_TEMPLATE = {
+    PAYMENT_CANCEL: 'payment_cancel',
+    PAYMENT_ERROR: 'payment_error',
+    PAYMENT_SUCCESS: 'payment-success',
+    CREATION_ERROR: 'creation-error',
+    CREATION_SUCCESS: 'creation-success',
+    DOWNLOAD_FIRST: 'download-first',
+    FETCH_ERROR: 'fetch-error',
+    INVALID_NFT_IDS: 'invalid-nft-ids'
+} as const;
+export type NotificationTemplate =
+    (typeof NOTIFICATION_TEMPLATE)[keyof typeof NOTIFICATION_TEMPLATE];
