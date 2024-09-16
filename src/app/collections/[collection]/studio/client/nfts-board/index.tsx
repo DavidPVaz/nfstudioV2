@@ -15,6 +15,7 @@ import { HelpInDialog } from '@/app/collections/[collection]/studio/client/help'
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useApiRead } from '@/hooks/use-api';
 import { useDialog } from '@/hooks/use-dialog';
+import { notify } from '@/hooks/use-notification';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
@@ -135,6 +136,10 @@ const Toolbar = React.memo(
                         disabled={!canCreate}
                         size="lg"
                         onClick={() => {
+                            notify({
+                                title: 'Test',
+                                description: 'test description'
+                            });
                             //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
                         }}
                     >

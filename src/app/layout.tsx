@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { cn } from '@/lib/utils';
 import { ColorThemeProvider } from '@/app/color-theme-provider';
 import { ReactQueryClientProvider } from '@/app/query-client-provider';
+import { NotificationProvider } from '@/app/notification-provider';
 import { Header, Footer } from '@/components/organisms';
 import { ScrollUp } from '@/components/molecules';
 import '@/styles/globals.css';
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
                     </ReactQueryClientProvider>
                 </ColorThemeProvider>
+                <NotificationProvider />
             </body>
         </html>
     );
