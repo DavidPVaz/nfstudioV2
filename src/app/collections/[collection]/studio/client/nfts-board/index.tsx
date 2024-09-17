@@ -42,12 +42,17 @@ export const NftsBoard = ({
     const { selectedCollection, unsupportedTraits, cacheStrategy } = useStudioContext();
 
     const userHasLoadedNFTs = useMemo(() => hasLoadedNFTs(nfts), [nfts]);
-    const nftsLoadIsComplete = useMemo(() => areCompleteNFTs(nfts), [nfts]);
+    const nftsLoadIsComplete = useMemo(
+        () => areCompleteNFTs(nfts) && userHasLoadedNFTs,
+        [nfts, userHasLoadedNFTs]
+    );
 
     const { response, noNetwork } = useApiRead<LoadMetadataProps, NFT[]>({
         method: loadMetadata,
         args: { collection: selectedCollection, nfts, unsupportedTraits },
         enabled: userHasLoadedNFTs && !nftsLoadIsComplete,
+        keepPreviousData: true,
+        initialData: [],
         onError: error => console.log(error)
     });
 
