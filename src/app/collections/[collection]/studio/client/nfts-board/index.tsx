@@ -110,6 +110,7 @@ const Toolbar = React.memo(
     ({ canCreate, onRefresh }: { canCreate: boolean; onRefresh: LoadIncompleteNFTs }) => {
         const refreshDialog = useDialog();
         const helpDialog = useDialog();
+        const { notify } = useNotification();
 
         return (
             <>
@@ -144,6 +145,12 @@ const Toolbar = React.memo(
                         disabled={!canCreate}
                         size="lg"
                         onClick={() => {
+                            notify({
+                                title: 'Whoops!',
+                                description: 'Message',
+                                duration: 6000,
+                                variant: 'success'
+                            });
                             //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
                         }}
                     >

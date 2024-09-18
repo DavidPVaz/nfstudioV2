@@ -16,7 +16,7 @@ export const NotificationProvider = () => {
     return (
         <Provider>
             {notifications.map(({ id, title, description, action, ...props }) => (
-                <Notification key={id} {...props}>
+                <Notification key={id} onClick={() => props.onOpenChange?.(!props.open)} {...props}>
                     <div className="grid gap-1">
                         {title && <NotificationTitle>{title}</NotificationTitle>}
                         {description && (
