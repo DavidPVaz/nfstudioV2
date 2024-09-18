@@ -22,12 +22,12 @@ type ContentfulApiGetRequest = {
 /**
  * Performs a GET request to Contentful delivery api.
  *
- * @param {ContentfulApiGetRequest} data - contentful api request data
- * @param {ContentfulApiGetRequest['queryArgs']} data.queryArgs - the request query arguments
- * @param {ContentfulApiGetRequest['queryArgs']} data.queryArgs.include - wether to include links between entries and assets
- * @param {ContentfulApiGetRequest['queryArgs']} data.queryArgs.content_type - the type of content
- * @param {ContentfulApiGetRequest['queryArgs']} data.queryArgs.fields - key value pairs of search parameters to append on query in format `fields.<property>=value`
- * @param {ContentfulApiGetRequest['retries']} [data.retries] - number of times to retry this request
+ * @param data - contentful api request data
+ * @param data.queryArgs - the request query arguments
+ * @param data.queryArgs.include - wether to include links between entries and assets
+ * @param data.queryArgs.content_type - the type of content
+ * @param data.queryArgs.fields - key value pairs of search parameters to append on query in format `fields.<property>=value`
+ * @param [data.retries] - number of times to retry this request
  *
  * @throws {Error | ContentfulApiRequestError} if request failed
  */

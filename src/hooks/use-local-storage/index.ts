@@ -23,8 +23,8 @@ export type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | u
 /**
  * Allows to sync react state with storage api.
  *
- * @param {string} key - identifier of the state to manage in store
- * @param {T} initialValue - the initial state value
+ * @param key - identifier of the state to manage in store
+ * @param initialValue - the initial state value
  */
 export function useLocalStorage<T>(
     key: string,

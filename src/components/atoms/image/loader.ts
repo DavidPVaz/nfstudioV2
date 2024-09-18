@@ -9,12 +9,12 @@ type LoaderProps = ImageLoaderProps & {
 /**
  * Create a custom image loader to use in image optimization.
  *
- * @param {LoaderProps} data data to compose custom loader query
- * @param {LoaderProps['src']} data.src image source
- * @param {LoaderProps['width']} data.width intended image width
- * @param {LoaderProps['quality']} [data.quality] intended image quality
- * @param {LoaderProps['maxAge']} [data.maxAge] number of seconds of browser cache
- * @param {LoaderProps['sMaxAge']} [data.sMaxAge] number of seconds of server cache
+ * @param data data to compose custom loader query
+ * @param data.src image source
+ * @param data.width intended image width
+ * @param [data.quality] intended image quality
+ * @param [data.maxAge] number of seconds of browser cache
+ * @param [data.sMaxAge] number of seconds of server cache
  */
 export const getLoader =
     ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>

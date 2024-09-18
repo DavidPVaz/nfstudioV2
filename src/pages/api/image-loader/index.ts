@@ -22,8 +22,8 @@ const QueryParamsSchema = v.object({
 /**
  * API endpoint to perform image optimization.
  *
- * @param {NextApiRequest} request - Nextjs request
- * @param {NextApiResponse} response - Nextjs response
+ * @param request - Nextjs request
+ * @param response - Nextjs response
  */
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
     let query: v.InferOutput<typeof QueryParamsSchema>;

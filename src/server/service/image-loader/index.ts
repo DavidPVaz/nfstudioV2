@@ -17,10 +17,10 @@ const isCMSStaticAsset = (url: string) => !url.startsWith('https://');
 /**
  * Optimizes the image with CMS' own image optimization API to save computing resources.
  *
- * @param {ImageOptimizationProps} query - Nextjs request query search parameters
- * @param {ImageOptimizationProps['src']} query.src - image source
- * @param {ImageOptimizationProps['width']} query.width - image optimization width
- * @param {ImageOptimizationProps['quality']} query.quality - image optimization quality
+ * @param query - Nextjs request query search parameters
+ * @param query.src - image source
+ * @param query.width - image optimization width
+ * @param query.quality - image optimization quality
  */
 const optimizationWithCMSImageApi = async ({ src, width, quality }: ImageOptimizationProps) => {
     const imageData = await fetch(
@@ -33,10 +33,10 @@ const optimizationWithCMSImageApi = async ({ src, width, quality }: ImageOptimiz
 /**
  * Performs image optimization for browser usage.
  *
- * @param {ImageOptimizationProps} query - Nextjs request query search parameters
- * @param {ImageOptimizationProps['src']} query.src - image source
- * @param {ImageOptimizationProps['width']} [query.width] - image optimization width
- * @param {ImageOptimizationProps['quality']} [query.quality] - image optimization quality
+ * @param query - Nextjs request query search parameters
+ * @param query.src - image source
+ * @param [query.width] - image optimization width
+ * @param [query.quality] - image optimization quality
  */
 export const optimize = async ({ src, width = 1000, quality = 75 }: ImageOptimizationProps) => {
     const decoded = decodeURI(src);

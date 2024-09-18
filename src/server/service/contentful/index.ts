@@ -14,8 +14,8 @@ import {
 /**
  * Performs a query to NFStudio CMS to retrieve a document.
  *
- * @param {object} options - options to query document
- * @param {DocumentTitle} options.title - document title
+ * @param options - options to query document
+ * @param options.title - document title
  *
  * @throws {Error | ContentfulApiRequestError} if request failed
  */

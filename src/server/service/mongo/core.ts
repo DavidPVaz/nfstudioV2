@@ -28,10 +28,10 @@ const ACCESS_KEY = {
 /**
  * Performs a POST request to MongoDB data api.
  *
- * @param {MongoApiRequest} data - mongo api request data
- * @param {MongoApiRequest['action']} data.action - action type to perform in this request
- * @param {MongoApiRequest['data']} data.data - the request data
- * @param {MongoApiRequest['retries']} [data.retries] - number of times to retry this request
+ * @param data - mongo api request data
+ * @param data.action - action type to perform in this request
+ * @param data.data - the request data
+ * @param [data.retries] - number of times to retry this request
  *
  * @throws {Error | MongoDataApiRequestError} if request failed
  */

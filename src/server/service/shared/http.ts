@@ -24,10 +24,10 @@ const NON_RETRIABLE_CLIENT_ERROR_CODES = [400, 401, 403, 404, 409];
 /**
  * Performs a HTTP request.
  *
- * @param {HttpRequest} data - request data
- * @param {HttpRequest['retryDelay']} [data.retryDelay] - the number of delay to retry the request in ms - defaults to 1000
- * @param {HttpRequest['retries']} data.retries - the number of times to retry the request
- * @param {HttpRequest['options']} data.options - the request options
+ * @param data - request data
+ * @param [data.retryDelay] - the number of delay to retry the request in ms - defaults to 1000
+ * @param data.retries - the number of times to retry the request
+ * @param data.options - the request options
  *
  * @throws {Error | NFStudioRequestError} if request failed
  */

@@ -19,10 +19,10 @@ type TokenMetadata = {
 /**
  * Performs a http request to own API to query NFT metadata.
  *
- * @param {LoadMetadataProps} options
- * @param {LoadMetadataProps['collection']} options.collection - the collection to query for metadata
- * @param {LoadMetadataProps['nfts']} options.nfts - the ID(s) of NFT to query for metadata
- * @param {LoadMetadataProps['unsupportedTraits']} options.unsupportedTraits - unsupported traits for this collection
+ * @param options
+ * @param options.collection - the collection to query for metadata
+ * @param options.nfts - the ID(s) of NFT to query for metadata
+ * @param options.unsupportedTraits - unsupported traits for this collection
  *
  * @throws {Error} if request failed
  */

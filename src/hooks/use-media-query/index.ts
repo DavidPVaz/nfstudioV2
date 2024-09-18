@@ -5,7 +5,7 @@ import { useCallback, useSyncExternalStore } from 'react';
 /**
  * Allows to subscribe to changes in media-query.
  *
- * @param {string} mediaQuery - media query to subscribe to
+ * @param mediaQuery - media query to subscribe to
  */
 export const useMediaQuery = (mediaQuery: string) => {
     const subscribe = useCallback(

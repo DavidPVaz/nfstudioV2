@@ -19,7 +19,7 @@ type QueryStringProps = Record<
 /**
  * Create a query string suitable for use in an URL search params that iterates 1 level deep in case of an object as value
  *
- * @param {QueryStringProps} data key-value pairs of query string data
+ * @param data key-value pairs of query string data
  */
 export const buildQueryString = (data: QueryStringProps) => {
     const query = new URLSearchParams();
