@@ -6,9 +6,7 @@ type ApiReadProps<T extends Record<string, unknown>, R> = {
     args: T;
     resources?: string[];
     enabled?: boolean;
-    keepPreviousData?: boolean;
-    initialData?: R;
-    onError?: (error: Error) => void;
+    onError: (error: Error) => boolean;
 };
 
 /**
@@ -19,40 +17,61 @@ type ApiReadProps<T extends Record<string, unknown>, R> = {
  * @param {ApiReadProps['args']} options.args - the arguments to be passed to the method
  * @param {ApiReadProps['resources']} [options.resources] - the name of the API resources identifying the data being read
  * @param {ApiReadProps['enabled']} [options.enabled] - whether to automatically fetch data
- * @param {ApiReadProps['keepPreviousData']} [options.keepPreviousData] - wether to keep a copy of previously successfully fetched data
- * @param {ApiReadProps['initialData']} [options.initialData] - initial query data
- * @param {ApiReadProps['onError']} [options.onError] - error handling function
+ * @param {ApiReadProps['onError']} options.onError - error handling function
  */
 export const useApiRead = <T extends Record<string, unknown>, R>({
     method,
     args,
     resources = [],
     enabled = true,
-    keepPreviousData = false,
-    initialData,
     onError
 }: ApiReadProps<T, R>) => {
-    const dataRef = useRef<R | null | undefined>(initialData);
-
     const { isLoading, data, error, fetchStatus } = useQuery<R>({
         queryKey: [...resources, ...Object.values(args)],
         queryFn: () => method(args),
         enabled,
-        throwOnError: error => {
-            onError?.(error);
-
-            return false; // -> return the error as state
-        }
+        throwOnError: error => onError(error)
     });
 
-    if (keepPreviousData && data) {
-        dataRef.current = data;
-    }
-
     return {
-        response: keepPreviousData && error ? dataRef.current : data,
+        response: data,
         isLoading,
         error,
         noNetwork: fetchStatus === 'paused'
+    };
+};
+
+type FallbackApiReadProps<T extends Record<string, unknown>, R> = ApiReadProps<T, R> & {
+    initialFallback: R;
+};
+
+/**
+ * Manages the lifecycle of an API request to read data and maintains a fallback data reference.
+ * Useful when performing an optimistic fetch so we can rollback to fallback data on read error.
+ *
+ * @param {FallbackApiReadProps} options
+ * @param {FallbackApiReadProps['method']} options.method - the function responsible for sending the request
+ * @param {FallbackApiReadProps['args']} options.args - the arguments to be passed to the method
+ * @param {FallbackApiReadProps['resources']} [options.resources] - the name of the API resources identifying the data being read
+ * @param {FallbackApiReadProps['enabled']} [options.enabled] - whether to automatically fetch data
+ * @param {FallbackApiReadProps['onError']} options.onError - error handling function
+ * @param {FallbackApiReadProps['initialFallback']} options.initialFallback - initial fallback data in case of error on first read
+ */
+export const useFallbackApiRead = <T extends Record<string, unknown>, R>({
+    initialFallback,
+    ...apiReadProps
+}: FallbackApiReadProps<T, R>) => {
+    const fallback = useRef<R>(initialFallback);
+
+    const { response, isLoading, error, noNetwork } = useApiRead(apiReadProps);
+
+    if (response) {
+        fallback.current = response;
+    }
+
+    return {
+        response: error ? fallback.current : response,
+        isLoading,
+        noNetwork
     };
 };

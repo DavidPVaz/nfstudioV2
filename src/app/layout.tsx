@@ -9,7 +9,13 @@ import { Header, Footer } from '@/components/organisms';
 import { ScrollUp } from '@/components/molecules';
 import '@/styles/globals.css';
 
-const fontSans = FontSans({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-sans' });
+const fontSans = FontSans({
+    subsets: ['latin'],
+    weight: ['400', '700'],
+    variable: '--font-sans',
+    display: 'swap',
+    preload: true
+});
 
 const title = 'NFStudio | Effortlessly Showcase NFTs';
 const description =

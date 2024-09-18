@@ -13,7 +13,7 @@ import { Tooltip } from '@/components/atoms/tooltip';
 import { LoadNfts, LoadNftsInDialog } from '@/app/collections/[collection]/studio/client/load-nfts';
 import { HelpInDialog } from '@/app/collections/[collection]/studio/client/help';
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
-import { useApiRead } from '@/hooks/use-api';
+import { useFallbackApiRead } from '@/hooks/use-api';
 import { useDialog } from '@/hooks/use-dialog';
 import { useNotification } from '@/hooks/use-notification';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
@@ -43,21 +43,22 @@ export const NftsBoard = ({
 
     const userHasLoadedNFTs = useMemo(() => hasLoadedNFTs(nfts), [nfts]);
     const nftsLoadIsComplete = useMemo(
-        () => areCompleteNFTs(nfts) && userHasLoadedNFTs,
+        () => userHasLoadedNFTs && areCompleteNFTs(nfts),
         [nfts, userHasLoadedNFTs]
     );
 
-    const { response, noNetwork } = useApiRead<LoadMetadataProps, NFT[]>({
+    const { response, noNetwork } = useFallbackApiRead<LoadMetadataProps, NFT[]>({
         method: loadMetadata,
         args: { collection: selectedCollection, nfts, unsupportedTraits },
         enabled: userHasLoadedNFTs && !nftsLoadIsComplete,
-        keepPreviousData: true,
-        initialData: [],
-        onError: error => console.log(error)
+        initialFallback: [],
+        onError: error => {
+            console.log(error);
+            return false; // -> return the error as state
+        }
     });
 
     // TODO: deal with error by notifying user - toast
-    // TODO: in case of error, rollback to showing previous complete nft data if any
 
     useEffect(() => {
         if (nftsLoadIsComplete) {
