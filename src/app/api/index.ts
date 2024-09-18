@@ -1,6 +1,7 @@
 import { buildQueryString } from '@/lib/utils';
 import type { CollectionMetadata, CollectionConfiguration } from '@/server/service/mongo/types';
 import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/studio/client';
+import { FetchError, EmptyMetadataError, UnsupportedTraitsError } from '@/app/errors';
 
 export type LoadMetadataProps = {
     collection: string;
@@ -32,13 +33,13 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
         )) ?? {};
 
     if (response.status !== 200) {
-        throw Error('Fetch error.');
+        throw new FetchError();
     }
 
     const metadata = (await response.json()) as CollectionMetadata[];
 
     if (metadata.length === 0) {
-        throw Error('No Collection.');
+        throw new EmptyMetadataError();
     }
 
     const withoutUnsupportedTraits = (await Promise.all(
@@ -70,7 +71,7 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
     )) as NFT[];
 
     if (withoutUnsupportedTraits.length === 0) {
-        throw Error('No Collection.');
+        throw new UnsupportedTraitsError();
     }
 
     return withoutUnsupportedTraits;

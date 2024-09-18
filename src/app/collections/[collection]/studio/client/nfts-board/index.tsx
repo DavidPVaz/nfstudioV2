@@ -17,7 +17,6 @@ import { useFallbackApiRead } from '@/hooks/use-api';
 import { useDialog } from '@/hooks/use-dialog';
 import { useNotification } from '@/hooks/use-notification';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
-import { NOTIFICATION_TEMPLATE } from '@/shared/enums';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
     nfts.every(
@@ -40,6 +39,7 @@ export const NftsBoard = ({
     onNFTSelect: (selectedId: number) => void;
 }) => {
     const { selectedCollection, unsupportedTraits, cacheStrategy } = useStudioContext();
+    const { notify } = useNotification();
 
     const userHasLoadedNFTs = useMemo(() => hasLoadedNFTs(nfts), [nfts]);
     const nftsLoadIsComplete = useMemo(
@@ -51,14 +51,9 @@ export const NftsBoard = ({
         method: loadMetadata,
         args: { collection: selectedCollection, nfts, unsupportedTraits },
         enabled: userHasLoadedNFTs && !nftsLoadIsComplete,
-        initialFallback: [],
-        onError: error => {
-            console.log(error);
-            return false; // -> return the error as state
-        }
+        initialFallback: nftsLoadIsComplete ? (nfts as NFT[]) : [],
+        onError: error => notify({ title: 'Whoops!', description: error.message, duration: 6000 })
     });
-
-    // TODO: deal with error by notifying user - toast
 
     useEffect(() => {
         if (nftsLoadIsComplete) {
@@ -109,7 +104,6 @@ const Toolbar = React.memo(
     ({ canCreate, onRefresh }: { canCreate: boolean; onRefresh: LoadIncompleteNFTs }) => {
         const refreshDialog = useDialog();
         const helpDialog = useDialog();
-        const { notify } = useNotification();
 
         return (
             <>
@@ -144,9 +138,6 @@ const Toolbar = React.memo(
                         disabled={!canCreate}
                         size="lg"
                         onClick={() => {
-                            notify({
-                                template: NOTIFICATION_TEMPLATE.FETCH_ERROR
-                            });
                             //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
                         }}
                     >

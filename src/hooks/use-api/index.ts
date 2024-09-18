@@ -6,7 +6,7 @@ type ApiReadProps<T extends Record<string, unknown>, R> = {
     args: T;
     resources?: string[];
     enabled?: boolean;
-    onError: (error: Error) => boolean;
+    onError: (error: Error) => void;
 };
 
 /**
@@ -30,7 +30,10 @@ export const useApiRead = <T extends Record<string, unknown>, R>({
         queryKey: [...resources, ...Object.values(args)],
         queryFn: () => method(args),
         enabled,
-        throwOnError: error => onError(error)
+        throwOnError: error => {
+            onError(error);
+            return false;
+        }
     });
 
     return {
