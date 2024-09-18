@@ -52,7 +52,13 @@ export const NftsBoard = ({
         args: { collection: selectedCollection, nfts, unsupportedTraits },
         enabled: userHasLoadedNFTs && !nftsLoadIsComplete,
         initialFallback: nftsLoadIsComplete ? (nfts as NFT[]) : [],
-        onError: error => notify({ title: 'Whoops!', description: error.message, duration: 6000 })
+        onError: error =>
+            notify({
+                title: 'Whoops!',
+                description: error.message,
+                duration: 6000,
+                variant: 'destructive'
+            })
     });
 
     useEffect(() => {

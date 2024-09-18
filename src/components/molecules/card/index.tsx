@@ -67,8 +67,8 @@ export const NFTCard = React.memo(
         >
             <button className="relative flex cursor-pointer flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
                 <Image
-                    width={263.73}
-                    height={263.73}
+                    width={178.82}
+                    height={178.82}
                     className="rounded-lg"
                     src={imgSrc}
                     alt={`NFT #${id}`}
