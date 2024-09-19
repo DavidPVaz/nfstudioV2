@@ -145,7 +145,7 @@ const ShowcaseSectionMiniGallery = () => (
                 {columnData.map(imgSrc => (
                     <div key={imgSrc} className="w-full p-1">
                         <Image
-                            quality={20}
+                            quality={30}
                             optimizedWidth={340}
                             alt="gallery"
                             className="rounded-lg"

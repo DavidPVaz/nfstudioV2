@@ -71,7 +71,7 @@ const LeftPage = ({ mobileSrcOne, mobileSrcTwo, desktopSrc }: LeftPageData) => (
     <div className="flex w-1/2 flex-wrap">
         <div className="w-1/2 p-1 md:p-2">
             <Image
-                quality={20}
+                quality={30}
                 optimizedWidth={340}
                 alt="gallery"
                 className="rounded-lg"
@@ -82,7 +82,7 @@ const LeftPage = ({ mobileSrcOne, mobileSrcTwo, desktopSrc }: LeftPageData) => (
         </div>
         <div className="w-1/2 p-1 md:p-2">
             <Image
-                quality={20}
+                quality={30}
                 optimizedWidth={340}
                 alt="gallery"
                 className="rounded-lg"
@@ -93,7 +93,7 @@ const LeftPage = ({ mobileSrcOne, mobileSrcTwo, desktopSrc }: LeftPageData) => (
         </div>
         <div className="w-full p-1 md:p-2">
             <Image
-                quality={20}
+                quality={40}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"
@@ -109,7 +109,7 @@ const RightPage = ({ bannerSrcOne, bannerSrcTwo, desktopSrc }: RightPageData) =>
     <div className="flex w-1/2 flex-wrap">
         <div className="w-full p-1 md:p-2">
             <Image
-                quality={20}
+                quality={40}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"
@@ -120,7 +120,7 @@ const RightPage = ({ bannerSrcOne, bannerSrcTwo, desktopSrc }: RightPageData) =>
         </div>
         <div className="w-full p-1 md:p-2">
             <Image
-                quality={20}
+                quality={40}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"
@@ -131,7 +131,7 @@ const RightPage = ({ bannerSrcOne, bannerSrcTwo, desktopSrc }: RightPageData) =>
         </div>
         <div className="w-full p-1 md:p-2">
             <Image
-                quality={20}
+                quality={40}
                 optimizedWidth={573}
                 alt="gallery"
                 className="rounded-lg"

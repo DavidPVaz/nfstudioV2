@@ -5,7 +5,7 @@ const shimmer = () => `
   <defs>
     <linearGradient id="g">
       <stop stop-color="#1e293b" offset="20%" />
-      <stop stop-color="#00142E33" offset="50%" />
+      <stop stop-color="#00142E" offset="50%" />
       <stop stop-color="#1e293b" offset="70%" />
     </linearGradient>
   </defs>

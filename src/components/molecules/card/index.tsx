@@ -37,7 +37,7 @@ export const CollectionCard = ({ className, imgSrc, href, chain, name }: Collect
                 src={imgSrc}
                 alt={`${name} card`}
                 optimizedWidth={300}
-                quality={20}
+                quality={30}
             />
             <CardTitle className="text-center">{`${name.replace('_', ' ')}`}</CardTitle>
         </Link>
@@ -87,8 +87,8 @@ export const NFTCard = React.memo(
 export const NFTCardSkeleton = () => (
     <Card className="min-w-full border animate-out fade-out-90" asChild>
         <div className="relative flex cursor-default flex-col items-center gap-y-2 p-2 2xs:p-3 sm:p-4">
-            <Skeleton className="relative h-0 w-full pb-[100%]" />
-            <Skeleton className="flex h-[16px] w-[48px] sm:h-[28px] sm:w-[54px]" />
+            <Skeleton className="h-0 w-full pb-[100%]" />
+            <Skeleton className="h-[16px] w-[48px] sm:h-[28px] sm:w-[54px]" />
         </div>
     </Card>
 );
