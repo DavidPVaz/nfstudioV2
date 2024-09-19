@@ -6,6 +6,7 @@ import { Command as CommandPrimitive } from 'cmdk';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/atoms/dialog';
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/atoms/drawer';
 import { Hide } from '@/components/atoms/visually-hidden';
 
 const Command = React.forwardRef<
@@ -29,7 +30,7 @@ const CommandDialog = ({ className, children, title, ...props }: CommandDialogPr
     <Dialog {...props}>
         <DialogContent
             className={cn(
-                'overflow-hidden border-0 p-0 shadow-lg 2xs:rounded-lg 2xs:border',
+                'min-h-[393px] overflow-hidden border-0 p-0 shadow-lg 2xs:rounded-lg 2xs:border',
                 className
             )}
         >
@@ -42,6 +43,25 @@ const CommandDialog = ({ className, children, title, ...props }: CommandDialogPr
             </Command>
         </DialogContent>
     </Dialog>
+);
+
+const CommandDrawer = ({ className, children, title, ...props }: CommandDialogProps) => (
+    <Drawer {...props}>
+        <DrawerContent
+            className={cn(
+                'overflow-hidden border-0 p-0 shadow-lg 2xs:rounded-lg 2xs:border',
+                className
+            )}
+        >
+            <Hide>
+                <DrawerTitle>{title}</DrawerTitle>
+                <DrawerDescription>{title}</DrawerDescription>
+            </Hide>
+            <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+                {children}
+            </Command>
+        </DrawerContent>
+    </Drawer>
 );
 
 const CommandInput = React.forwardRef<
@@ -69,7 +89,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <CommandPrimitive.List
         ref={ref}
-        className={cn('max-h-[300px] min-h-[300px] overflow-y-auto overflow-x-hidden', className)}
+        className={cn('min-h-[300px] overflow-y-auto overflow-x-hidden', className)}
         {...props}
     />
 ));
@@ -141,6 +161,7 @@ CommandShortcut.displayName = 'CommandShortcut';
 export {
     Command,
     CommandDialog,
+    CommandDrawer,
     CommandInput,
     CommandList,
     CommandEmpty,

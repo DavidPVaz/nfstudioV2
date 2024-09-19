@@ -15,13 +15,15 @@ type SearchDialogContentProps = {
     onChain: (chain: Chain | null) => void;
     data: { value: string; imgSrc: string }[];
     selectedChain: Chain | null;
+    isDesktop: boolean;
 };
 
-export const DialogContent = ({
+export const DialogContent = async ({
     onSelect,
     onChain,
     data,
-    selectedChain
+    selectedChain,
+    isDesktop
 }: SearchDialogContentProps) => (
     <>
         <CommandInput
@@ -30,7 +32,7 @@ export const DialogContent = ({
             autoFocus
         />
         <ChainFilter onChain={onChain} selectedChain={selectedChain} />
-        <CommandList>
+        <CommandList className={`${isDesktop ? 'max-h-[300px]' : ''}`}>
             <CommandEmpty>No collections found.</CommandEmpty>
             <CommandGroup>
                 {data.map(({ value, imgSrc }) => (

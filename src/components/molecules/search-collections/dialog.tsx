@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { CommandDialog } from '@/components/atoms';
+import { CommandDialog, CommandDrawer } from '@/components/atoms/command';
 import { Chain } from '@/shared/enums';
 import { DialogContentSkeleton } from './dialog-content-skeleton';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 type SearchDialogProps = {
     open: boolean;
@@ -27,21 +28,26 @@ export const SearchDialog = ({
     onChain,
     data,
     selectedChain
-}: SearchDialogProps) => (
-    <CommandDialog
-        className="min-h-[393px]"
-        open={open}
-        onOpenChange={onOpenChange}
-        title={'Search available NFT collections'}
-        modal
-    >
-        {open && (
-            <DialogContent
-                onSelect={onSelect}
-                onChain={onChain}
-                data={data}
-                selectedChain={selectedChain}
-            />
-        )}
-    </CommandDialog>
-);
+}: SearchDialogProps) => {
+    const isDesktop = useMediaQuery('(min-width: 476px)');
+    const SearchComponent = useMemo(() => (isDesktop ? CommandDialog : CommandDrawer), [isDesktop]);
+
+    return (
+        <SearchComponent
+            open={open}
+            onOpenChange={onOpenChange}
+            title={'Search available NFT collections'}
+            modal
+        >
+            {open && (
+                <DialogContent
+                    onSelect={onSelect}
+                    onChain={onChain}
+                    data={data}
+                    selectedChain={selectedChain}
+                    isDesktop={isDesktop}
+                />
+            )}
+        </SearchComponent>
+    );
+};
