@@ -118,7 +118,8 @@ const NotificationTimer = ({ duration = 5000 }: { duration?: number }) => (
         <div className="absolute top-0 h-[5px] w-full bg-white/30" />
         <div className="absolute top-0 h-[5px] w-full">
             <div
-                className={`h-full w-full origin-left transform animate-[round-time_${duration}ms_linear_forwards] bg-white will-change-transform group-hover:[animation-play-state:paused]`}
+                className="h-full w-full origin-left transform animate-[round-time_linear_forwards] bg-white will-change-transform group-hover:[animation-play-state:paused]"
+                style={{ animationDuration: `${duration}ms` }}
             />
         </div>
     </div>
