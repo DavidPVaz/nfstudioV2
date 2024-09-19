@@ -8,11 +8,17 @@ import { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Chain } from '@/shared/enums';
 import { SearchDialog } from './dialog';
 import { useDialog } from '@/hooks/use-dialog';
+import { isMacOS } from '@/lib/utils';
 
 export const SearchCollections = ({ collections }: { collections: CollectionConfiguration[] }) => {
     const { isOpen, open, close, toggle } = useDialog();
     const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
+    const [isMac, setIsMac] = useState<boolean | null>(null);
     const { push } = useRouter();
+
+    useEffect(() => {
+        setIsMac(isMacOS());
+    }, []);
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -49,13 +55,14 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
         [collections, selectedChain]
     );
 
-    // TODO: mac ? ⌘ : Ctrl ; Make drawer below 2xs?
+    // TODO: Make drawer below 2xs?
     return (
         <>
             <Button aria-label="Search collections" onClick={open} variant="outline">
-                <span className="hidden md:inline-flex">Search collections...</span>
-                <span className="inline-flex md:hidden">Search...</span>
-                <CommandShortcut>⌘K</CommandShortcut>
+                <span className="inline">Search collections...</span>
+                <CommandShortcut className="hidden 2xs:inline">
+                    {isMac === null ? null : `${isMac ? '⌘' : 'Ctrl '}K`}
+                </CommandShortcut>
             </Button>
             <SearchDialog
                 open={isOpen}

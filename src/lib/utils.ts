@@ -62,3 +62,8 @@ export const buildQueryString = (data: QueryStringProps) => {
 
     return query.toString();
 };
+
+/**
+ * Checks wether the device is Mac OS through UA.
+ */
+export const isMacOS = () => window?.navigator?.userAgent.includes('Mac OS');
