@@ -148,7 +148,7 @@ const Toolbar = React.memo(
                             notify({
                                 title: 'Whoops!',
                                 description: 'Message',
-                                duration: 60000,
+                                duration: 3000,
                                 variant: 'success'
                             });
                             //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft

@@ -113,6 +113,17 @@ const NotificationDescription = React.forwardRef<
 ));
 NotificationDescription.displayName = NotificationPrimitives.Description.displayName;
 
+const NotificationTimer = ({ duration = 5000 }: { duration?: number }) => (
+    <div className="relative flex w-full">
+        <div className="absolute top-0 h-[5px] w-full bg-white/30" />
+        <div className="absolute top-0 h-[5px] w-full">
+            <div
+                className={`h-full w-full origin-left transform animate-[round-time_${duration}ms_linear_forwards] bg-white will-change-transform group-hover:[animation-play-state:paused]`}
+            />
+        </div>
+    </div>
+);
+
 type NotificationProps = React.ComponentPropsWithoutRef<typeof Notification>;
 
 type NotificationActionElement = React.ReactElement<typeof NotificationAction>;
@@ -126,5 +137,6 @@ export {
     NotificationTitle,
     NotificationDescription,
     NotificationClose,
-    NotificationAction
+    NotificationAction,
+    NotificationTimer
 };

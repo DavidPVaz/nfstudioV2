@@ -62,9 +62,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         </div>
                         <ScrollUp />
                         <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+                        <NotificationProvider />
                     </ReactQueryClientProvider>
                 </ColorThemeProvider>
-                <NotificationProvider />
             </body>
         </html>
     );

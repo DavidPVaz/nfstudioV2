@@ -7,7 +7,8 @@ import {
     NotificationDescription,
     Provider,
     NotificationTitle,
-    NotificationViewport
+    NotificationViewport,
+    NotificationTimer
 } from '@/components/atoms/notification';
 
 export const NotificationProvider = () => {
@@ -17,11 +18,12 @@ export const NotificationProvider = () => {
         <Provider>
             {notifications.map(({ id, title, description, action, ...props }) => (
                 <Notification key={id} onClick={() => props.onOpenChange?.(!props.open)} {...props}>
-                    <div className="grid gap-1">
+                    <div className="grid w-full gap-1">
                         {title && <NotificationTitle>{title}</NotificationTitle>}
                         {description && (
                             <NotificationDescription>{description}</NotificationDescription>
                         )}
+                        <NotificationTimer duration={props.duration} />
                     </div>
                     {action}
                     <NotificationClose />

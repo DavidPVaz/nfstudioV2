@@ -93,6 +93,12 @@ const config = {
                 show: {
                     from: { opacity: '0' },
                     to: { opacity: '1' }
+                },
+                'round-time': {
+                    from: { transform: 'scaleX(1)' },
+                    to: {
+                        transform: 'scaleX(0)'
+                    }
                 }
             },
             animation: {
