@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { Collections, CollectionsList } from '@/components/organisms';
-import { SearchCollections, PageTitle } from '@/components/molecules';
+import { PageTitle } from '@/components/molecules/page-title';
+import { SearchCollections } from '@/components/molecules/search-collections';
 import { queryCollectionsData } from '@/server/service/mongo';
 
 const title = 'Collections | NFStudio';

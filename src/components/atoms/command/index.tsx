@@ -73,7 +73,7 @@ const CommandInput = React.forwardRef<
         <CommandPrimitive.Input
             ref={ref}
             className={cn(
-                'flex h-11 w-full rounded-lg bg-transparent py-3 pr-6 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
+                'flex h-11 w-full rounded-lg bg-transparent py-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 2xs:pr-10',
                 className
             )}
             {...props}
@@ -89,7 +89,10 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
     <CommandPrimitive.List
         ref={ref}
-        className={cn('min-h-[300px] overflow-y-auto overflow-x-hidden', className)}
+        className={cn(
+            'min-h-[300px] overflow-y-auto overflow-x-hidden 2xs:max-h-[300px]',
+            className
+        )}
         {...props}
     />
 ));

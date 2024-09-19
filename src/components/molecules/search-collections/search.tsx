@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { CommandDialog, CommandDrawer } from '@/components/atoms/command';
 import { Chain } from '@/shared/enums';
-import { DialogContentSkeleton } from './dialog-content-skeleton';
+import { SearchContentSkeleton } from './search-content-skeleton';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
-type SearchDialogProps = {
+type SearchProps = {
     open: boolean;
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
     onSelect: (value: string) => void;
@@ -14,22 +14,22 @@ type SearchDialogProps = {
     selectedChain: Chain | null;
 };
 
-const DialogContent = dynamic(
-    () => import('./dialog-content').then(module => module.DialogContent),
+const SearchContent = dynamic(
+    () => import('./search-content').then(module => module.SearchContent),
     {
-        loading: DialogContentSkeleton
+        loading: SearchContentSkeleton
     }
 );
 
-export const SearchDialog = ({
+export const Search = ({
     open,
     onOpenChange,
     onSelect,
     onChain,
     data,
     selectedChain
-}: SearchDialogProps) => {
-    const isDesktop = useMediaQuery('(min-width: 476px)');
+}: SearchProps) => {
+    const isDesktop = useMediaQuery('(min-width: 475px)');
     const SearchComponent = useMemo(() => (isDesktop ? CommandDialog : CommandDrawer), [isDesktop]);
 
     return (
@@ -40,12 +40,11 @@ export const SearchDialog = ({
             modal
         >
             {open && (
-                <DialogContent
+                <SearchContent
                     onSelect={onSelect}
                     onChain={onChain}
                     data={data}
                     selectedChain={selectedChain}
-                    isDesktop={isDesktop}
                 />
             )}
         </SearchComponent>

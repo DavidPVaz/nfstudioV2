@@ -10,21 +10,14 @@ import {
 } from '@/components/atoms';
 import { Chain, CHAIN_ICON_MAP } from '@/shared/enums';
 
-type SearchDialogContentProps = {
+type SearchContentProps = {
     onSelect: (value: string) => void;
     onChain: (chain: Chain | null) => void;
     data: { value: string; imgSrc: string }[];
     selectedChain: Chain | null;
-    isDesktop: boolean;
 };
 
-export const DialogContent = async ({
-    onSelect,
-    onChain,
-    data,
-    selectedChain,
-    isDesktop
-}: SearchDialogContentProps) => (
+export const SearchContent = ({ onSelect, onChain, data, selectedChain }: SearchContentProps) => (
     <>
         <CommandInput
             aria-label="Search collections"
@@ -32,21 +25,23 @@ export const DialogContent = async ({
             autoFocus
         />
         <ChainFilter onChain={onChain} selectedChain={selectedChain} />
-        <CommandList className={`${isDesktop ? 'max-h-[300px]' : ''}`}>
-            <CommandEmpty>No collections found.</CommandEmpty>
+        <CommandList>
+            <CommandEmpty className="w-full pt-4 text-center text-lg">
+                No collections found.
+            </CommandEmpty>
             <CommandGroup>
                 {data.map(({ value, imgSrc }) => (
                     <CommandItem key={value} value={value} onSelect={onSelect}>
                         <Image
                             optimizedWidth={300}
-                            quality={20}
+                            quality={30}
                             alt={value}
                             className="rounded-sm"
                             src={imgSrc}
                             width={35}
                             height={45.8465}
                         />
-                        <span>{value}</span>
+                        <span className="text-lg">{value}</span>
                     </CommandItem>
                 ))}
             </CommandGroup>

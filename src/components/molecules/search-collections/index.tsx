@@ -6,7 +6,7 @@ import { CommandShortcut } from '@/components/atoms/command';
 import { Button } from '@/components/atoms';
 import { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Chain } from '@/shared/enums';
-import { SearchDialog } from './dialog';
+import { Search } from './search';
 import { useDialog } from '@/hooks/use-dialog';
 import { isMacOS } from '@/lib/utils';
 
@@ -55,7 +55,6 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
         [collections, selectedChain]
     );
 
-    // TODO: Make drawer below 2xs?
     return (
         <>
             <Button aria-label="Search collections" onClick={open} variant="outline">
@@ -64,7 +63,7 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
                     {isMac === null ? null : `${isMac ? '⌘' : 'Ctrl '}K`}
                 </CommandShortcut>
             </Button>
-            <SearchDialog
+            <Search
                 open={isOpen}
                 onOpenChange={toggle}
                 onSelect={onSelect}
