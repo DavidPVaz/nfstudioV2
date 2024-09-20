@@ -1,20 +1,15 @@
 import React, { useEffect, useMemo } from 'react';
-import { CircleHelp, RefreshCcw } from 'lucide-react';
 import type {
     SelectedNFTs,
     NFT,
-    IncompleteNFT,
     LoadCompleteNFTs,
     LoadIncompleteNFTs
 } from '@/app/collections/[collection]/studio/client';
 import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card';
-import { Button } from '@/components/atoms/button';
-import { Tooltip } from '@/components/atoms/tooltip';
-import { LoadNFTs, RefreshNFTsModal } from '@/app/collections/[collection]/studio/client/load-nfts';
-import { HelpModal } from '@/app/collections/[collection]/studio/client/help';
+import { LoadNFTs } from '@/app/collections/[collection]/studio/client/load-nfts';
+import { Toolbar } from '@/app/collections/[collection]/studio/client/toolbar';
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useFallbackApiRead } from '@/hooks/use-api';
-import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
 
@@ -46,6 +41,7 @@ export const NftsBoard = ({
         () => userHasLoadedNFTs && areCompleteNFTs(nfts),
         [nfts, userHasLoadedNFTs]
     );
+    const selectedId = useMemo(() => (nfts as NFT[]).find(({ selected }) => selected)?.id, [nfts]);
 
     const { response, noNetwork } = useFallbackApiRead<LoadMetadataProps, NFT[]>({
         method: loadMetadata,
@@ -101,77 +97,11 @@ export const NftsBoard = ({
                           ))}
                 </div>
             </div>
-            <Toolbar onRefresh={onIncompleteLoad} canCreate={nftsLoadIsComplete} />
+            <Toolbar
+                onRefresh={onIncompleteLoad}
+                canCreate={nftsLoadIsComplete}
+                selectedId={selectedId}
+            />
         </div>
     );
 };
-
-const Toolbar = React.memo(
-    ({ canCreate, onRefresh }: { canCreate: boolean; onRefresh: LoadIncompleteNFTs }) => {
-        const refreshModal = useModal();
-        const helpModal = useModal();
-        const { notify } = useNotification();
-
-        return (
-            <>
-                <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
-                    <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
-                        <Tooltip content="Refresh NFT selection">
-                            <Button
-                                variant="ghost"
-                                size="icon2x"
-                                onClick={refreshModal.open}
-                                disabled={refreshModal.isOpen}
-                            >
-                                <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                                <span className="sr-only">Refresh NFT selection</span>
-                            </Button>
-                        </Tooltip>
-
-                        <Tooltip content="Get help">
-                            <Button
-                                variant="ghost"
-                                size="icon2x"
-                                onClick={helpModal.open}
-                                disabled={helpModal.isOpen}
-                            >
-                                <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                                <span className="sr-only">Get help</span>
-                            </Button>
-                        </Tooltip>
-                    </div>
-
-                    <Button
-                        disabled={!canCreate}
-                        size="lg"
-                        onClick={() => {
-                            notify({
-                                title: 'Whoops!',
-                                description: 'Message',
-                                duration: 3000,
-                                variant: 'success'
-                            });
-                            //hasSelectedOneNft ? open wizard : show notification if user tries to create without having any selected nft
-                        }}
-                    >
-                        CREATE
-                    </Button>
-                </div>
-
-                <RefreshNFTsModal
-                    open={refreshModal.isOpen}
-                    onOpenChange={refreshModal.toggle}
-                    onRefresh={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
-                        refreshModal.close();
-                        onRefresh(incompleteNFTs);
-                    }}
-                />
-
-                <HelpModal open={helpModal.isOpen} onOpenChange={helpModal.toggle} />
-            </>
-        );
-    },
-    (previousProps, nextProps) =>
-        previousProps.canCreate === nextProps.canCreate ||
-        previousProps.onRefresh === nextProps.onRefresh
-);
