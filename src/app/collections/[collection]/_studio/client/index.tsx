@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { Skeleton } from '@/components/atoms/skeleton';
-import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
-import { NftsBoard } from '@/app/collections/[collection]/studio/client/nfts-board';
+import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
+import { NftsBoard } from '@/app/collections/[collection]/_studio/client/nfts-board';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 
 export type NFT = {

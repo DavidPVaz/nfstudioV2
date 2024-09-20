@@ -3,11 +3,11 @@ import { CircleHelp, RefreshCcw } from 'lucide-react';
 import type {
     IncompleteNFT,
     LoadIncompleteNFTs
-} from '@/app/collections/[collection]/studio/client';
+} from '@/app/collections/[collection]/_studio/client';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
-import { RefreshNFTsModal } from '@/app/collections/[collection]/studio/client/nfts-board/load-nfts';
-import { HelpModal } from '@/app/collections/[collection]/studio/client/nfts-board/help';
+import { RefreshNFTsModal } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts';
+import { HelpModal } from '@/app/collections/[collection]/_studio/client/nfts-board/help';
 import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
 

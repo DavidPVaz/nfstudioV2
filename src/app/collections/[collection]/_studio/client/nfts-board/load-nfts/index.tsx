@@ -3,8 +3,8 @@
 import React from 'react';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/atoms/card';
 import { Modal } from '@/components/molecules/modal';
-import { LoadForm } from '@/app/collections/[collection]/studio/client/nfts-board/load-nfts/load-form';
-import { type LoadIncompleteNFTs } from '@/app/collections/[collection]/studio/client';
+import { LoadForm } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts/load-form';
+import { type LoadIncompleteNFTs } from '@/app/collections/[collection]/_studio/client';
 
 const Content = () => (
     <>

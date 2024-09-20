@@ -1,7 +1,7 @@
 import { buildQueryString } from '@/lib/utils';
 import type { CollectionMetadata, CollectionConfiguration } from '@/server/service/mongo/types';
-import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/studio/client';
-import { FetchError, EmptyMetadataError, UnsupportedTraitsError } from '@/app/errors';
+import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/_studio/client';
+import { FetchError, EmptyMetadataError, UnsupportedTraitsError } from '@/app/_errors';
 
 export type LoadMetadataProps = {
     collection: string;

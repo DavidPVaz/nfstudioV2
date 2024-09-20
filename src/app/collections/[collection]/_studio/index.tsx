@@ -2,7 +2,7 @@ import React from 'react';
 import type { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Button } from '@/components/atoms/button';
 import { MarketplaceIcon, DiscordIcon, TwitterIcon, WebsiteIcon } from '@/resources';
-import { StudioClientContent } from '@/app/collections/[collection]/studio/client';
+import { StudioClientContent } from '@/app/collections/[collection]/_studio/client';
 
 export const Studio = ({
     collectionConfiguration

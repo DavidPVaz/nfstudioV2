@@ -12,7 +12,7 @@ import {
     FormLabel,
     FormMessage
 } from '@/components/atoms/form';
-import type { LoadIncompleteNFTs } from '@/app/collections/[collection]/studio/client';
+import type { LoadIncompleteNFTs } from '@/app/collections/[collection]/_studio/client';
 
 const LoadFormSchema = v.object({
     ids: v.pipe(

@@ -29,8 +29,8 @@ export const SearchModal = ({
     data,
     selectedChain
 }: SearchModalProps) => {
-    const isDesktop = useMediaQuery('(min-width: 475px)');
-    const Modal = useMemo(() => (isDesktop ? CommandDialog : CommandDrawer), [isDesktop]);
+    const is2xs = useMediaQuery('(min-width: 475px)');
+    const Modal = useMemo(() => (is2xs ? CommandDialog : CommandDrawer), [is2xs]);
 
     return (
         <Modal
