@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/atoms/card';
 import { Modal } from '@/components/molecules/modal';

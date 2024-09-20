@@ -1,8 +1,3 @@
-import { default as SolanaIcon } from '@/resources/SolanaIcon.svg';
-import { default as EthereumIcon } from '@/resources/EthereumIcon.svg';
-import { default as PolygonIcon } from '@/resources/PolygonIcon.svg';
-import { default as OptimismIcon } from '@/resources/OptimismIcon.svg';
-
 export const CHAINS = {
     SOLANA: 'Solana',
     ETHEREUM: 'Ethereum',
@@ -10,12 +5,6 @@ export const CHAINS = {
     OPTIMISM: 'Optimism'
 } as const;
 export type Chain = (typeof CHAINS)[keyof typeof CHAINS];
-export const CHAIN_ICON_MAP = {
-    [CHAINS.SOLANA]: SolanaIcon,
-    [CHAINS.ETHEREUM]: EthereumIcon,
-    [CHAINS.POLYGON]: PolygonIcon,
-    [CHAINS.OPTIMISM]: OptimismIcon
-} as const;
 
 export const PAGES = {
     HOME: '/',

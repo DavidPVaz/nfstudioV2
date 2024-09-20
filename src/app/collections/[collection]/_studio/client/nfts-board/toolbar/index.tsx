@@ -8,6 +8,7 @@ import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
 import { RefreshNFTsModal } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts';
 import { HelpModal } from '@/app/collections/[collection]/_studio/client/nfts-board/help';
+import { WizardModal } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard';
 import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
 
@@ -23,6 +24,7 @@ export const Toolbar = React.memo(
     }) => {
         const refreshModal = useModal();
         const helpModal = useModal();
+        const wizardModal = useModal();
         const { notify } = useNotification();
 
         const onCreate = useCallback(() => {
@@ -35,8 +37,8 @@ export const Toolbar = React.memo(
                 return;
             }
 
-            alert(`open wizard with id ${selectedId}`);
-        }, [notify, selectedId]);
+            wizardModal.open();
+        }, [notify, selectedId, wizardModal]);
 
         return (
             <>
@@ -82,6 +84,8 @@ export const Toolbar = React.memo(
                 />
 
                 <HelpModal open={helpModal.isOpen} onOpenChange={helpModal.toggle} />
+
+                <WizardModal open={wizardModal.isOpen} onOpenChange={wizardModal.toggle} />
             </>
         );
     },

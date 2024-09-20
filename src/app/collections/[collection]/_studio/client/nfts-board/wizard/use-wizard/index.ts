@@ -6,19 +6,19 @@ import type {
 } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/';
 
 export const useWizard = ({ pages, pageKey }: { pages: WizardPages; pageKey: WizardPageKey }) => {
-    const [currentPage, setCurrentPage] = useState<WizardPage>(pages[pageKey]);
+    const [current, setCurrent] = useState<WizardPage>(pages[pageKey]);
 
     const next = useCallback(
-        () => currentPage.next && setCurrentPage(pages[currentPage.next]),
-        [setCurrentPage, pages, currentPage]
+        () => current.next && setCurrent(pages[current.next]),
+        [setCurrent, pages, current]
     );
     const previous = useCallback(
-        () => currentPage.previous && setCurrentPage(pages[currentPage.previous]),
-        [setCurrentPage, pages, currentPage]
+        () => current.previous && setCurrent(pages[current.previous]),
+        [setCurrent, pages, current]
     );
 
     return {
-        Page: currentPage?.component,
+        Page: current?.Page,
         pageKey,
         next,
         previous
