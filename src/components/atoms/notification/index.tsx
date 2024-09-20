@@ -2,6 +2,7 @@
 
 import React from 'react';
 import * as NotificationPrimitives from '@radix-ui/react-toast';
+import { X } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
@@ -82,7 +83,8 @@ const NotificationClose = React.forwardRef<
         toast-close=""
         {...props}
     >
-        <span className="p-1">esc</span>
+        <X className="h-4 w-4 2xs:hidden" />
+        <span className="hidden p-1 2xs:inline">esc</span>
         <span className="sr-only">Close notification</span>
     </NotificationPrimitives.Close>
 ));

@@ -17,7 +17,7 @@ export const HelpModal = ({ open, onOpenChange }: { open: boolean; onOpenChange:
         () =>
             isDesktop
                 ? 'max-h-[65vh] min-h-[65vh] max-w-lg overflow-y-auto pl-0 2xs:border sm:max-w-xl md:max-w-2xl lg:max-w-4xl'
-                : 'overflow-hidden border-0 p-0 shadow-lg',
+                : 'border-0',
         [isDesktop]
     );
 
