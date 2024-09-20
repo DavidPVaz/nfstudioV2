@@ -55,10 +55,9 @@ export type Option = (typeof OPTIONS)[keyof typeof OPTIONS];
 
 export const WIZARD_PAGES = {
     SELECTION: 'selection',
-    CONFIRM: 'confirm',
-    CHECKOUT: 'checkout'
+    CONFIRM: 'confirm'
 } as const;
-export type WizardPage = (typeof WIZARD_PAGES)[keyof typeof WIZARD_PAGES];
+export type WizardPageKey = (typeof WIZARD_PAGES)[keyof typeof WIZARD_PAGES];
 
 export const GALLERY_IMAGES = {
     BANNER: [
