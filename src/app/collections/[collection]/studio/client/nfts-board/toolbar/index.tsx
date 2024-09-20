@@ -6,8 +6,8 @@ import type {
 } from '@/app/collections/[collection]/studio/client';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
-import { RefreshNFTsModal } from '@/app/collections/[collection]/studio/client/load-nfts';
-import { HelpModal } from '@/app/collections/[collection]/studio/client/help';
+import { RefreshNFTsModal } from '@/app/collections/[collection]/studio/client/nfts-board/load-nfts';
+import { HelpModal } from '@/app/collections/[collection]/studio/client/nfts-board/help';
 import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
 

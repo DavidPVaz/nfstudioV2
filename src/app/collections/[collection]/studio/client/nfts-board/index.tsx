@@ -6,8 +6,8 @@ import type {
     LoadIncompleteNFTs
 } from '@/app/collections/[collection]/studio/client';
 import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card';
-import { LoadNFTs } from '@/app/collections/[collection]/studio/client/load-nfts';
-import { Toolbar } from '@/app/collections/[collection]/studio/client/toolbar';
+import { LoadNFTs } from '@/app/collections/[collection]/studio/client/nfts-board/load-nfts';
+import { Toolbar } from '@/app/collections/[collection]/studio/client/nfts-board/toolbar';
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useFallbackApiRead } from '@/hooks/use-api';
 import { useNotification } from '@/hooks/use-notification';

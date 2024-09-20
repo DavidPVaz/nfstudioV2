@@ -102,7 +102,7 @@ const FAQS = [
         answer: 'Some images in the available collections might have certain traits that are not yet supported. These traits would not allow a clean image generation.'
     },
     {
-        question: "Why can't I create my wallpaper or banner if I am not on a desktop device?",
+        question: "Why can't I create my wallpaper or banner on mobile?",
         answer: "To create your wallpaper or banner, you will need to perform a payment of $4. This payment is done via a Web3 transaction, and to do that you will need to use a Web3 wallet. NFStudio's business workflow is a simple one - you pay for your digital product and then you are allowed to download the product you paid for. But in this moment Web3 mobile wallet applications have a major limitation, they do not allow downloads within their own application browser. This means that after you paid for your wallpaper or banner, while using a Web3 mobile wallet application, the wallet's browser would not allow you to download the product you paid for. As such, for safety reasons, you can only use NFStudio's service while on a desktop device."
     }
 ];
