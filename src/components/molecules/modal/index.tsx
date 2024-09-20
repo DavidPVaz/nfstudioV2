@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Hide } from '@/components/atoms/visually-hidden';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/atoms/dialog';
 import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/atoms/drawer';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 type ModalProps = {
     className: string;
@@ -12,7 +13,7 @@ type ModalProps = {
     children: React.ReactNode;
 };
 
-export const ManagedDialog = ({
+const ManagedDialog = ({
     className,
     open,
     onOpenChange,
@@ -31,7 +32,7 @@ export const ManagedDialog = ({
     </Dialog>
 );
 
-export const ManagedDrawer = ({
+const ManagedDrawer = ({
     className,
     open,
     onOpenChange,
@@ -49,3 +50,27 @@ export const ManagedDrawer = ({
         </DrawerContent>
     </Drawer>
 );
+
+export const Modal = ({
+    className,
+    open,
+    onOpenChange,
+    title,
+    description,
+    children
+}: ModalProps) => {
+    const is2xs = useMediaQuery('(min-width: 475px)');
+    const Modal = useMemo(() => (is2xs ? ManagedDialog : ManagedDrawer), [is2xs]);
+
+    return (
+        <Modal
+            open={open}
+            onOpenChange={onOpenChange}
+            title={title}
+            description={description}
+            className={className}
+        >
+            {children}
+        </Modal>
+    );
+};
