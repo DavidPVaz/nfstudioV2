@@ -22,7 +22,7 @@ const STEPS = [
 ];
 
 export const HelpContent = () => (
-    <div className="relative flex h-full w-full flex-col gap-y-6 bg-background">
+    <div className="relative flex h-full w-full flex-col gap-y-6 overflow-y-auto bg-background pb-6">
         <PageTitle
             title="You can create social media banners, desktop and mobile wallpapers."
             className="pl-6 text-left text-xl leading-none 2xs:text-2xl lg:text-3xl"

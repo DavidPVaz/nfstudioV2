@@ -10,11 +10,11 @@ import type {
 import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
-import { LoadNfts, LoadNftsInDialog } from '@/app/collections/[collection]/studio/client/load-nfts';
-import { HelpInDialog } from '@/app/collections/[collection]/studio/client/help';
+import { LoadNFTs, RefreshNFTsModal } from '@/app/collections/[collection]/studio/client/load-nfts';
+import { HelpModal } from '@/app/collections/[collection]/studio/client/help';
 import { loadMetadata, type LoadMetadataProps } from '@/app/api';
 import { useFallbackApiRead } from '@/hooks/use-api';
-import { useDialog } from '@/hooks/use-dialog';
+import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
 import { useStudioContext } from '@/app/collections/[collection]/studio/client/context';
 
@@ -72,7 +72,7 @@ export const NftsBoard = ({
     }, [nftsLoadIsComplete, response, onCompleteLoad]);
 
     if (!userHasLoadedNFTs) {
-        return <LoadNfts onIncompleteLoad={onIncompleteLoad} />;
+        return <LoadNFTs onIncompleteLoad={onIncompleteLoad} />;
     }
 
     if (noNetwork) {
@@ -108,8 +108,8 @@ export const NftsBoard = ({
 
 const Toolbar = React.memo(
     ({ canCreate, onRefresh }: { canCreate: boolean; onRefresh: LoadIncompleteNFTs }) => {
-        const refreshDialog = useDialog();
-        const helpDialog = useDialog();
+        const refreshModal = useModal();
+        const helpModal = useModal();
         const { notify } = useNotification();
 
         return (
@@ -120,8 +120,8 @@ const Toolbar = React.memo(
                             <Button
                                 variant="ghost"
                                 size="icon2x"
-                                onClick={refreshDialog.open}
-                                disabled={refreshDialog.isOpen}
+                                onClick={refreshModal.open}
+                                disabled={refreshModal.isOpen}
                             >
                                 <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
                                 <span className="sr-only">Refresh NFT selection</span>
@@ -132,8 +132,8 @@ const Toolbar = React.memo(
                             <Button
                                 variant="ghost"
                                 size="icon2x"
-                                onClick={helpDialog.open}
-                                disabled={helpDialog.isOpen}
+                                onClick={helpModal.open}
+                                disabled={helpModal.isOpen}
                             >
                                 <CircleHelp className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
                                 <span className="sr-only">Get help</span>
@@ -158,16 +158,16 @@ const Toolbar = React.memo(
                     </Button>
                 </div>
 
-                <LoadNftsInDialog
-                    open={refreshDialog.isOpen}
-                    onOpenChange={refreshDialog.toggle}
+                <RefreshNFTsModal
+                    open={refreshModal.isOpen}
+                    onOpenChange={refreshModal.toggle}
                     onRefresh={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
-                        refreshDialog.close();
+                        refreshModal.close();
                         onRefresh(incompleteNFTs);
                     }}
                 />
 
-                <HelpInDialog open={helpDialog.isOpen} onOpenChange={helpDialog.toggle} />
+                <HelpModal open={helpModal.isOpen} onOpenChange={helpModal.toggle} />
             </>
         );
     },

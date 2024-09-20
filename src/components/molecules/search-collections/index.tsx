@@ -6,12 +6,12 @@ import { CommandShortcut } from '@/components/atoms/command';
 import { Button } from '@/components/atoms';
 import { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Chain } from '@/shared/enums';
-import { Search } from './search';
-import { useDialog } from '@/hooks/use-dialog';
+import { SearchModal } from './search';
+import { useModal } from '@/hooks/use-modal';
 import { isMacOS } from '@/lib/utils';
 
 export const SearchCollections = ({ collections }: { collections: CollectionConfiguration[] }) => {
-    const { isOpen, open, close, toggle } = useDialog();
+    const { isOpen, open, close, toggle } = useModal();
     const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
     const [isMac, setIsMac] = useState<boolean | null>(null);
     const { push } = useRouter();
@@ -63,7 +63,7 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
                     {isMac === null ? null : `${isMac ? '⌘' : 'Ctrl '}K`}
                 </CommandShortcut>
             </Button>
-            <Search
+            <SearchModal
                 open={isOpen}
                 onOpenChange={toggle}
                 onSelect={onSelect}

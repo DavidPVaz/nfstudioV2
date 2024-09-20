@@ -5,7 +5,7 @@ import { Chain } from '@/shared/enums';
 import { SearchContentSkeleton } from './search-content-skeleton';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
-type SearchProps = {
+type SearchModalProps = {
     open: boolean;
     onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
     onSelect: (value: string) => void;
@@ -21,19 +21,19 @@ const SearchContent = dynamic(
     }
 );
 
-export const Search = ({
+export const SearchModal = ({
     open,
     onOpenChange,
     onSelect,
     onChain,
     data,
     selectedChain
-}: SearchProps) => {
+}: SearchModalProps) => {
     const isDesktop = useMediaQuery('(min-width: 475px)');
-    const SearchComponent = useMemo(() => (isDesktop ? CommandDialog : CommandDrawer), [isDesktop]);
+    const Modal = useMemo(() => (isDesktop ? CommandDialog : CommandDrawer), [isDesktop]);
 
     return (
-        <SearchComponent
+        <Modal
             open={open}
             onOpenChange={onOpenChange}
             title={'Search available NFT collections'}
@@ -47,6 +47,6 @@ export const Search = ({
                     selectedChain={selectedChain}
                 />
             )}
-        </SearchComponent>
+        </Modal>
     );
 };
