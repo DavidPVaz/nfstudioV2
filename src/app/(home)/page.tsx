@@ -1,11 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { PAGES, GALLERY_IMAGES } from '@/shared/enums';
-import { Collections, Gallery } from '@/components/organisms';
-import { Image, Button } from '@/components/atoms';
-import { CreateButton } from './create-button';
-import { NFStudioList } from './nfstudio-list';
+import { PAGES, GALLERY_IMAGES } from '@/enums';
+import { Gallery } from '@/components/organisms/gallery';
+import { Collections } from '@/components/organisms/collections';
+import { Button } from '@/components/atoms/button';
+import { Image } from '@/components/atoms/image';
+import { CreateButton } from '@/app/(home)/create-button';
+import { NFStudioList } from '@/app/(home)/nfstudio-list';
 import { queryCollectionsData } from '@/server/service/mongo';
 
 const { MOBILE } = GALLERY_IMAGES;

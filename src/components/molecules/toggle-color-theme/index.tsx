@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import { Button } from '@/components/atoms';
+import { Button } from '@/components/atoms/button';
 
 export const ToggleColorTheme = () => {
     const { setTheme, theme } = useTheme();

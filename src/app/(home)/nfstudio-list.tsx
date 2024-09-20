@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { type CollectionConfiguration } from '@/server/service/mongo/types';
-import { CollectionsList } from '@/components/organisms';
+import { CollectionsList } from '@/components/organisms/collections';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 export const NFStudioList = ({ collections }: { collections: CollectionConfiguration[] }) => {

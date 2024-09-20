@@ -9,7 +9,7 @@ import {
     addListener,
     type State,
     type Notification
-} from './provider-state';
+} from '@/hooks/use-notification/provider-state';
 
 export const useNotification = () => ({
     notify: (notification: Omit<Notification, 'id'>) =>

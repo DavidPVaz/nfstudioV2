@@ -1,4 +1,4 @@
-import { type Chain, type Platform, type Option } from '@/shared/enums';
+import { type Chain, type Platform, type Option } from '@/enums';
 
 export const DATABASES = {
     COLLECTIONS: 'collections',

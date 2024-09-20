@@ -1,7 +1,10 @@
 import React from 'react';
 import type { CollectionConfiguration } from '@/server/service/mongo/types';
 import { Button } from '@/components/atoms/button';
-import { MarketplaceIcon, DiscordIcon, TwitterIcon, WebsiteIcon } from '@/resources';
+import { default as MarketplaceIcon } from '@/resources/MarketplaceIcon.svg';
+import { default as DiscordIcon } from '@/resources/DiscordIcon.svg';
+import { default as TwitterIcon } from '@/resources/TwitterIcon.svg';
+import { default as WebsiteIcon } from '@/resources/WebsiteIcon.svg';
 import { StudioClientContent } from '@/app/collections/[collection]/_studio/client';
 
 export const Studio = ({

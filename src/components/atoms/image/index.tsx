@@ -3,8 +3,8 @@
 import React from 'react';
 import { default as NextImage } from 'next/image';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { getLoader } from './loader';
-import { generatePlaceholder } from './placeholder';
+import { getLoader } from '@/components/atoms/image/loader';
+import { generatePlaceholder } from '@/components/atoms/image/placeholder';
 import { cn } from '@/lib/utils';
 
 const imageVariants = cva('pointer-events-none object-center', {

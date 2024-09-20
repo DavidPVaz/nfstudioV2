@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image } from '@/components/atoms';
+import { Image } from '@/components/atoms/image';
 import { cn } from '@/lib/utils';
-import { GALLERY_IMAGES } from '@/shared/enums';
+import { GALLERY_IMAGES } from '@/enums';
 
 const { MOBILE, DESKTOP, BANNER } = GALLERY_IMAGES;
 

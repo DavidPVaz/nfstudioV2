@@ -4,11 +4,11 @@ import {
     CommandList,
     CommandEmpty,
     CommandGroup,
-    CommandItem,
-    Image,
-    Button
-} from '@/components/atoms';
-import { Chain, CHAIN_ICON_MAP } from '@/shared/enums';
+    CommandItem
+} from '@/components/atoms/command';
+import { Image } from '@/components/atoms/image';
+import { Button } from '@/components/atoms/button';
+import { Chain, CHAIN_ICON_MAP } from '@/enums';
 
 type SearchContentProps = {
     onSelect: (value: string) => void;

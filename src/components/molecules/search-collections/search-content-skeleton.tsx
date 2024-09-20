@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/atoms';
+import { Skeleton } from '@/components/atoms/skeleton';
 
 export const SearchContentSkeleton = () => (
     <div className="z-50 flex min-w-full flex-col">

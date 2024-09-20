@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { queryCollectionsData } from '@/server/service/mongo';
-import { PAGES } from '@/shared/enums';
+import { PAGES } from '@/enums';
 import { StudioContextProvider } from '@/app/collections/[collection]/_studio/client/context';
 import { Studio } from '@/app/collections/[collection]/_studio';
 

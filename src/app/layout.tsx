@@ -5,8 +5,9 @@ import { cn } from '@/lib/utils';
 import { ColorThemeProvider } from '@/app/color-theme-provider';
 import { ReactQueryClientProvider } from '@/app/query-client-provider';
 import { NotificationProvider } from '@/app/notification-provider';
-import { Header, Footer } from '@/components/organisms';
-import { ScrollUp } from '@/components/molecules';
+import { Footer } from '@/components/organisms/footer';
+import { Header } from '@/components/organisms/header';
+import { ScrollUp } from '@/components/molecules/scroll-up';
 import '@/styles/globals.css';
 
 const fontSans = FontSans({

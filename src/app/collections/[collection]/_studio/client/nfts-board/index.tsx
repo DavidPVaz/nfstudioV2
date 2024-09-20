@@ -5,7 +5,7 @@ import type {
     LoadCompleteNFTs,
     LoadIncompleteNFTs
 } from '@/app/collections/[collection]/_studio/client';
-import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card';
+import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card/nft';
 import { LoadNFTs } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts';
 import { Toolbar } from '@/app/collections/[collection]/_studio/client/nfts-board/toolbar';
 import { loadMetadata, type LoadMetadataProps } from '@/app/_api';

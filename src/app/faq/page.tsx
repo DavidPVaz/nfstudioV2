@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import React from 'react';
-import { PageTitle } from '@/components/molecules';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/atoms';
+import { PageTitle } from '@/components/molecules/page-title';
+import {
+    Accordion,
+    AccordionItem,
+    AccordionTrigger,
+    AccordionContent
+} from '@/components/atoms/accordion';
 
 const title = 'FAQ | NFStudio';
 

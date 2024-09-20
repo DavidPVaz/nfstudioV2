@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import React from 'react';
-import { Collections, CollectionsList } from '@/components/organisms';
+import { Collections, CollectionsList } from '@/components/organisms/collections';
 import { PageTitle } from '@/components/molecules/page-title';
 import { SearchCollections } from '@/components/molecules/search-collections';
 import { queryCollectionsData } from '@/server/service/mongo';

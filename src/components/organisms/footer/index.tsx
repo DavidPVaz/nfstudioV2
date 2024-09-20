@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/atoms';
-import { PAGES } from '@/shared/enums';
-import { NFStudioIcon, NFStudioLettersIcon } from '@/resources';
+import { Button } from '@/components/atoms/button';
+import { PAGES } from '@/enums';
+import { default as NFStudioIcon } from '@/resources/NFStudioIcon.svg';
+import { default as NFStudioLettersIcon } from '@/resources/NFStudioLettersIcon.svg';
 
 export const Footer = () => (
     <footer className="py-6 md:px-8 md:py-0 md:pb-6">

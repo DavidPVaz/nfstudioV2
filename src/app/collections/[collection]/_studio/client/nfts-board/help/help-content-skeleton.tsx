@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/atoms';
+import { Skeleton } from '@/components/atoms/skeleton';
 
 export const HelpContentSkeleton = () => (
     <div className="relative flex h-full w-full flex-col gap-y-6">

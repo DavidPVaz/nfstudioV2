@@ -3,10 +3,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { CommandShortcut } from '@/components/atoms/command';
-import { Button } from '@/components/atoms';
+import { Button } from '@/components/atoms/button';
 import { CollectionConfiguration } from '@/server/service/mongo/types';
-import { Chain } from '@/shared/enums';
-import { SearchModal } from './search';
+import { Chain } from '@/enums';
+import { SearchModal } from '@/components/molecules/search-collections/search';
 import { useModal } from '@/hooks/use-modal';
 import { isMacOS } from '@/lib/utils';
 

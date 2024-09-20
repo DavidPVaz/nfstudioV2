@@ -12,13 +12,13 @@ const Content = () => (
             Please <strong>provide</strong> <strong>the</strong> <strong>IDs</strong> of the{' '}
             <strong>NFTs</strong> you wish to convert.
         </CardTitle>
-        <CardDescription className="text-sm text-foreground sm:text-lg">
+        <CardDescription className="text-base text-foreground sm:text-lg">
             You can load up to <strong>20</strong> <strong>NFTs</strong>, but you will{' '}
             <strong>only</strong> <strong>be</strong> <strong>able</strong> to work on them{' '}
             <strong>individually</strong>. Please add the <strong>IDs</strong>{' '}
             <strong>separated</strong> <strong>by</strong> <strong>comma</strong>.
         </CardDescription>
-        <CardDescription className="text-sm text-foreground sm:text-lg">
+        <CardDescription className="text-base text-foreground sm:text-lg">
             When you are done, <strong>click</strong> <strong>Load</strong>.
         </CardDescription>
     </>

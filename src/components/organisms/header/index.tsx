@@ -1,10 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
-import { PAGES } from '@/shared/enums';
-import { ToggleColorTheme } from '@/components/molecules';
-import { Button } from '@/components/atoms';
-import { NFStudioIcon, NFStudioLettersIcon, TwitterIcon } from '@/resources';
+import { PAGES } from '@/enums';
+import { ToggleColorTheme } from '@/components/molecules/toggle-color-theme';
+import { Button } from '@/components/atoms/button';
+import { default as NFStudioIcon } from '@/resources/NFStudioIcon.svg';
+import { default as NFStudioLettersIcon } from '@/resources/NFStudioLettersIcon.svg';
+import { default as TwitterIcon } from '@/resources/TwitterIcon.svg';
 
 export const Header = () => (
     <header className="sticky top-0 z-50 w-full bg-background/60 backdrop-blur-md">

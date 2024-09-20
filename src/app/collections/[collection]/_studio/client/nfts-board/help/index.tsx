@@ -3,11 +3,17 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Modal } from '@/components/molecules/modal';
-import { HelpContentSkeleton } from './help-content-skeleton';
+import { HelpContentSkeleton } from '@/app/collections/[collection]/_studio/client/nfts-board/help/help-content-skeleton';
 
-const HelpContent = dynamic(() => import('./help-content').then(module => module.HelpContent), {
-    loading: HelpContentSkeleton
-});
+const HelpContent = dynamic(
+    () =>
+        import('@/app/collections/[collection]/_studio/client/nfts-board/help/help-content').then(
+            module => module.HelpContent
+        ),
+    {
+        loading: HelpContentSkeleton
+    }
+);
 
 export const HelpModal = ({ open, onOpenChange }: { open: boolean; onOpenChange: () => void }) => (
     <Modal

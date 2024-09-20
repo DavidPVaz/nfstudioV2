@@ -1,4 +1,7 @@
-import { SolanaIcon, EthereumIcon, PolygonIcon, OptimismIcon } from '@/resources';
+import { default as SolanaIcon } from '@/resources/SolanaIcon.svg';
+import { default as EthereumIcon } from '@/resources/EthereumIcon.svg';
+import { default as PolygonIcon } from '@/resources/PolygonIcon.svg';
+import { default as OptimismIcon } from '@/resources/OptimismIcon.svg';
 
 export const CHAINS = {
     SOLANA: 'Solana',

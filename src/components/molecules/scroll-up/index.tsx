@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/atoms';
+import { Button } from '@/components/atoms/button';
 import { ArrowUp } from 'lucide-react';
 import { useWindowScroll } from '@/hooks/use-window-scroll';
 

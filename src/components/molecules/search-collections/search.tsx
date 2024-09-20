@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { CommandDialog, CommandDrawer } from '@/components/atoms/command';
-import { Chain } from '@/shared/enums';
-import { SearchContentSkeleton } from './search-content-skeleton';
+import { Chain } from '@/enums';
+import { SearchContentSkeleton } from '@/components/molecules/search-collections/search-content-skeleton';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 type SearchModalProps = {
@@ -15,7 +15,10 @@ type SearchModalProps = {
 };
 
 const SearchContent = dynamic(
-    () => import('./search-content').then(module => module.SearchContent),
+    () =>
+        import('@/components/molecules/search-collections/search-content').then(
+            module => module.SearchContent
+        ),
     {
         loading: SearchContentSkeleton
     }
