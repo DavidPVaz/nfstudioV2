@@ -8,32 +8,9 @@ import {
     AccordionContent
 } from '@/components/atoms/accordion';
 
-const title = 'FAQ | NFStudio';
-
 export const metadata: Metadata = {
-    title
+    title: 'FAQ | NFStudio'
 };
-
-const FaqPage = () => (
-    <div className="relative flex w-full flex-col items-center justify-start gap-y-4 duration-300 animate-in fade-in-0 md:gap-y-8">
-        <section className="relative flex w-full flex-col">
-            <PageTitle title="FREQUENTLY ASKED QUESTIONS" />
-        </section>
-
-        <section className="relative flex w-full flex-col">
-            <Accordion type="single" collapsible className="flex w-full flex-col gap-y-3">
-                {FAQS.map(({ question, answer }) => (
-                    <AccordionItem key={question} value={question}>
-                        <AccordionTrigger>{question}</AccordionTrigger>
-                        <AccordionContent>{answer}</AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
-        </section>
-    </div>
-);
-
-export default FaqPage;
 
 const FAQS = [
     {
@@ -111,3 +88,24 @@ const FAQS = [
         answer: "To create your wallpaper or banner, you will need to perform a payment of $4. This payment is done via a Web3 transaction, and to do that you will need to use a Web3 wallet. NFStudio's business workflow is a simple one - you pay for your digital product and then you are allowed to download the product you paid for. But in this moment Web3 mobile wallet applications have a major limitation, they do not allow downloads within their own application browser. This means that after you paid for your wallpaper or banner, while using a Web3 mobile wallet application, the wallet's browser would not allow you to download the product you paid for. As such, for safety reasons, you can only use NFStudio's service while on a desktop device."
     }
 ];
+
+const FaqPage = () => (
+    <div className="relative flex w-full flex-col items-center justify-start gap-y-4 duration-300 animate-in fade-in-0 md:gap-y-8">
+        <section className="relative flex w-full flex-col">
+            <PageTitle title="FREQUENTLY ASKED QUESTIONS" />
+        </section>
+
+        <section className="relative flex w-full flex-col">
+            <Accordion type="single" collapsible className="flex w-full flex-col gap-y-3">
+                {FAQS.map(({ question, answer }) => (
+                    <AccordionItem key={question} value={question}>
+                        <AccordionTrigger>{question}</AccordionTrigger>
+                        <AccordionContent>{answer}</AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+        </section>
+    </div>
+);
+
+export default FaqPage;

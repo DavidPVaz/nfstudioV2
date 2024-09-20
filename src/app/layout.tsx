@@ -18,14 +18,11 @@ const fontSans = FontSans({
     preload: true
 });
 
-const title = 'NFStudio | Effortlessly Showcase NFTs';
-const description =
-    'Effortlessly create stunning social media banners, desktop and mobile wallpapers from your favorite NFTs in seconds!';
-
 export const metadata: Metadata = {
     metadataBase: new URL(process.env.APP_URL!),
-    title,
-    description,
+    title: 'NFStudio | Effortlessly Showcase NFTs',
+    description:
+        'Effortlessly create stunning social media banners, desktop and mobile wallpapers from your favorite NFTs in seconds!',
     keywords: [
         'NFT',
         'NFT wallpaper',
@@ -43,30 +40,30 @@ export const metadata: Metadata = {
     }
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-    return (
-        <html lang="en" suppressHydrationWarning>
-            <body
-                className={cn(
-                    'min-h-screen min-w-[290px] bg-background font-sans antialiased',
-                    fontSans.variable
-                )}
-            >
-                <ColorThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-                    <ReactQueryClientProvider>
-                        <div className="relative flex min-h-screen flex-col">
-                            <Header />
-                            <main className="flex-1 pb-10 sm:pb-20">
-                                <div className="container relative">{children}</div>
-                            </main>
-                            <Footer />
-                        </div>
-                        <ScrollUp />
-                        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
-                    </ReactQueryClientProvider>
-                </ColorThemeProvider>
-                <NotificationProvider />
-            </body>
-        </html>
-    );
-}
+const RootLayout = ({ children }: { children: React.ReactNode }) => (
+    <html lang="en" suppressHydrationWarning>
+        <body
+            className={cn(
+                'min-h-screen min-w-[290px] bg-background font-sans antialiased',
+                fontSans.variable
+            )}
+        >
+            <ColorThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+                <ReactQueryClientProvider>
+                    <div className="relative flex min-h-screen flex-col">
+                        <Header />
+                        <main className="flex-1 pb-10 sm:pb-20">
+                            <div className="container relative">{children}</div>
+                        </main>
+                        <Footer />
+                    </div>
+                    <ScrollUp />
+                    <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+                </ReactQueryClientProvider>
+            </ColorThemeProvider>
+            <NotificationProvider />
+        </body>
+    </html>
+);
+
+export default RootLayout;

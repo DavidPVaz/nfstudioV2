@@ -5,10 +5,8 @@ import { PageTitle } from '@/components/molecules/page-title';
 import { SearchCollections } from '@/components/molecules/search-collections';
 import { queryCollectionsData } from '@/server/service/mongo';
 
-const title = 'Collections | NFStudio';
-
 export const metadata: Metadata = {
-    title
+    title: 'Collections | NFStudio'
 };
 
 const CollectionsPage = async () => {

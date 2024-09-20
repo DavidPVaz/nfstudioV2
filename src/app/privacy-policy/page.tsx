@@ -4,10 +4,8 @@ import { Document } from '@/components/organisms/document';
 import { queryDocument } from '@/server/service/contentful';
 import { DOCUMENTS } from '@/server/service/contentful/types';
 
-const title = 'Privacy Policy | NFStudio';
-
 export const metadata: Metadata = {
-    title
+    title: 'Privacy Policy | NFStudio'
 };
 
 const PrivacyPolicyPage = async () => {

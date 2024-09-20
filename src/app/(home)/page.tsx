@@ -10,19 +10,6 @@ import { CreateButton } from '@/app/(home)/create-button';
 import { NFStudioList } from '@/app/(home)/nfstudio-list';
 import { queryCollectionsData } from '@/server/service/mongo';
 
-const { MOBILE } = GALLERY_IMAGES;
-
-const HomePage = () => (
-    <div className="relative flex w-full flex-col items-center justify-start gap-y-24 duration-300 animate-in fade-in-0 md:gap-y-36">
-        <TopSection />
-        <IntroSection />
-        <CollectionsSection />
-        <ShowcaseSection />
-    </div>
-);
-
-export default HomePage;
-
 const TopSection = () => (
     <section className="relative flex w-fit flex-row">
         <div className="hidden flex-col gap-y-6 p-2 md:flex md:w-1/5 lg:gap-y-20">
@@ -96,6 +83,51 @@ const CollectionsSection = async () => {
     );
 };
 
+const { MOBILE } = GALLERY_IMAGES;
+
+const constructMiniGalleryData = () => {
+    const IMAGE_PER_COLUMN = 4;
+    const miniGalleryData: string[][] = [];
+
+    for (let index = 0; index < MOBILE.length; index += IMAGE_PER_COLUMN) {
+        const slice =
+            index + IMAGE_PER_COLUMN > MOBILE.length ? [index] : [index, index + IMAGE_PER_COLUMN];
+
+        miniGalleryData.push(MOBILE.slice(...slice));
+    }
+
+    return miniGalleryData;
+};
+
+const CLASS_PER_COLUMN_MINI_GALLERY = [
+    'absolute -mt-20 flex w-1/4 flex-wrap sm:-mt-20',
+    'absolute left-1/4 -mt-5 flex w-1/4 flex-wrap sm:-mt-10',
+    'absolute left-2/4 -mt-12 flex w-1/4 flex-wrap 2xs:-mt-20 sm:-mt-36',
+    'absolute left-3/4 mt-5 flex w-1/4 flex-wrap sm:-mt-80'
+];
+
+const ShowcaseSectionMiniGallery = () => (
+    <div className="absolute -right-48 top-28 z-0 w-[180%] rotate-20 2xs:-right-36 2xs:top-10 2xs:w-[120%] sm:-right-20 sm:-top-10 sm:w-2/3">
+        {constructMiniGalleryData().map((columnData, index) => (
+            <div key={index} className={CLASS_PER_COLUMN_MINI_GALLERY[index]}>
+                {columnData.map(imgSrc => (
+                    <div key={imgSrc} className="w-full p-1">
+                        <Image
+                            quality={30}
+                            optimizedWidth={340}
+                            alt="gallery"
+                            className="rounded-lg"
+                            src={imgSrc}
+                            width={337.16}
+                            height={394.79}
+                        />
+                    </div>
+                ))}
+            </div>
+        ))}
+    </div>
+);
+
 const ShowcaseSection = () => (
     <section className="relative flex h-[600px] w-full min-w-[226px] overflow-hidden rounded-lg bg-white/95 sm:h-56">
         <div className="relative z-10 flex h-full w-full flex-col items-center justify-between pb-10 sm:items-start sm:p-5">
@@ -119,45 +151,13 @@ const ShowcaseSection = () => (
     </section>
 );
 
-const CLASS_PER_COLUMN_MINI_GALLERY = [
-    'absolute -mt-20 flex w-1/4 flex-wrap sm:-mt-20',
-    'absolute left-1/4 -mt-5 flex w-1/4 flex-wrap sm:-mt-10',
-    'absolute left-2/4 -mt-12 flex w-1/4 flex-wrap 2xs:-mt-20 sm:-mt-36',
-    'absolute left-3/4 mt-5 flex w-1/4 flex-wrap sm:-mt-80'
-];
-
-const constructMiniGalleryData = () => {
-    const IMAGE_PER_COLUMN = 4;
-    const miniGalleryData: string[][] = [];
-
-    for (let index = 0; index < MOBILE.length; index += IMAGE_PER_COLUMN) {
-        const slice =
-            index + IMAGE_PER_COLUMN > MOBILE.length ? [index] : [index, index + IMAGE_PER_COLUMN];
-
-        miniGalleryData.push(MOBILE.slice(...slice));
-    }
-
-    return miniGalleryData;
-};
-
-const ShowcaseSectionMiniGallery = () => (
-    <div className="absolute -right-48 top-28 z-0 w-[180%] rotate-20 2xs:-right-36 2xs:top-10 2xs:w-[120%] sm:-right-20 sm:-top-10 sm:w-2/3">
-        {constructMiniGalleryData().map((columnData, index) => (
-            <div key={index} className={CLASS_PER_COLUMN_MINI_GALLERY[index]}>
-                {columnData.map(imgSrc => (
-                    <div key={imgSrc} className="w-full p-1">
-                        <Image
-                            quality={30}
-                            optimizedWidth={340}
-                            alt="gallery"
-                            className="rounded-lg"
-                            src={imgSrc}
-                            width={337.16}
-                            height={394.79}
-                        />
-                    </div>
-                ))}
-            </div>
-        ))}
+const HomePage = () => (
+    <div className="relative flex w-full flex-col items-center justify-start gap-y-24 duration-300 animate-in fade-in-0 md:gap-y-36">
+        <TopSection />
+        <IntroSection />
+        <CollectionsSection />
+        <ShowcaseSection />
     </div>
 );
+
+export default HomePage;

@@ -16,8 +16,9 @@ type TokenMetadata = {
         value: string;
     }[];
 };
+
 /**
- * Performs a http request to own API to query NFT metadata.
+ * Performs a http request to query NFT metadata.
  *
  * @param options
  * @param options.collection - the collection to query for metadata

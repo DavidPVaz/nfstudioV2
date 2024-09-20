@@ -4,10 +4,8 @@ import { Document } from '@/components/organisms/document';
 import { queryDocument } from '@/server/service/contentful';
 import { DOCUMENTS } from '@/server/service/contentful/types';
 
-const title = 'Terms of Service | NFStudio';
-
 export const metadata: Metadata = {
-    title
+    title: 'Terms of Service | NFStudio'
 };
 
 const TermsOfServicePage = async () => {

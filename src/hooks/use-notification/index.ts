@@ -11,6 +11,9 @@ import {
     type Notification
 } from '@/hooks/use-notification/provider-state';
 
+/**
+ * Allows to hook into and add a notification to Notification Provider.
+ */
 export const useNotification = () => ({
     notify: (notification: Omit<Notification, 'id'>) =>
         setTimeout(() => {
@@ -46,6 +49,9 @@ export const useNotification = () => ({
         })
 });
 
+/**
+ * Creates the state store to be used in Notification Provider.
+ */
 export const useNotificationProvider = () => {
     const [state, setState] = useState<State>(memoryState);
 
