@@ -42,6 +42,7 @@ export function useLocalStorage<T>(
 
     const setState = useCallback(
         (value: SetStateArgs<T>) => {
+            const store = getSnapshot();
             const nextState =
                 value instanceof Function && store ? value(JSON.parse(store) as T) : (value as T);
 
@@ -49,7 +50,7 @@ export function useLocalStorage<T>(
                 ? removeLocalStorageItem(key)
                 : setLocalStorageItem<T>(key, nextState);
         },
-        [key, store]
+        [key, getSnapshot]
     );
 
     useEffect(() => {

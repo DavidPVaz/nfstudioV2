@@ -51,15 +51,13 @@ export const WizardContent = () => {
         pageKey: data.pageKey
     });
 
-    useEffect(() => {
-        return () => setData(null);
-    }, [setData]);
+    useEffect(() => () => setData(null), [setData]);
 
     const updateData = useCallback(
-        (data: Partial<WizardData>) => {
-            setData(previousData => ({
-                ...previousData,
-                ...data,
+        (newWizardData: Partial<WizardData>) => {
+            setData(currentWizardData => ({
+                ...currentWizardData,
+                ...newWizardData,
                 pageKey
             }));
         },
