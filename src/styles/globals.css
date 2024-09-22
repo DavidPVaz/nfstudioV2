@@ -75,7 +75,7 @@
     }
     body {
         @apply bg-background text-foreground;
-        padding-left: calc(100vw - 100%);
+        scrollbar-gutter: stable;
     }
 }
 
@@ -83,4 +83,16 @@
     .pb-safe {
         padding-bottom: env(safe-area-inset-bottom);
     }
+}
+
+::-webkit-scrollbar {
+    @apply h-1 w-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply rounded-lg border-[1px] border-solid border-transparent bg-foreground/80 bg-clip-padding;
 }
