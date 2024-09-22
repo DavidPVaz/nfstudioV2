@@ -121,24 +121,28 @@ export const PLATFORM_OPTIONS_MAP: Record<Platform, PlatformOptions> = {
     }
 };
 
-export const getAvailablePlatforms = () => PLATFORM_DISPLAY_NAME;
-export const getAvailableOptions = () => OPTION_DISPLAY_NAME;
+export const getAvailablePlatforms = () =>
+    Object.entries(PLATFORM_DISPLAY_NAME).map(([value, display]) => ({
+        value,
+        display
+    })) as { value: Platform; display: string }[];
+
 export const getPlatformAvailableOptions = (platform: Platform) =>
     Object.entries(PLATFORM_OPTIONS_MAP[platform]).reduce(
         (acc, [option, config]) => {
             const { width, height } = config;
 
-            return {
+            return [
                 ...acc,
-                [option as Option]: {
-                    width,
-                    height,
-                    displayName: OPTION_DISPLAY_NAME[option as Option]
+                {
+                    value: option as Option,
+                    display: `${OPTION_DISPLAY_NAME[option as Option]} - ${width}px x ${height}px`
                 }
-            };
+            ];
         },
-        {} as Record<Option, { width: number; height: number; displayName: string }>
+        [] as { value: Option; display: string }[]
     );
+
 export const getPlatformOptionConfig = ({
     platform,
     option
