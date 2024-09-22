@@ -8,24 +8,26 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue
-} from '@/components/ui/select';
+} from '@/components/atoms/select';
 
 type SelectionProps = {
     onSelect: (value: string) => void;
-    selected: string;
+    selected?: string;
     options: { value: string; display: string }[];
     disabled?: boolean;
+    placeholder: string;
 };
 
 export const SelectionDropdown = ({
     onSelect,
     selected,
     options,
-    disabled = false
+    disabled = false,
+    placeholder
 }: SelectionProps) => (
-    <Select onValueChange={onSelect} value={selected} disabled={disabled}>
+    <Select onValueChange={onSelect} value={selected ?? placeholder} disabled={disabled}>
         <SelectTrigger>
-            <SelectValue>{selected}</SelectValue>
+            <SelectValue>{selected ?? placeholder}</SelectValue>
         </SelectTrigger>
         <SelectContent>
             <SelectGroup>

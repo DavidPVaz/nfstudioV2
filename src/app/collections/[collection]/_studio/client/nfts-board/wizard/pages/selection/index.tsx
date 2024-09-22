@@ -51,12 +51,13 @@ export const Selection = () => {
             <SelectionDropdown
                 onSelect={onPlatform}
                 options={AVAILABLE_PLATFORMS}
-                selected={selectedPlatformDisplay ?? SELECT_PLATFORM}
+                selected={selectedPlatformDisplay}
+                placeholder={SELECT_PLATFORM}
             />
             <SelectionDropdown
                 onSelect={onOption}
                 options={availableOptions}
-                selected={SELECT_OPTION}
+                placeholder={SELECT_OPTION}
                 disabled={availableOptions.length === 0}
             />
         </>
