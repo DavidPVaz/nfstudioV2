@@ -60,15 +60,15 @@ export const Wizard = () => {
 
     const previous = useCallback(
         () =>
-            Pages[data.pageKey]?.previous && updateData({ pageKey: Pages[data.pageKey].previous! }),
+            Pages[data.pageKey].previous && updateData({ pageKey: Pages[data.pageKey].previous! }),
         [updateData, data.pageKey]
     );
     const next = useCallback(
-        () => Pages[data.pageKey]?.next && updateData({ pageKey: Pages[data.pageKey].next! }),
+        () => Pages[data.pageKey].next && updateData({ pageKey: Pages[data.pageKey].next! }),
         [updateData, data.pageKey]
     );
 
-    const Page = useMemo(() => Pages[data.pageKey]?.Page, [data.pageKey]);
+    const Page = useMemo(() => Pages[data.pageKey].Page, [data.pageKey]);
 
     const context = {
         data,
@@ -77,7 +77,11 @@ export const Wizard = () => {
         next
     };
 
-    return <Context.Provider value={context}>{Page ? <Page /> : null}</Context.Provider>;
+    return (
+        <Context.Provider value={context}>
+            <Page />
+        </Context.Provider>
+    );
 };
 
 export const useWizardContext = () => useContext(Context) as WizardContext;
