@@ -41,7 +41,7 @@ export const NftsBoard = ({
         () => userHasLoadedNFTs && areCompleteNFTs(nfts),
         [nfts, userHasLoadedNFTs]
     );
-    const selectedId = useMemo(() => (nfts as NFT[]).find(({ selected }) => selected)?.id, [nfts]);
+    const selectedNFT = useMemo(() => (nfts as NFT[]).find(({ selected }) => selected), [nfts]);
 
     const { response, noNetwork } = useFallbackApiRead<LoadMetadataProps, NFT[]>({
         method: loadMetadata,
@@ -100,7 +100,7 @@ export const NftsBoard = ({
             <Toolbar
                 onRefresh={onIncompleteLoad}
                 canCreate={nftsLoadIsComplete}
-                selectedId={selectedId}
+                selectedNFT={selectedNFT}
             />
         </div>
     );

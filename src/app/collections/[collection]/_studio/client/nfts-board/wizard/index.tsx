@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Modal } from '@/components/molecules/modal';
+import type { NFT } from '@/app/collections/[collection]/_studio/client/';
 
 const Wizard = dynamic(
     () =>
@@ -14,10 +15,12 @@ const Wizard = dynamic(
 
 export const WizardModal = ({
     open,
-    onOpenChange
+    onOpenChange,
+    selectedNFT
 }: {
     open: boolean;
     onOpenChange: () => void;
+    selectedNFT: NFT;
 }) => (
     <Modal
         open={open}
@@ -26,6 +29,6 @@ export const WizardModal = ({
         description="Studio session"
         className="h-[75%] border-0 2xs:h-[85%] 2xs:max-w-[90%] 2xs:border sm:max-w-[80%]"
     >
-        {open && <Wizard />}
+        {open && <Wizard selectedNFT={selectedNFT} />}
     </Modal>
 );

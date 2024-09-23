@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { CircleHelp, RefreshCcw } from 'lucide-react';
 import type {
+    NFT,
     IncompleteNFT,
     LoadIncompleteNFTs
 } from '@/app/collections/[collection]/_studio/client';
@@ -15,11 +16,11 @@ import { useNotification } from '@/hooks/use-notification';
 export const Toolbar = React.memo(
     ({
         canCreate,
-        selectedId,
+        selectedNFT,
         onRefresh
     }: {
         canCreate: boolean;
-        selectedId?: number;
+        selectedNFT?: NFT;
         onRefresh: LoadIncompleteNFTs;
     }) => {
         const refreshModal = useModal();
@@ -28,7 +29,7 @@ export const Toolbar = React.memo(
         const { notify } = useNotification();
 
         const onCreate = useCallback(() => {
-            if (!selectedId) {
+            if (!selectedNFT) {
                 notify({
                     title: 'No NFT selected!',
                     description: 'Select the NFT before starting the creation.',
@@ -38,7 +39,7 @@ export const Toolbar = React.memo(
             }
 
             wizardModal.open();
-        }, [notify, selectedId, wizardModal]);
+        }, [notify, selectedNFT, wizardModal]);
 
         return (
             <>
@@ -85,12 +86,18 @@ export const Toolbar = React.memo(
 
                 <HelpModal open={helpModal.isOpen} onOpenChange={helpModal.toggle} />
 
-                <WizardModal open={wizardModal.isOpen} onOpenChange={wizardModal.toggle} />
+                {selectedNFT && (
+                    <WizardModal
+                        open={wizardModal.isOpen}
+                        onOpenChange={wizardModal.toggle}
+                        selectedNFT={selectedNFT}
+                    />
+                )}
             </>
         );
     },
     (previousProps, nextProps) =>
         previousProps.canCreate === nextProps.canCreate &&
-        previousProps.selectedId === nextProps.selectedId &&
+        previousProps.selectedNFT === nextProps.selectedNFT &&
         previousProps.onRefresh === nextProps.onRefresh
 );

@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useEffect, useContext, useMemo } from 'react';
-import { WIZARD_PAGES, WizardPageKey, Platform, Option } from '@/enums';
+import { WIZARD_PAGES, type WizardPageKey, type Platform, type Option } from '@/enums';
+import type { NFT } from '@/app/collections/[collection]/_studio/client/';
 import { Pages } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages';
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
 import { useLocalStorage } from '@/hooks/use-local-storage';
@@ -17,6 +18,7 @@ type WizardData = {
     downloadId?: string;
     hasDownloaded: boolean;
     pageKey: WizardPageKey;
+    selectedNFT: NFT;
 };
 
 type WizardContext = {
@@ -39,12 +41,12 @@ const DEFAULT_DATA = {
     pageKey: WIZARD_PAGES.SELECTION
 };
 
-export const Wizard = () => {
+export const Wizard = ({ selectedNFT }: { selectedNFT: NFT }) => {
     const { selectedCollection } = useStudioContext();
-    const [data, setData] = useLocalStorage<WizardData>(
-        `studio-${selectedCollection}`,
-        DEFAULT_DATA
-    );
+    const [data, setData] = useLocalStorage<WizardData>(`studio-${selectedCollection}`, {
+        selectedNFT,
+        ...DEFAULT_DATA
+    });
 
     useEffect(() => () => setData(null), [setData]);
 
