@@ -39,7 +39,7 @@ export const Selection = () => {
     );
 
     return (
-        <div className="relative flex w-full flex-col gap-8 pt-6 2xs:w-4/5 2xs:pt-0 md:flex-row">
+        <div className="relative flex w-full flex-col justify-start gap-8 pt-6 2xs:w-4/5 2xs:justify-center 2xs:pt-0 md:flex-row md:items-center">
             <SelectionDropdown
                 ariaLabel={SELECT_PLATFORM}
                 onSelect={onPlatform}

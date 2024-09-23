@@ -28,7 +28,7 @@ export const WizardModal = ({
         onOpenChange={onOpenChange}
         title="Studio session"
         description="Studio session"
-        className="h-[75%] border-0 2xs:h-[85%] 2xs:max-w-[90%] 2xs:border sm:max-w-[80%]"
+        className="h-[90%] border-0 2xs:h-[85%] 2xs:max-w-[90%] 2xs:border sm:max-w-[80%]"
     >
         {open && <Wizard selectedNFT={selectedNFT} />}
     </Modal>
