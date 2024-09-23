@@ -7,14 +7,14 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 const Context = createContext({});
 
 type WizardData = {
-    platform: null | Platform;
-    option: null | Option;
+    platform?: Platform;
+    option?: Option;
     atRight: boolean;
     coverStyle: boolean;
     logo?: string;
-    downloadRef: null | string;
-    downloadName: null | string;
-    downloadId: null | string;
+    downloadRef?: string;
+    downloadName?: string;
+    downloadId?: string;
     hasDownloaded: boolean;
     pageKey: WizardPageKey;
 };
@@ -27,14 +27,14 @@ type WizardContext = {
 };
 
 const DEFAULT_DATA = {
-    platform: null,
-    option: null,
+    platform: undefined,
+    option: undefined,
     atRight: false,
     coverStyle: false,
     logo: undefined,
-    downloadRef: null,
-    downloadName: null,
-    downloadId: null,
+    downloadRef: undefined,
+    downloadName: undefined,
+    downloadId: undefined,
     hasDownloaded: false,
     pageKey: WIZARD_PAGES.SELECTION
 };
@@ -79,7 +79,9 @@ export const Wizard = () => {
 
     return (
         <Context.Provider value={context}>
-            <Page />
+            <div className="flex flex-1 items-start justify-center p-6 2xs:items-center 2xs:p-0">
+                <Page />
+            </div>
         </Context.Provider>
     );
 };
