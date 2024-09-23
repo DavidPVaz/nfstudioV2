@@ -1,12 +1,18 @@
 'use client';
 
 import { useSyncExternalStore, useCallback, useEffect } from 'react';
+import { compressToUTF16, decompressFromUTF16 } from 'lz-string';
 
 const dispatchStorageEvent = (key: string, newValue: string | null) =>
     window.dispatchEvent(new StorageEvent('storage', { key, newValue }));
 
 const setLocalStorageItem = <T>(key: string, value: T | null) => {
-    const stringifiedValue = JSON.stringify(value);
+    let stringifiedValue = JSON.stringify(value);
+
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV !== 'development') {
+        stringifiedValue = compressToUTF16(stringifiedValue);
+    }
+
     window.localStorage.setItem(key, stringifiedValue);
     dispatchStorageEvent(key, stringifiedValue);
 };
@@ -16,7 +22,14 @@ const removeLocalStorageItem = (key: string) => {
     dispatchStorageEvent(key, null);
 };
 
-const getLocalStorageItem = (key: string) => window.localStorage.getItem(key);
+const getLocalStorageItem = (key: string) => {
+    if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
+        return window.localStorage.getItem(key);
+    }
+
+    const item = window.localStorage.getItem(key);
+    return item ? decompressFromUTF16(item) : null;
+};
 
 export type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefined);
 

@@ -71,6 +71,9 @@ importers:
       lucide-react:
         specifier: ^0.395.0
         version: 0.395.0(react@18.3.1)
+      lz-string:
+        specifier: ^1.5.0
+        version: 1.5.0
       next:
         specifier: 14.2.4
         version: 14.2.4(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3862,6 +3865,10 @@ packages:
     resolution: {integrity: sha512-6hzdNH5723A4FLaYZWpK50iyZH8iS2Jq5zuPRRotOFkhu6kxxJiebVdJ72tCR5XkiIeYFOU5NUawFZOac+VeYw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
+
+  lz-string@1.5.0:
+    resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
+    hasBin: true
 
   magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
@@ -9343,6 +9350,8 @@ snapshots:
   lucide-react@0.395.0(react@18.3.1):
     dependencies:
       react: 18.3.1
+
+  lz-string@1.5.0: {}
 
   magic-string@0.30.10:
     dependencies:
