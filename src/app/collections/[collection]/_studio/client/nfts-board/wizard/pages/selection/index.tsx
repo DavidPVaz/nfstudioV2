@@ -46,7 +46,6 @@ export const Selection = () => {
                 options={AVAILABLE_PLATFORMS}
                 selected={platform}
                 placeholder={SELECT_PLATFORM}
-                defaultOpen={!platform}
             />
             <SelectionDropdown
                 ariaLabel={SELECT_OPTION}

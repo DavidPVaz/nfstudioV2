@@ -16,7 +16,6 @@ type SelectionProps = {
     options: { value: string; display: string }[];
     disabled?: boolean;
     placeholder: string;
-    defaultOpen?: boolean;
     ariaLabel: string;
 };
 
@@ -26,10 +25,9 @@ export const SelectionDropdown = ({
     options,
     disabled = false,
     placeholder,
-    defaultOpen = false,
     ariaLabel
 }: SelectionProps) => (
-    <Select onValueChange={onSelect} value={selected} disabled={disabled} defaultOpen={defaultOpen}>
+    <Select onValueChange={onSelect} value={selected} disabled={disabled}>
         <SelectTrigger aria-label={ariaLabel}>
             <SelectValue placeholder={placeholder} />
         </SelectTrigger>
