@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { Skeleton } from '@/components/atoms/skeleton';
+import { NFStudioSkeleton } from '@/components/molecules/nfstudio-skeleton';
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
 import { NftsBoard } from '@/app/collections/[collection]/_studio/client/nfts-board';
 import { useLocalStorage } from '@/hooks/use-local-storage';
@@ -56,7 +56,7 @@ export const StudioClientContent = () => {
     );
 
     return !client ? (
-        <Skeleton className="min-h-full w-full" />
+        <NFStudioSkeleton />
     ) : (
         <NftsBoard
             nfts={nfts}

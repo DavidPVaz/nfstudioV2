@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { Modal } from '@/components/molecules/modal';
+import { NFStudioSkeleton } from '@/components/molecules/nfstudio-skeleton';
 import type { NFT } from '@/app/collections/[collection]/_studio/client/';
 
 const Wizard = dynamic(
@@ -9,7 +10,7 @@ const Wizard = dynamic(
             module => module.Wizard
         ),
     {
-        loading: () => <>Loading..</>
+        loading: NFStudioSkeleton
     }
 );
 
