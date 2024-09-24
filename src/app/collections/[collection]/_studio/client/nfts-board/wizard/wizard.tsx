@@ -24,7 +24,7 @@ type WizardData = {
 type WizardContext = {
     data: WizardData;
     updateData: (data: Partial<WizardData>) => void;
-    previous: () => void;
+    previous: (resetFields?: Partial<WizardData>) => void;
     next: () => void;
 };
 
@@ -55,8 +55,9 @@ export const Wizard = ({ selectedNFT }: { selectedNFT: NFT }) => {
     );
 
     const previous = useCallback(
-        () =>
-            Pages[data.pageKey].previous && updateData({ pageKey: Pages[data.pageKey].previous! }),
+        (resetFields: Partial<WizardData> = {}) =>
+            Pages[data.pageKey].previous &&
+            updateData({ pageKey: Pages[data.pageKey].previous!, ...resetFields }),
         [updateData, data.pageKey]
     );
     const next = useCallback(

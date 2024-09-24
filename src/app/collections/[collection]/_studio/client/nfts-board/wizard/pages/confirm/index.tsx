@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Link from 'next/link';
-import { PAGES } from '@/enums';
+import { PAGES, PLATFORMS, type Platform } from '@/enums';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
 import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
-import { NFTPositionSwitch } from '@/components/molecules/nft-position-switch';
+import { Switch } from '@/components/molecules/nft-position-switch';
 import { SelectableLogo } from '@/components/molecules/selectable-logo';
 import { ArrowLeft } from 'lucide-react';
 
@@ -78,7 +78,7 @@ const Logos = React.memo(
         onSelect: (logo?: string) => void;
     }) => (
         <div
-            className={`grid w-[95%] ${logos.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3`}
+            className={`grid w-[95%] ${logos.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3 transition-all`}
         >
             {logos.map((logo, index) => (
                 <SelectableLogo
@@ -97,60 +97,103 @@ const Logos = React.memo(
 );
 
 const Selectors = ({
+    platform,
     nftPositionChecked,
     onNFTPositionCheckChange,
+    coverStyleChecked,
+    onCoverStyleCheckChange,
     logos,
     selectedLogo,
     onLogoSelect
 }: {
+    platform: Platform;
     nftPositionChecked: boolean;
     onNFTPositionCheckChange: (checked: boolean) => void;
+    coverStyleChecked: boolean;
+    onCoverStyleCheckChange: (checked: boolean) => void;
     logos: string[];
     selectedLogo?: string;
     onLogoSelect: (logo?: string) => void;
-}) => (
-    <div className="relative flex w-full flex-col items-center gap-y-4 md:gap-y-6">
-        <div className="relative flex w-full flex-col items-center gap-y-3 md:gap-y-4">
-            <span className="text-base 2xs:text-xl">NFT&#39;s positioning?</span>
-            <NFTPositionSwitch
-                leftLabel="Center"
-                rightLabel="Right"
-                checked={nftPositionChecked}
-                onCheckChange={onNFTPositionCheckChange}
-            />
-        </div>
+}) => {
+    const userSelectedMobilePlatform = useMemo(() => platform === PLATFORMS.MOBILE, [platform]);
+    const switchLabel = useMemo(
+        () => (userSelectedMobilePlatform ? 'Cover style?' : "NFT's positioning?"),
+        [userSelectedMobilePlatform]
+    );
 
-        <div className="relative flex w-full flex-col items-center gap-y-3 md:gap-y-4">
-            <span className="text-base 2xs:text-xl">Logos</span>
-            <Logos logos={logos} selectedLogo={selectedLogo} onSelect={onLogoSelect} />
+    return (
+        <div className="relative flex w-full flex-col items-center gap-y-4 md:gap-y-6">
+            <div className="relative flex w-full flex-col items-center gap-y-3 md:gap-y-4">
+                <span className="text-base 2xs:text-xl">{switchLabel}</span>
+                {userSelectedMobilePlatform ? (
+                    <Switch
+                        leftLabel="No"
+                        rightLabel="yes"
+                        checked={coverStyleChecked}
+                        onCheckChange={onCoverStyleCheckChange}
+                    />
+                ) : (
+                    <Switch
+                        leftLabel="Center"
+                        rightLabel="Right"
+                        checked={nftPositionChecked}
+                        onCheckChange={onNFTPositionCheckChange}
+                    />
+                )}
+            </div>
+
+            <div
+                className={`relative ${!coverStyleChecked ? 'flex' : 'hidden'} w-full flex-col items-center gap-y-3 md:gap-y-4`}
+            >
+                <span className="text-base 2xs:text-xl">Logos</span>
+                <Logos logos={logos} selectedLogo={selectedLogo} onSelect={onLogoSelect} />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export const Confirm = () => {
     const { cacheStrategy, logos } = useStudioContext();
     const {
         previous,
         updateData,
-        data: { selectedNFT, atRight, logo }
+        data: { platform, selectedNFT, atRight, logo, coverStyle }
     } = useWizardContext();
 
+    const onBack = useCallback(
+        () =>
+            previous({
+                platform: undefined,
+                option: undefined,
+                logo: undefined,
+                atRight: false,
+                coverStyle: false
+            }),
+        [previous]
+    );
     const onNFTPositionCheck = useCallback(
         (atRight: boolean) => updateData({ atRight }),
+        [updateData]
+    );
+    const onCoverStyleCheck = useCallback(
+        (coverStyle: boolean) => updateData({ coverStyle }),
         [updateData]
     );
     const onLogoSelect = useCallback((logo?: string) => updateData({ logo }), [updateData]);
 
     return (
         <>
-            <BackArrow onBack={previous} />
+            <BackArrow onBack={onBack} />
             <div className="relative grid max-h-[calc(100%-100px+1.5rem)] w-full grid-cols-1 overflow-y-auto 2xs:max-h-[calc(100%-92px+1.5rem)] lg:grid-cols-2">
                 <div className="relative flex w-full flex-1 flex-col items-center justify-start gap-y-3 pb-3 lg:justify-center">
                     <NFTDisplay {...selectedNFT} {...cacheStrategy} />
                     <div className="relative flex w-full flex-1 flex-col items-center lg:hidden">
                         <Selectors
+                            platform={platform!}
                             nftPositionChecked={atRight}
                             onNFTPositionCheckChange={onNFTPositionCheck}
+                            coverStyleChecked={coverStyle}
+                            onCoverStyleCheckChange={onCoverStyleCheck}
                             logos={logos}
                             selectedLogo={logo}
                             onLogoSelect={onLogoSelect}
@@ -159,8 +202,11 @@ export const Confirm = () => {
                 </div>
                 <div className="hidden w-full flex-1 flex-col items-center justify-center lg:flex">
                     <Selectors
+                        platform={platform!}
                         nftPositionChecked={atRight}
                         onNFTPositionCheckChange={onNFTPositionCheck}
+                        coverStyleChecked={coverStyle}
+                        onCoverStyleCheckChange={onCoverStyleCheck}
                         logos={logos}
                         selectedLogo={logo}
                         onLogoSelect={onLogoSelect}

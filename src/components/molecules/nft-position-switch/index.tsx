@@ -1,8 +1,8 @@
 import React from 'react';
 import { Label } from '@/components/atoms/label';
-import { Switch } from '@/components/atoms/switch';
+import { Switch as SwitchRaw } from '@/components/atoms/switch';
 
-export const NFTPositionSwitch = React.memo(
+export const Switch = React.memo(
     ({
         checked,
         onCheckChange,
@@ -17,19 +17,19 @@ export const NFTPositionSwitch = React.memo(
         <div className="flex w-full items-center justify-center gap-x-3">
             <Label
                 className={`${!checked ? 'text-xl font-bold' : 'text-lg'} w-full text-right transition-all`}
-                htmlFor="nft-position"
+                htmlFor="switch"
             >
                 {leftLabel}
             </Label>
-            <Switch
+            <SwitchRaw
                 className="data-[state=checked]:bg-foreground data-[state=unchecked]:bg-foreground"
-                id="nft-position"
+                id="switch"
                 checked={checked}
                 onCheckedChange={onCheckChange}
             />
             <Label
                 className={`${checked ? 'text-xl font-bold' : 'text-lg'} w-full text-left transition-all`}
-                htmlFor="nft-position"
+                htmlFor="switch"
             >
                 {rightLabel}
             </Label>
