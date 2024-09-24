@@ -82,7 +82,11 @@ export function useLocalStorage<T>(
  * @param selector - the selector function
  * @param defaultValue - the default value if store does not exist
  */
-export const useSelector = <T, R>(key: string, selector: (store: T) => R, defaultValue = null) => {
+export const useSelector = <T, R>(
+    key: string,
+    selector: (store: T) => R | undefined,
+    defaultValue = null
+) => {
     const store = getLocalStorageItem(key);
 
     return store === null ? defaultValue : selector(JSON.parse(store) as T);
