@@ -41,7 +41,8 @@ export const NFTCard = React.memo(
             </button>
         </Card>
     ),
-    (previousProps, nextProps) => previousProps.selected === nextProps.selected
+    (previousProps, nextProps) =>
+        previousProps.selected === nextProps.selected && previousProps.onClick === nextProps.onClick
 );
 
 export const NFTCardSkeleton = () => (
