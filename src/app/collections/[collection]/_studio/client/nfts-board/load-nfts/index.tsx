@@ -1,8 +1,15 @@
 import React from 'react';
+import { RefreshCcw } from 'lucide-react';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/atoms/card';
+import { Button } from '@/components/atoms/button';
+import { Tooltip } from '@/components/atoms/tooltip';
 import { Modal } from '@/components/molecules/modal';
+import { useModal } from '@/hooks/use-modal';
 import { LoadForm } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts/load-form';
-import { type LoadIncompleteNFTs } from '@/app/collections/[collection]/_studio/client';
+import {
+    type LoadIncompleteNFTs,
+    type IncompleteNFT
+} from '@/app/collections/[collection]/_studio/client';
 
 const Content = () => (
     <>
@@ -35,29 +42,38 @@ export const LoadNFTs = ({ onIncompleteLoad }: { onIncompleteLoad: LoadIncomplet
     </div>
 );
 
-export const RefreshNFTsModal = ({
-    open,
-    onOpenChange,
-    onRefresh
-}: {
-    open: boolean;
-    onOpenChange: () => void;
-    onRefresh: LoadIncompleteNFTs;
-}) => (
-    <Modal
-        open={open}
-        onOpenChange={onOpenChange}
-        title="Refresh NFT selection"
-        description="Refresh NFT selection"
-        className="max-w-lg border-0 2xs:min-h-[526px] 2xs:border"
-    >
-        <Card className="relative h-full w-full border-0 bg-background">
-            <CardHeader className="gap-y-2 pb-2 pl-6 pr-6 pt-6 sm:gap-y-3">
-                <Content />
-            </CardHeader>
-            <div className="pb-6 pl-6 pr-6 pt-2 2xs:pt-3">
-                <LoadForm onSubmit={onRefresh} />
-            </div>
-        </Card>
-    </Modal>
-);
+export const RefreshNFTs = ({ onRefresh }: { onRefresh: LoadIncompleteNFTs }) => {
+    const { isOpen, open, toggle, close } = useModal();
+
+    return (
+        <>
+            <Tooltip content="Refresh NFT selection">
+                <Button variant="ghost" size="icon2x" onClick={open} disabled={isOpen}>
+                    <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
+                    <span className="sr-only">Refresh NFT selection</span>
+                </Button>
+            </Tooltip>
+            <Modal
+                open={isOpen}
+                onOpenChange={toggle}
+                title="Refresh NFT selection"
+                description="Refresh NFT selection"
+                className="max-w-lg border-0 2xs:min-h-[526px] 2xs:border"
+            >
+                <Card className="relative h-full w-full border-0 bg-background">
+                    <CardHeader className="gap-y-2 pb-2 pl-6 pr-6 pt-6 sm:gap-y-3">
+                        <Content />
+                    </CardHeader>
+                    <div className="pb-6 pl-6 pr-6 pt-2 2xs:pt-3">
+                        <LoadForm
+                            onSubmit={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
+                                close();
+                                onRefresh(incompleteNFTs);
+                            }}
+                        />
+                    </div>
+                </Card>
+            </Modal>
+        </>
+    );
+};

@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { PAGES, PLATFORMS, type Platform } from '@/enums';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
@@ -7,7 +8,8 @@ import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
 import { Switch } from '@/components/molecules/nft-position-switch';
 import { SelectableLogo } from '@/components/molecules/selectable-logo';
-import { ArrowLeft } from 'lucide-react';
+import { Preview } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/confirm/preview';
+import { Order } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/confirm/order';
 
 const BackArrow = React.memo(
     ({ onBack }: { onBack: () => void }) => (
@@ -27,8 +29,8 @@ const BackArrow = React.memo(
 const Actions = React.memo(() => (
     <div className="absolute bottom-0 flex w-full flex-col items-center justify-center gap-y-4 py-2">
         <div className="flex flex-row gap-x-4">
-            <Button className="h-9 rounded-lg px-5 2xs:h-11 2xs:px-8">PREVIEW</Button>
-            <Button className="h-9 rounded-lg px-5 2xs:h-11 2xs:px-8">ORDER</Button>
+            <Preview />
+            <Order />
         </div>
         <span className="w-full text-center text-xs">
             By clicking &#39;Order&#39;, you agree to the{' '}
