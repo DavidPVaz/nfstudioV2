@@ -19,6 +19,28 @@ const BackArrow = ({ onBack }: { onBack: () => void }) => (
     </Button>
 );
 
+const Actions = () => (
+    <div className="absolute bottom-0 flex w-full flex-col items-center justify-center gap-y-4 py-2">
+        <div className="flex flex-row gap-x-4">
+            <Button className="h-9 rounded-lg px-5 2xs:h-11 2xs:px-8">PREVIEW</Button>
+            <Button className="h-9 rounded-lg px-5 2xs:h-11 2xs:px-8">ORDER</Button>
+        </div>
+        <span className="w-full text-center text-xs">
+            By clicking &#39;Order&#39;, you agree to the{' '}
+            <Link aria-label="Consult terms of services" href={PAGES.TERMS_OF_SERVICE}>
+                <strong>NFStudio Terms of Service</strong>
+            </Link>
+        </span>
+    </div>
+);
+
+const Selectors = () => (
+    <>
+        <span className="text-base">NFT&#39;s positioning?</span>
+        <span className="h-10 text-base">toggle</span>
+    </>
+);
+
 export const Confirm = () => {
     const { cacheStrategy } = useStudioContext();
     const {
@@ -29,12 +51,12 @@ export const Confirm = () => {
     return (
         <>
             <BackArrow onBack={previous} />
-            <div className="relative flex max-h-full min-h-full min-w-full flex-col items-start justify-center">
-                <div className="flex w-full flex-1 flex-col items-center justify-start gap-y-6">
-                    <div className="flex w-full justify-center">
+            <div className="relative grid h-[calc(100%-100px+1.5rem)] w-full grid-cols-1 2xs:h-[calc(100%-92px+1.5rem)] lg:grid-cols-2">
+                <div className="relative flex w-full flex-1 flex-col items-center justify-start gap-y-3 lg:justify-center">
+                    <div className="flex w-full justify-center px-14 lg:px-0">
                         <Image
-                            width={200}
-                            height={200}
+                            width={350}
+                            height={350}
                             className="rounded-lg"
                             src={selectedNFT.src}
                             alt={`NFT #${selectedNFT.id}`}
@@ -43,22 +65,15 @@ export const Confirm = () => {
                             {...cacheStrategy}
                         />
                     </div>
-                    <span className="text-base">NFT's positioning?</span>
-                    <span className="h-10 text-base">toggle</span>
-                </div>
-                <div className="absolute bottom-0 flex w-full flex-col items-center justify-center gap-y-4">
-                    <div className="flex flex-row gap-x-4">
-                        <Button size="lg">PREVIEW</Button>
-                        <Button size="lg">ORDER</Button>
+                    <div className="relative flex flex-col items-center gap-y-2 lg:hidden">
+                        <Selectors />
                     </div>
-                    <span className="w-full text-center text-xs">
-                        By clicking 'Order', you agree to the{' '}
-                        <Link aria-label="Consult terms of services" href={PAGES.TERMS_OF_SERVICE}>
-                            <strong>NFStudio Terms of Service</strong>
-                        </Link>
-                    </span>
+                </div>
+                <div className="hidden w-full flex-1 flex-col items-center justify-center gap-y-6 lg:flex">
+                    <Selectors />
                 </div>
             </div>
+            <Actions />
         </>
     );
 };

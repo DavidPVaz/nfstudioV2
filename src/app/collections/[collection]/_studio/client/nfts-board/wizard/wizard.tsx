@@ -81,7 +81,7 @@ export const Wizard = ({ selectedNFT }: { selectedNFT: NFT }) => {
 
     return (
         <Context.Provider value={context}>
-            <div className="flex h-full justify-center p-6 2xs:p-0">
+            <div className="flex h-full max-h-full justify-center overflow-hidden p-6 2xs:p-0">
                 <Page />
             </div>
         </Context.Provider>
