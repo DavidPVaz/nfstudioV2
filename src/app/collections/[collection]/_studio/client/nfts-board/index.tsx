@@ -99,7 +99,7 @@ export const NftsBoard = ({
             </div>
             <Toolbar
                 onRefresh={onIncompleteLoad}
-                canCreate={nftsLoadIsComplete}
+                disabled={!nftsLoadIsComplete}
                 selectedNFT={selectedNFT}
             />
         </div>

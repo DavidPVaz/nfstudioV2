@@ -1,37 +1,35 @@
 import React, { useCallback } from 'react';
 import type { NFT, LoadIncompleteNFTs } from '@/app/collections/[collection]/_studio/client';
-import { Button } from '@/components/atoms/button';
 import { RefreshNFTs } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts';
 import { Help } from '@/app/collections/[collection]/_studio/client/nfts-board/help';
-import { WizardModal } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard';
-import { useModal } from '@/hooks/use-modal';
+import { Wizard } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard';
 import { useNotification } from '@/hooks/use-notification';
 
 export const Toolbar = React.memo(
     ({
-        canCreate,
+        disabled,
         selectedNFT,
         onRefresh
     }: {
-        canCreate: boolean;
+        disabled: boolean;
         selectedNFT?: NFT;
         onRefresh: LoadIncompleteNFTs;
     }) => {
-        const wizardModal = useModal();
         const { notify } = useNotification();
 
-        const onCreate = useCallback(() => {
+        const canCreate = useCallback(() => {
             if (!selectedNFT) {
                 notify({
                     title: 'No NFT selected!',
                     description: 'Select the NFT before starting the creation.',
                     duration: 3000
                 });
-                return;
+
+                return false;
             }
 
-            wizardModal.open();
-        }, [notify, selectedNFT, wizardModal]);
+            return true;
+        }, [notify, selectedNFT]);
 
         return (
             <>
@@ -41,23 +39,13 @@ export const Toolbar = React.memo(
                         <Help />
                     </div>
 
-                    <Button disabled={!canCreate} size="lg" onClick={onCreate}>
-                        CREATE
-                    </Button>
+                    <Wizard disabled={disabled} canCreate={canCreate} selectedNFT={selectedNFT} />
                 </div>
-
-                {selectedNFT && (
-                    <WizardModal
-                        open={wizardModal.isOpen}
-                        onOpenChange={wizardModal.toggle}
-                        selectedNFT={selectedNFT}
-                    />
-                )}
             </>
         );
     },
     (previousProps, nextProps) =>
-        previousProps.canCreate === nextProps.canCreate &&
+        previousProps.disabled === nextProps.disabled &&
         previousProps.selectedNFT === nextProps.selectedNFT &&
         previousProps.onRefresh === nextProps.onRefresh
 );

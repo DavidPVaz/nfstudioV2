@@ -35,7 +35,7 @@ const DEFAULT_DATA = {
     pageKey: WIZARD_PAGES.SELECTION
 };
 
-export const Wizard = ({ selectedNFT }: { selectedNFT: NFT }) => {
+export const WizardContent = ({ selectedNFT }: { selectedNFT: NFT }) => {
     const { selectedCollection } = useStudioContext();
     const [data, setData] = useLocalStorage<WizardData>(`studio-${selectedCollection}`, {
         selectedNFT,
