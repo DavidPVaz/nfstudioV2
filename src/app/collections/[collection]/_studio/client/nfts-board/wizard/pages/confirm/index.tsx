@@ -6,6 +6,7 @@ import { useStudioContext } from '@/app/collections/[collection]/_studio/client/
 import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
 import { NFTPositionSwitch } from '@/components/molecules/nft-position-switch';
+import { SelectableLogo } from '@/components/molecules/selectable-logo';
 import { ArrowLeft } from 'lucide-react';
 
 const BackArrow = React.memo(
@@ -66,50 +67,104 @@ const NFTDisplay = React.memo(
     )
 );
 
-const Selectors = ({
-    checked,
-    onCheckChange
-}: {
-    checked: boolean;
-    onCheckChange: (checked: boolean) => void;
-}) => (
-    <>
-        <span className="text-base 2xs:text-xl">NFT&#39;s positioning?</span>
+const Logos = React.memo(
+    ({
+        logos,
+        selectedLogo,
+        onSelect
+    }: {
+        logos: string[];
+        selectedLogo?: string;
+        onSelect: (logo?: string) => void;
+    }) => (
+        <div
+            className={`grid w-[95%] ${logos.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3`}
+        >
+            {logos.map((logo, index) => (
+                <SelectableLogo
+                    key={logo}
+                    logo={logo}
+                    selected={logo === selectedLogo}
+                    onSelect={onSelect}
+                    ariaLabel={`Select logo ${index + 1}`}
+                />
+            ))}
+        </div>
+    ),
+    (previousProps, nextProps) =>
+        previousProps.selectedLogo === nextProps.selectedLogo &&
+        previousProps.onSelect === nextProps.onSelect
+);
 
-        <NFTPositionSwitch
-            leftLabel="Center"
-            rightLabel="Right"
-            checked={checked}
-            onCheckChange={onCheckChange}
-        />
-    </>
+const Selectors = ({
+    nftPositionChecked,
+    onNFTPositionCheckChange,
+    logos,
+    selectedLogo,
+    onLogoSelect
+}: {
+    nftPositionChecked: boolean;
+    onNFTPositionCheckChange: (checked: boolean) => void;
+    logos: string[];
+    selectedLogo?: string;
+    onLogoSelect: (logo?: string) => void;
+}) => (
+    <div className="relative flex w-full flex-col items-center gap-y-4 md:gap-y-6">
+        <div className="relative flex w-full flex-col items-center gap-y-3 md:gap-y-4">
+            <span className="text-base 2xs:text-xl">NFT&#39;s positioning?</span>
+            <NFTPositionSwitch
+                leftLabel="Center"
+                rightLabel="Right"
+                checked={nftPositionChecked}
+                onCheckChange={onNFTPositionCheckChange}
+            />
+        </div>
+
+        <div className="relative flex w-full flex-col items-center gap-y-3 md:gap-y-4">
+            <span className="text-base 2xs:text-xl">Logos</span>
+            <Logos logos={logos} selectedLogo={selectedLogo} onSelect={onLogoSelect} />
+        </div>
+    </div>
 );
 
 export const Confirm = () => {
-    const { cacheStrategy } = useStudioContext();
+    const { cacheStrategy, logos } = useStudioContext();
     const {
         previous,
         updateData,
-        data: { selectedNFT, atRight }
+        data: { selectedNFT, atRight, logo }
     } = useWizardContext();
 
     const onNFTPositionCheck = useCallback(
         (atRight: boolean) => updateData({ atRight }),
         [updateData]
     );
+    const onLogoSelect = useCallback((logo?: string) => updateData({ logo }), [updateData]);
 
     return (
         <>
             <BackArrow onBack={previous} />
-            <div className="relative grid h-[calc(100%-100px+1.5rem)] w-full grid-cols-1 2xs:h-[calc(100%-92px+1.5rem)] lg:grid-cols-2">
-                <div className="relative flex w-full flex-1 flex-col items-center justify-start gap-y-3 lg:justify-center">
+            <div className="relative grid max-h-[calc(100%-100px+1.5rem)] w-full grid-cols-1 overflow-y-auto 2xs:max-h-[calc(100%-92px+1.5rem)] lg:grid-cols-2">
+                <div className="relative flex w-full flex-1 flex-col items-center justify-start gap-y-3 pb-3 lg:justify-center">
                     <NFTDisplay {...selectedNFT} {...cacheStrategy} />
-                    <div className="relative flex w-full flex-col items-center gap-y-2 lg:hidden">
-                        <Selectors checked={atRight} onCheckChange={onNFTPositionCheck} />
+                    <div className="relative flex w-full flex-1 flex-col items-center lg:hidden">
+                        <Selectors
+                            nftPositionChecked={atRight}
+                            onNFTPositionCheckChange={onNFTPositionCheck}
+                            logos={logos}
+                            selectedLogo={logo}
+                            onLogoSelect={onLogoSelect}
+                        />
                     </div>
                 </div>
-                <div className="hidden w-full flex-1 flex-col items-center justify-center gap-y-6 lg:flex">
-                    <Selectors checked={atRight} onCheckChange={onNFTPositionCheck} />
+                <div className="hidden w-full flex-1 flex-col items-center justify-center lg:flex">
+                    <Selectors
+                        nftPositionChecked={atRight}
+                        onNFTPositionCheckChange={onNFTPositionCheck}
+                        logos={logos}
+                        selectedLogo={logo}
+                        onLogoSelect={onLogoSelect}
+                    />
                 </div>
             </div>
             <Actions />

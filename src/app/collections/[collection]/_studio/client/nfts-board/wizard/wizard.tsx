@@ -29,14 +29,8 @@ type WizardContext = {
 };
 
 const DEFAULT_DATA = {
-    platform: undefined,
-    option: undefined,
     atRight: false,
     coverStyle: false,
-    logo: undefined,
-    downloadRef: undefined,
-    downloadName: undefined,
-    downloadId: undefined,
     hasDownloaded: false,
     pageKey: WIZARD_PAGES.SELECTION
 };
