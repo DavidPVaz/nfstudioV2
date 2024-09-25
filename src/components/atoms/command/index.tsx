@@ -5,7 +5,13 @@ import { type DialogProps } from '@radix-ui/react-dialog';
 import { Command as CommandPrimitive } from 'cmdk';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/atoms/dialog';
+import {
+    Dialog,
+    DialogPortal,
+    DialogContent,
+    DialogTitle,
+    DialogDescription
+} from '@/components/atoms/dialog';
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from '@/components/atoms/drawer';
 import { Hide } from '@/components/atoms/visually-hidden';
 
@@ -28,20 +34,22 @@ type CommandDialogProps = DialogProps & { title: string; className?: string };
 
 const CommandDialog = ({ className, children, title, ...props }: CommandDialogProps) => (
     <Dialog {...props}>
-        <DialogContent
-            className={cn(
-                'min-h-[393px] overflow-hidden border-0 p-0 shadow-lg 2xs:rounded-lg 2xs:border',
-                className
-            )}
-        >
-            <Hide>
-                <DialogTitle>{title}</DialogTitle>
-                <DialogDescription>{title}</DialogDescription>
-            </Hide>
-            <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-                {children}
-            </Command>
-        </DialogContent>
+        <DialogPortal>
+            <DialogContent
+                className={cn(
+                    'min-h-[393px] overflow-hidden border-0 p-0 shadow-lg 2xs:rounded-lg 2xs:border',
+                    className
+                )}
+            >
+                <Hide>
+                    <DialogTitle>{title}</DialogTitle>
+                    <DialogDescription>{title}</DialogDescription>
+                </Hide>
+                <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-2 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+                    {children}
+                </Command>
+            </DialogContent>
+        </DialogPortal>
     </Dialog>
 );
 

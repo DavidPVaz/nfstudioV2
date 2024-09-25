@@ -51,7 +51,7 @@ export const Wizard = React.memo(
                     description="Studio session"
                     className="h-[90%] border-0 2xs:h-[85%] 2xs:max-w-[90%] 2xs:border sm:max-w-[80%]"
                 >
-                    {isOpen && <WizardContent selectedNFT={selectedNFT!} />}
+                    <WizardContent selectedNFT={selectedNFT!} />
                 </Modal>
             </>
         );

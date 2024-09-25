@@ -62,6 +62,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
                 </ReactQueryClientProvider>
             </ColorThemeProvider>
             <NotificationProvider />
+            <div id="extra" />
         </body>
     </html>
 );

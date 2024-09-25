@@ -1,6 +1,12 @@
 import React, { useMemo } from 'react';
 import { Hide } from '@/components/atoms/visually-hidden';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/atoms/dialog';
+import {
+    Dialog,
+    DialogContent,
+    DialogContentExtra,
+    DialogTitle,
+    DialogDescription
+} from '@/components/atoms/dialog';
 import { Drawer, DrawerContent, DrawerTitle, DrawerDescription } from '@/components/atoms/drawer';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
@@ -10,6 +16,9 @@ type ModalProps = {
     onOpenChange: () => void;
     title: string;
     description: string;
+    extraContainer?: boolean;
+    dialog?: boolean;
+    drawer?: boolean;
     children: React.ReactNode;
 };
 
@@ -19,16 +28,27 @@ const ManagedDialog = ({
     onOpenChange,
     title,
     description,
+    extraContainer,
     children
 }: ModalProps) => (
     <Dialog open={open} onOpenChange={onOpenChange} modal>
-        <DialogContent className={className}>
-            <Hide>
-                <DialogTitle>{title}</DialogTitle>
-                <DialogDescription>{description}</DialogDescription>
-            </Hide>
-            {open && children}
-        </DialogContent>
+        {extraContainer ? (
+            <DialogContentExtra className={className}>
+                <Hide>
+                    <DialogTitle>{title}</DialogTitle>
+                    <DialogDescription>{description}</DialogDescription>
+                </Hide>
+                {open && children}
+            </DialogContentExtra>
+        ) : (
+            <DialogContent className={className}>
+                <Hide>
+                    <DialogTitle>{title}</DialogTitle>
+                    <DialogDescription>{description}</DialogDescription>
+                </Hide>
+                {open && children}
+            </DialogContent>
+        )}
     </Dialog>
 );
 
@@ -57,13 +77,21 @@ export const Modal = ({
     onOpenChange,
     title,
     description,
+    extraContainer,
+    dialog,
+    drawer,
     children
 }: ModalProps) => {
     const is2xs = useMediaQuery('(min-width: 475px)');
-    const Modal = useMemo(() => (is2xs ? ManagedDialog : ManagedDrawer), [is2xs]);
+    const Modal = useMemo(
+        () =>
+            dialog ? ManagedDialog : drawer ? ManagedDrawer : is2xs ? ManagedDialog : ManagedDrawer,
+        [is2xs, dialog, drawer]
+    );
 
     return (
         <Modal
+            extraContainer={extraContainer}
             open={open}
             onOpenChange={onOpenChange}
             title={title}
