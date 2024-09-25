@@ -46,23 +46,25 @@ export const LoadNFTs = () => {
     );
 };
 
+const tooltipContent = 'Refresh NFT selection';
+
 export const RefreshNFTs = React.memo(() => {
     const { onIncompleteNFTsLoad } = useStudioSessionContext();
     const { isOpen, open, toggle, close } = useModal();
 
     return (
         <>
-            <Tooltip content="Refresh NFT selection">
+            <Tooltip content={tooltipContent}>
                 <Button variant="ghost" size="icon2x" onClick={open} disabled={isOpen}>
                     <RefreshCcw className="h-[1.7rem] w-[1.7rem] sm:h-[2rem] sm:w-[2rem]" />
-                    <span className="sr-only">Refresh NFT selection</span>
+                    <span className="sr-only">{tooltipContent}</span>
                 </Button>
             </Tooltip>
             <Modal
                 open={isOpen}
                 onOpenChange={toggle}
-                title="Refresh NFT selection"
-                description="Refresh NFT selection"
+                title={tooltipContent}
+                description={tooltipContent}
                 className="max-w-lg border-0 2xs:min-h-[526px] 2xs:border"
             >
                 <Card className="relative h-full w-full border-0 bg-background">

@@ -10,6 +10,7 @@ import {
     RefreshNFTs
 } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts';
 import { Help } from '@/app/collections/[collection]/_studio/client/nfts-board/help';
+import { Downloads } from '@/app/collections/[collection]/_studio/client/nfts-board/downloads';
 import { Wizard } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard';
 import { loadMetadata, type LoadMetadataProps } from '@/app/_api';
 import { useFallbackApiRead } from '@/hooks/use-api';
@@ -92,8 +93,9 @@ export const NftsBoard = () => {
             </div>
             <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
                 <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
-                    <RefreshNFTs />
                     <Help />
+                    <RefreshNFTs />
+                    <Downloads />
                 </div>
 
                 <Wizard disabled={!nftsLoadIsComplete} />

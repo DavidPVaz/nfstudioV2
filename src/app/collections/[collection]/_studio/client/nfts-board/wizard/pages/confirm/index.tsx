@@ -6,7 +6,7 @@ import { useWizardContext } from '@/app/collections/[collection]/_studio/client/
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
 import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
-import { Switch } from '@/components/molecules/nft-position-switch';
+import { Switch } from '@/components/molecules/switch';
 import { SelectableLogo } from '@/components/molecules/selectable-logo';
 import { Preview } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/confirm/preview';
 import { Order } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/confirm/order';

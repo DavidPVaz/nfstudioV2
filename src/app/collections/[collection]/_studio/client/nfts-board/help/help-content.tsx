@@ -3,6 +3,7 @@ import { PageTitle } from '@/components/molecules/page-title';
 
 const STEPS = [
     'You can refresh your selected NFTs at anytime by clicking the refresh button in the toolbar.',
+    'You can access your previous downloads at anytime by clicking the folder button in the toolbar.',
     'Select the NFT you wish to convert. Only one NFT can be selected at a time.',
     "Click 'Create'.",
     'Select your desired platform.',
@@ -20,7 +21,7 @@ const STEPS = [
     "The download will start automatically. If it doesn't, click the 'Download' button.",
     'Congratulations! Display it with pride!'
 ];
-
+// TODO: make the first two out of steps and present as !info
 export const HelpContent = () => (
     <div className="relative flex h-full w-full flex-col gap-y-6 overflow-y-auto bg-background pb-6">
         <PageTitle
