@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
-import type {
-    SelectedNFTs,
-    NFT,
-    LoadCompleteNFTs,
-    LoadIncompleteNFTs
+import {
+    type SelectedNFTs,
+    type NFT,
+    useStudioSessionContext
 } from '@/app/collections/[collection]/_studio/client';
 import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card/nft';
 import {
@@ -26,34 +25,9 @@ const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
     );
 const hasLoadedNFTs = (nfts: SelectedNFTs) => nfts.length > 0;
 
-const Toolbar = React.memo(
-    ({ disabled, onRefresh }: { disabled: boolean; onRefresh: LoadIncompleteNFTs }) => (
-        <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
-            <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
-                <RefreshNFTs onRefresh={onRefresh} />
-                <Help />
-            </div>
-
-            <Wizard disabled={disabled} />
-        </div>
-    ),
-    (previousProps, nextProps) =>
-        previousProps.disabled === nextProps.disabled &&
-        previousProps.onRefresh === nextProps.onRefresh
-);
-
-export const NftsBoard = ({
-    nfts,
-    onCompleteLoad,
-    onIncompleteLoad,
-    onNFTSelect
-}: {
-    nfts: SelectedNFTs;
-    onCompleteLoad: LoadCompleteNFTs;
-    onIncompleteLoad: LoadIncompleteNFTs;
-    onNFTSelect: (selectedId: number) => void;
-}) => {
+export const NftsBoard = () => {
     const { selectedCollection, unsupportedTraits, cacheStrategy } = useStudioContext();
+    const { nfts, onCompleteNFTsLoad, onNFTSelect } = useStudioSessionContext();
     const { notify } = useNotification();
 
     const userHasLoadedNFTs = useMemo(() => hasLoadedNFTs(nfts), [nfts]);
@@ -82,12 +56,12 @@ export const NftsBoard = ({
         }
 
         if (response) {
-            onCompleteLoad(response);
+            onCompleteNFTsLoad(response);
         }
-    }, [nftsLoadIsComplete, response, onCompleteLoad]);
+    }, [nftsLoadIsComplete, response, onCompleteNFTsLoad]);
 
     if (!userHasLoadedNFTs) {
-        return <LoadNFTs onIncompleteLoad={onIncompleteLoad} />;
+        return <LoadNFTs />;
     }
 
     if (noNetwork) {
@@ -116,7 +90,14 @@ export const NftsBoard = ({
                           ))}
                 </div>
             </div>
-            <Toolbar onRefresh={onIncompleteLoad} disabled={!nftsLoadIsComplete} />
+            <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
+                <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
+                    <RefreshNFTs />
+                    <Help />
+                </div>
+
+                <Wizard disabled={!nftsLoadIsComplete} />
+            </div>
         </div>
     );
 };

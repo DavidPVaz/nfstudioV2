@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { Modal } from '@/components/molecules/modal';
 import { Button } from '@/components/atoms/button';
 import { useModal } from '@/hooks/use-modal';
-import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
-import { useSelector } from '@/hooks/use-local-storage';
+import { useStudioSessionContext } from '@/app/collections/[collection]/_studio/client';
 import { useNotification } from '@/hooks/use-notification';
 import { NFStudioSkeleton } from '@/components/molecules/nfstudio-skeleton';
 import type { NFT } from '@/app/collections/[collection]/_studio/client/';
@@ -19,41 +18,43 @@ const WizardContent = dynamic(
     }
 );
 
-export const selectedNFTSelector = (nfts: NFT[]) => nfts.find(({ selected }) => selected);
+export const Wizard = React.memo(
+    ({ disabled }: { disabled: boolean }) => {
+        const { nfts } = useStudioSessionContext();
+        const { notify } = useNotification();
+        const { isOpen, open, toggle } = useModal();
 
-export const Wizard = ({ disabled }: { disabled: boolean }) => {
-    const { selectedCollection } = useStudioContext();
-    const selectedNFT = useSelector<NFT[], NFT>(selectedCollection, selectedNFTSelector);
-    const { notify } = useNotification();
-    const { isOpen, open, toggle } = useModal();
+        const selectedNFT = useMemo(() => (nfts as NFT[]).find(({ selected }) => selected), [nfts]);
 
-    const onCreate = useCallback(() => {
-        if (!selectedNFT) {
-            notify({
-                title: 'No NFT selected!',
-                description: 'Select the NFT before starting the creation.',
-                duration: 3000
-            });
-            return;
-        }
+        const onCreate = useCallback(() => {
+            if (!selectedNFT) {
+                notify({
+                    title: 'No NFT selected!',
+                    description: 'Select the NFT before starting the creation.',
+                    duration: 3000
+                });
+                return;
+            }
 
-        open();
-    }, [open, selectedNFT, notify]);
+            open();
+        }, [open, selectedNFT, notify]);
 
-    return (
-        <>
-            <Button disabled={disabled} size="lg" onClick={onCreate}>
-                CREATE
-            </Button>
-            <Modal
-                open={isOpen}
-                onOpenChange={toggle}
-                title="Studio session"
-                description="Studio session"
-                className="h-[90%] border-0 2xs:h-[85%] 2xs:max-w-[90%] 2xs:border sm:max-w-[80%]"
-            >
-                {isOpen && <WizardContent />}
-            </Modal>
-        </>
-    );
-};
+        return (
+            <>
+                <Button disabled={disabled} size="lg" onClick={onCreate}>
+                    CREATE
+                </Button>
+                <Modal
+                    open={isOpen}
+                    onOpenChange={toggle}
+                    title="Studio session"
+                    description="Studio session"
+                    className="h-[90%] border-0 2xs:h-[85%] 2xs:max-w-[90%] 2xs:border sm:max-w-[80%]"
+                >
+                    {isOpen && <WizardContent selectedNFT={selectedNFT!} />}
+                </Modal>
+            </>
+        );
+    },
+    (previousProps, nextProps) => previousProps.disabled === nextProps.disabled
+);

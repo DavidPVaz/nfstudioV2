@@ -17,7 +17,7 @@ const HelpContent = dynamic(
     }
 );
 
-export const Help = () => {
+export const Help = React.memo(() => {
     const { isOpen, open, toggle } = useModal();
 
     return (
@@ -39,4 +39,4 @@ export const Help = () => {
             </Modal>
         </>
     );
-};
+});

@@ -5,7 +5,7 @@ import { default as MarketplaceIcon } from '@/resources/MarketplaceIcon.svg';
 import { default as DiscordIcon } from '@/resources/DiscordIcon.svg';
 import { default as TwitterIcon } from '@/resources/TwitterIcon.svg';
 import { default as WebsiteIcon } from '@/resources/WebsiteIcon.svg';
-import { StudioClientContent } from '@/app/collections/[collection]/_studio/client';
+import { StudioContent } from '@/app/collections/[collection]/_studio/client';
 
 export const Studio = ({
     collectionConfiguration
@@ -51,7 +51,7 @@ export const Studio = ({
                 </div>
             </section>
             <section className="relative flex max-h-[75vh] min-h-[75vh] w-full rounded-lg border sm:w-4/5">
-                <StudioClientContent />
+                <StudioContent />
             </section>
         </div>
     );

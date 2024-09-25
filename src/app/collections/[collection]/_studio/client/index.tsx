@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { createContext, useContext, useCallback, useEffect, useState } from 'react';
 import { NFStudioSkeleton } from '@/components/molecules/nfstudio-skeleton';
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
 import { NftsBoard } from '@/app/collections/[collection]/_studio/client/nfts-board';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+
+const Context = createContext({});
 
 export type NFT = {
     id: number;
@@ -18,7 +20,14 @@ export type LoadIncompleteNFTs = (incompleteNFTs: { ids: IncompleteNFT[] }) => v
 export type LoadCompleteNFTs = (nfts: NFT[]) => void;
 export type SelectedNFTs = NFT[] | IncompleteNFT[];
 
-export const StudioClientContent = () => {
+type StudioSessionContext = {
+    nfts: SelectedNFTs;
+    onCompleteNFTsLoad: LoadCompleteNFTs;
+    onIncompleteNFTsLoad: LoadIncompleteNFTs;
+    onNFTSelect: (selectedId: number) => void;
+};
+
+export const StudioContent = () => {
     const { selectedCollection } = useStudioContext();
     const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(selectedCollection, []);
     const [client, setClient] = useState<boolean>(false);
@@ -55,14 +64,20 @@ export const StudioClientContent = () => {
         [setNfts]
     );
 
+    const context = {
+        nfts,
+        onCompleteNFTsLoad,
+        onIncompleteNFTsLoad,
+        onNFTSelect
+    };
+
     return !client ? (
         <NFStudioSkeleton />
     ) : (
-        <NftsBoard
-            nfts={nfts}
-            onCompleteLoad={onCompleteNFTsLoad}
-            onIncompleteLoad={onIncompleteNFTsLoad}
-            onNFTSelect={onNFTSelect}
-        />
+        <Context.Provider value={context}>
+            <NftsBoard />
+        </Context.Provider>
     );
 };
+
+export const useStudioSessionContext = () => useContext(Context) as StudioSessionContext;

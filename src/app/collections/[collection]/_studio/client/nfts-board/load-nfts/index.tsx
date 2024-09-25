@@ -7,8 +7,8 @@ import { Modal } from '@/components/molecules/modal';
 import { useModal } from '@/hooks/use-modal';
 import { LoadForm } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts/load-form';
 import {
-    type LoadIncompleteNFTs,
-    type IncompleteNFT
+    type IncompleteNFT,
+    useStudioSessionContext
 } from '@/app/collections/[collection]/_studio/client';
 
 const Content = () => (
@@ -29,20 +29,25 @@ const Content = () => (
     </>
 );
 
-export const LoadNFTs = ({ onIncompleteLoad }: { onIncompleteLoad: LoadIncompleteNFTs }) => (
-    <div className="container flex w-full items-center justify-center overflow-y-auto">
-        <Card className="relative h-full w-full max-w-lg border-0 bg-background 2xs:h-auto 2xs:border">
-            <CardHeader className="gap-y-2 pb-2 pl-0 pr-0 pt-6 2xs:p-6 2xs:pb-3 sm:gap-y-3">
-                <Content />
-            </CardHeader>
-            <div className="pb-6 pl-0 pr-0 pt-2 2xs:p-6 2xs:pt-3">
-                <LoadForm onSubmit={onIncompleteLoad} />
-            </div>
-        </Card>
-    </div>
-);
+export const LoadNFTs = () => {
+    const { onIncompleteNFTsLoad } = useStudioSessionContext();
 
-export const RefreshNFTs = ({ onRefresh }: { onRefresh: LoadIncompleteNFTs }) => {
+    return (
+        <div className="container flex w-full items-center justify-center overflow-y-auto">
+            <Card className="relative h-full w-full max-w-lg border-0 bg-background 2xs:h-auto 2xs:border">
+                <CardHeader className="gap-y-2 pb-2 pl-0 pr-0 pt-6 2xs:p-6 2xs:pb-3 sm:gap-y-3">
+                    <Content />
+                </CardHeader>
+                <div className="pb-6 pl-0 pr-0 pt-2 2xs:p-6 2xs:pt-3">
+                    <LoadForm onSubmit={onIncompleteNFTsLoad} />
+                </div>
+            </Card>
+        </div>
+    );
+};
+
+export const RefreshNFTs = React.memo(() => {
+    const { onIncompleteNFTsLoad } = useStudioSessionContext();
     const { isOpen, open, toggle, close } = useModal();
 
     return (
@@ -68,7 +73,7 @@ export const RefreshNFTs = ({ onRefresh }: { onRefresh: LoadIncompleteNFTs }) =>
                         <LoadForm
                             onSubmit={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
                                 close();
-                                onRefresh(incompleteNFTs);
+                                onIncompleteNFTsLoad(incompleteNFTs);
                             }}
                         />
                     </div>
@@ -76,4 +81,4 @@ export const RefreshNFTs = ({ onRefresh }: { onRefresh: LoadIncompleteNFTs }) =>
             </Modal>
         </>
     );
-};
+});

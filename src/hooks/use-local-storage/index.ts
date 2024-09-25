@@ -73,20 +73,3 @@ export function useLocalStorage<T>(
 
     return [store ? (JSON.parse(store) as T) : initialValue, setState];
 }
-
-/**
- * Allows to select a piece of state from the synced storage.
- *
- * @param key - identifier of the store
- * @param selector - the selector function
- * @param defaultValue - the default value if store does not exist
- */
-export const useSelector = <T, R>(
-    key: string,
-    selector: (store: T) => R | undefined,
-    defaultValue = null
-) => {
-    const store = useSyncExternalStore(subscribe, () => getSnapshot(key), getServerSnapshot);
-
-    return store ? selector(JSON.parse(store) as T) : defaultValue;
-};

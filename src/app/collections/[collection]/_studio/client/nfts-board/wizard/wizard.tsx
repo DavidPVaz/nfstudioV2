@@ -2,9 +2,8 @@ import React, { createContext, useCallback, useEffect, useContext, useMemo } fro
 import { WIZARD_PAGES, type WizardPageKey, type Platform, type Option } from '@/enums';
 import type { NFT } from '@/app/collections/[collection]/_studio/client/';
 import { Pages } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages';
-import { selectedNFTSelector } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard';
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
-import { useLocalStorage, useSelector } from '@/hooks/use-local-storage';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const Context = createContext({});
 
@@ -36,9 +35,8 @@ const DEFAULT_DATA = {
     pageKey: WIZARD_PAGES.SELECTION
 };
 
-export const WizardContent = () => {
+export const WizardContent = ({ selectedNFT }: { selectedNFT: NFT }) => {
     const { selectedCollection } = useStudioContext();
-    const selectedNFT = useSelector<NFT[], NFT>(selectedCollection, selectedNFTSelector)!;
     const [data, setData] = useLocalStorage<WizardData>(`studio-${selectedCollection}`, {
         selectedNFT,
         ...DEFAULT_DATA
