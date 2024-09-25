@@ -33,6 +33,13 @@ const getLocalStorageItem = (key: string) => {
 
 export type SetStateArgs<T> = T | null | undefined | ((store: T) => T | null | undefined);
 
+const subscribe = (callback: () => void) => {
+    window.addEventListener('storage', callback);
+    return () => window.removeEventListener('storage', callback);
+};
+const getSnapshot = (key: string) => getLocalStorageItem(key);
+const getServerSnapshot = () => null;
+
 /**
  * Allows to sync react state with storage api.
  *
@@ -43,19 +50,11 @@ export function useLocalStorage<T>(
     key: string,
     initialValue: T
 ): [T, (value: SetStateArgs<T>) => void] {
-    const subscribe = useCallback((callback: () => void) => {
-        window.addEventListener('storage', callback);
-        return () => window.removeEventListener('storage', callback);
-    }, []);
-
-    const getSnapshot = useCallback(() => getLocalStorageItem(key), [key]);
-    const getServerSnapshot = useCallback(() => null, []);
-
-    const store = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    const store = useSyncExternalStore(subscribe, () => getSnapshot(key), getServerSnapshot);
 
     const setState = useCallback(
         (value: SetStateArgs<T>) => {
-            const store = getSnapshot();
+            const store = getSnapshot(key);
             const nextState =
                 value instanceof Function && store ? value(JSON.parse(store) as T) : (value as T);
 
@@ -63,11 +62,11 @@ export function useLocalStorage<T>(
                 ? removeLocalStorageItem(key)
                 : setLocalStorageItem<T>(key, nextState);
         },
-        [key, getSnapshot]
+        [key]
     );
 
     useEffect(() => {
-        if (getLocalStorageItem(key) === null && initialValue !== undefined) {
+        if (getSnapshot(key) === null && initialValue !== undefined) {
             setLocalStorageItem<T>(key, initialValue);
         }
     }, [key, initialValue]);
@@ -87,7 +86,7 @@ export const useSelector = <T, R>(
     selector: (store: T) => R | undefined,
     defaultValue = null
 ) => {
-    const store = getLocalStorageItem(key);
+    const store = useSyncExternalStore(subscribe, () => getSnapshot(key), getServerSnapshot);
 
-    return store === null ? defaultValue : selector(JSON.parse(store) as T);
+    return store ? selector(JSON.parse(store) as T) : defaultValue;
 };

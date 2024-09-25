@@ -6,8 +6,12 @@ import type {
     LoadIncompleteNFTs
 } from '@/app/collections/[collection]/_studio/client';
 import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card/nft';
-import { LoadNFTs } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts';
-import { Toolbar } from '@/app/collections/[collection]/_studio/client/nfts-board/toolbar';
+import {
+    LoadNFTs,
+    RefreshNFTs
+} from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts';
+import { Help } from '@/app/collections/[collection]/_studio/client/nfts-board/help';
+import { Wizard } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard';
 import { loadMetadata, type LoadMetadataProps } from '@/app/_api';
 import { useFallbackApiRead } from '@/hooks/use-api';
 import { useNotification } from '@/hooks/use-notification';
@@ -21,6 +25,22 @@ const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
             typeof (nft as NFT).src === 'string'
     );
 const hasLoadedNFTs = (nfts: SelectedNFTs) => nfts.length > 0;
+
+const Toolbar = React.memo(
+    ({ disabled, onRefresh }: { disabled: boolean; onRefresh: LoadIncompleteNFTs }) => (
+        <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
+            <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
+                <RefreshNFTs onRefresh={onRefresh} />
+                <Help />
+            </div>
+
+            <Wizard disabled={disabled} />
+        </div>
+    ),
+    (previousProps, nextProps) =>
+        previousProps.disabled === nextProps.disabled &&
+        previousProps.onRefresh === nextProps.onRefresh
+);
 
 export const NftsBoard = ({
     nfts,
@@ -41,7 +61,6 @@ export const NftsBoard = ({
         () => userHasLoadedNFTs && areCompleteNFTs(nfts),
         [nfts, userHasLoadedNFTs]
     );
-    const selectedNFT = useMemo(() => (nfts as NFT[]).find(({ selected }) => selected), [nfts]);
 
     const { response, noNetwork } = useFallbackApiRead<LoadMetadataProps, NFT[]>({
         method: loadMetadata,
@@ -97,11 +116,7 @@ export const NftsBoard = ({
                           ))}
                 </div>
             </div>
-            <Toolbar
-                onRefresh={onIncompleteLoad}
-                disabled={!nftsLoadIsComplete}
-                selectedNFT={selectedNFT}
-            />
+            <Toolbar onRefresh={onIncompleteLoad} disabled={!nftsLoadIsComplete} />
         </div>
     );
 };

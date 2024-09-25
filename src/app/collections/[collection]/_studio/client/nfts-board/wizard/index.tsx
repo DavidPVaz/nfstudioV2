@@ -23,12 +23,11 @@ export const selectedNFTSelector = (nfts: NFT[]) => nfts.find(({ selected }) => 
 
 export const Wizard = ({ disabled }: { disabled: boolean }) => {
     const { selectedCollection } = useStudioContext();
+    const selectedNFT = useSelector<NFT[], NFT>(selectedCollection, selectedNFTSelector);
     const { notify } = useNotification();
     const { isOpen, open, toggle } = useModal();
 
     const onCreate = useCallback(() => {
-        const selectedNFT = useSelector<NFT[], NFT>(selectedCollection, selectedNFTSelector);
-
         if (!selectedNFT) {
             notify({
                 title: 'No NFT selected!',
@@ -39,7 +38,7 @@ export const Wizard = ({ disabled }: { disabled: boolean }) => {
         }
 
         open();
-    }, [open]);
+    }, [open, selectedNFT, notify]);
 
     return (
         <>

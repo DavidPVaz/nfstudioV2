@@ -80,7 +80,7 @@ const Logos = React.memo(
         onSelect: (logo?: string) => void;
     }) => (
         <div
-            className={`grid w-[95%] ${logos.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3 transition-all`}
+            className={`grid w-[95%] ${logos.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3 overflow-x-auto p-2 transition-all md:overflow-hidden`}
         >
             {logos.map((logo, index) => (
                 <SelectableLogo
