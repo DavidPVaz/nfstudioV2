@@ -7,29 +7,31 @@ export const Switch = React.memo(
         checked,
         onCheckChange,
         leftLabel,
-        rightLabel
+        rightLabel,
+        ariaLabel
     }: {
         checked: boolean;
         onCheckChange: (checked: boolean) => void;
         leftLabel: string;
         rightLabel: string;
+        ariaLabel: string;
     }) => (
         <div className="flex w-full items-center justify-center gap-x-3">
             <Label
+                onClick={e => e.preventDefault()}
                 className={`${!checked ? 'text-xl font-bold' : 'text-lg'} w-full text-right transition-all`}
-                htmlFor="switch"
             >
                 {leftLabel}
             </Label>
             <SwitchRaw
                 className="data-[state=checked]:bg-foreground data-[state=unchecked]:bg-foreground"
-                id="switch"
                 checked={checked}
                 onCheckedChange={onCheckChange}
+                aria-label={ariaLabel}
             />
             <Label
+                onClick={e => e.preventDefault()}
                 className={`${checked ? 'text-xl font-bold' : 'text-lg'} w-full text-left transition-all`}
-                htmlFor="switch"
             >
                 {rightLabel}
             </Label>

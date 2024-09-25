@@ -135,9 +135,10 @@ const Selectors = ({
                 {userSelectedMobilePlatform ? (
                     <Switch
                         leftLabel="No"
-                        rightLabel="yes"
+                        rightLabel="Yes"
                         checked={coverStyleChecked}
                         onCheckChange={onCoverStyleCheckChange}
+                        ariaLabel={switchLabel}
                     />
                 ) : (
                     <Switch
@@ -145,6 +146,7 @@ const Selectors = ({
                         rightLabel="Right"
                         checked={nftPositionChecked}
                         onCheckChange={onNFTPositionCheckChange}
+                        ariaLabel={switchLabel}
                     />
                 )}
             </div>
@@ -194,7 +196,7 @@ export const Confirm = () => {
             <div className="relative grid max-h-[calc(100%-100px+1.5rem)] w-full grid-cols-1 overflow-y-auto 2xs:max-h-[calc(100%-92px+1.5rem)] lg:grid-cols-2">
                 <div className="relative flex w-full flex-1 flex-col items-center justify-start gap-y-3 pb-3 lg:justify-center">
                     <NFTDisplay {...selectedNFT} {...cacheStrategy} />
-                    <div className="relative flex w-full flex-1 flex-col items-center justify-center lg:hidden">
+                    <div className="relative flex w-full flex-1 flex-col items-center justify-start lg:hidden">
                         <Selectors
                             platform={platform!}
                             nftPositionChecked={atRight}
