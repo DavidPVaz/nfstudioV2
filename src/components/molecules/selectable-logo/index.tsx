@@ -19,7 +19,7 @@ export const SelectableLogo = React.memo(
             onPressedChange={pressed => onSelect(pressed ? logo : undefined)}
             aria-label={ariaLabel}
             variant="outline"
-            className="h-20 py-3"
+            className="h-20 snap-center py-3"
         >
             <Image
                 width={179.27}
@@ -28,7 +28,7 @@ export const SelectableLogo = React.memo(
                 variant={'fill_contain'}
                 src={logo}
                 alt={ariaLabel}
-                optimizedWidth={200}
+                optimizedWidth={400}
                 quality={80}
             />
         </Toggle>

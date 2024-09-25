@@ -74,7 +74,7 @@ export const NftsBoard = () => {
 
     return (
         <div className="relative flex w-full flex-col">
-            <div className="container relative flex-1 overflow-y-auto">
+            <div className="container relative flex-1 overflow-y-auto overscroll-none">
                 <div className="grid w-full grid-cols-1 gap-3 pb-8 pt-8 xs:grid-cols-2 2xs:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     {!nftsLoadIsComplete
                         ? Array.from({ length: nfts.length }, (_, i) => <NFTCardSkeleton key={i} />)

@@ -10,6 +10,7 @@ import { Switch } from '@/components/molecules/nft-position-switch';
 import { SelectableLogo } from '@/components/molecules/selectable-logo';
 import { Preview } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/confirm/preview';
 import { Order } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/confirm/order';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 const BackArrow = React.memo(
     ({ onBack }: { onBack: () => void }) => (
@@ -17,7 +18,7 @@ const BackArrow = React.memo(
             onClick={onBack}
             variant="ghost"
             size="icon"
-            className="absolute left-2 top-2 rounded-sm opacity-70 ring-offset-background transition-opacity hover:bg-muted hover:ring-2 hover:ring-ring hover:ring-offset-2 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none"
+            className="absolute left-2 top-2 z-10 rounded-sm opacity-70 ring-offset-background transition-opacity hover:bg-muted hover:ring-2 hover:ring-ring hover:ring-offset-2 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none"
         >
             <ArrowLeft className="h-10 w-10 2xs:h-6 2xs:w-6" />
             <span className="sr-only">Go to previous page</span>
@@ -78,21 +79,25 @@ const Logos = React.memo(
         logos: string[];
         selectedLogo?: string;
         onSelect: (logo?: string) => void;
-    }) => (
-        <div
-            className={`grid w-[95%] ${logos.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-3 overflow-x-auto p-2 transition-all md:overflow-hidden`}
-        >
-            {logos.map((logo, index) => (
-                <SelectableLogo
-                    key={logo}
-                    logo={logo}
-                    selected={logo === selectedLogo}
-                    onSelect={onSelect}
-                    ariaLabel={`Select logo ${index + 1}`}
-                />
-            ))}
-        </div>
-    ),
+    }) => {
+        const is798px = useMediaQuery('only screen and (min-width : 798px)');
+
+        return (
+            <div
+                className={`grid snap-x auto-cols-[70%] grid-flow-col grid-cols-none px-0 2xs:auto-cols-[18rem] lg:w-[95%] lg:auto-cols-auto lg:grid-flow-row ${logos.length >= 3 ? 'w-full lg:grid-cols-3' : `${is798px ? 'w-auto' : 'w-full'} lg:grid-cols-2`} gap-3 overflow-x-auto py-2 transition-all lg:overflow-hidden lg:px-2`}
+            >
+                {logos.map((logo, index) => (
+                    <SelectableLogo
+                        key={logo}
+                        logo={logo}
+                        selected={logo === selectedLogo}
+                        onSelect={onSelect}
+                        ariaLabel={`Select logo ${index + 1}`}
+                    />
+                ))}
+            </div>
+        );
+    },
     (previousProps, nextProps) =>
         previousProps.selectedLogo === nextProps.selectedLogo &&
         previousProps.onSelect === nextProps.onSelect
@@ -124,8 +129,8 @@ const Selectors = ({
     );
 
     return (
-        <div className="relative flex w-full flex-col items-center gap-y-4 md:gap-y-6">
-            <div className="relative flex w-full flex-col items-center gap-y-3 md:gap-y-4">
+        <div className="relative flex w-full flex-col items-center gap-y-[2rem] lg:gap-y-6">
+            <div className="relative flex w-full flex-col items-center gap-y-3 lg:gap-y-4">
                 <span className="text-base 2xs:text-xl">{switchLabel}</span>
                 {userSelectedMobilePlatform ? (
                     <Switch
@@ -145,7 +150,7 @@ const Selectors = ({
             </div>
 
             <div
-                className={`relative ${!coverStyleChecked ? 'flex' : 'hidden'} w-full flex-col items-center gap-y-3 md:gap-y-4`}
+                className={`relative ${!coverStyleChecked ? 'flex' : 'hidden'} w-full flex-col items-center gap-y-3 lg:gap-y-4`}
             >
                 <span className="text-base 2xs:text-xl">Logos</span>
                 <Logos logos={logos} selectedLogo={selectedLogo} onSelect={onLogoSelect} />
@@ -189,7 +194,7 @@ export const Confirm = () => {
             <div className="relative grid max-h-[calc(100%-100px+1.5rem)] w-full grid-cols-1 overflow-y-auto 2xs:max-h-[calc(100%-92px+1.5rem)] lg:grid-cols-2">
                 <div className="relative flex w-full flex-1 flex-col items-center justify-start gap-y-3 pb-3 lg:justify-center">
                     <NFTDisplay {...selectedNFT} {...cacheStrategy} />
-                    <div className="relative flex w-full flex-1 flex-col items-center lg:hidden">
+                    <div className="relative flex w-full flex-1 flex-col items-center justify-center lg:hidden">
                         <Selectors
                             platform={platform!}
                             nftPositionChecked={atRight}
