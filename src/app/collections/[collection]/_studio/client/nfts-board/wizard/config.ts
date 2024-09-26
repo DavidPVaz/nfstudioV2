@@ -5,7 +5,7 @@ import {
     type Platform,
     type Option
 } from '@/enums';
-
+// TODO: move all this to lib
 export const getAvailablePlatforms = () =>
     Object.entries(PLATFORM_DISPLAY_NAME).map(([value, display]) => ({
         value,

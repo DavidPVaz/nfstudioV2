@@ -175,6 +175,7 @@ export const PLATFORM_OPTIONS_MAP: Record<Platform, PlatformOptions> = {
     }
 };
 
+// TODO: move to lib
 export const getOptionsMinMaxAvailableDimensions = () =>
     Object.values(PLATFORM_OPTIONS_MAP).reduce(
         (acc, option) => {
