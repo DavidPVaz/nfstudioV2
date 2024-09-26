@@ -128,7 +128,7 @@ export const createResizedLogo = async ({
         logo = logo.blur(1);
     }
 
-    return logo.trim().toBuffer();
+    return logo.toBuffer();
 };
 
 /**

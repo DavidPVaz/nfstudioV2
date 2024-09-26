@@ -119,7 +119,7 @@ export const preview = async (createOptions: Omit<CreateOptions, 'blur'>) => {
 
     const nfstudioLayer = await createResizedNFStudioLayerLogo(createOptions.width);
 
-    return sharp(await nft.webp({ quality: 10 }).toBuffer())
+    return sharp(await nft.webp({ quality: 30 }).toBuffer())
         .composite([
             {
                 input: nfstudioLayer,
@@ -127,6 +127,6 @@ export const preview = async (createOptions: Omit<CreateOptions, 'blur'>) => {
                 gravity: 'centre'
             }
         ])
-        .webp({ quality: 10 })
+        .webp({ quality: 30 })
         .toBuffer();
 };
