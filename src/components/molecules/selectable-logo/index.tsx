@@ -24,11 +24,10 @@ export const SelectableLogo = React.memo(
             <Image
                 width={179.27}
                 height={80}
-                className="h-full w-auto"
-                variant={'fill_contain'}
+                variant={'contain'}
                 src={logo}
                 alt={ariaLabel}
-                optimizedWidth={400}
+                optimizedWidth={200}
                 quality={80}
             />
         </Toggle>

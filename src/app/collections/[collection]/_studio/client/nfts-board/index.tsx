@@ -91,7 +91,7 @@ export const NftsBoard = () => {
                           ))}
                 </div>
             </div>
-            <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t xs:gap-x-4 sm:h-20 sm:gap-x-6">
+            <div className="sticky bottom-0 flex h-16 w-full flex-row items-center justify-center gap-x-2 rounded-b-lg border-t bg-background xs:gap-x-4 sm:h-20 sm:gap-x-6">
                 <div className="relative flex flex-row gap-x-1 sm:gap-x-2">
                     <Help />
                     <RefreshNFTs />

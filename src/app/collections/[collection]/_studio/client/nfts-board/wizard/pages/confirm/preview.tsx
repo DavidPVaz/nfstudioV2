@@ -73,7 +73,7 @@ export const Preview = React.memo(() => {
 
     const { width, height } = getPlatformOptionConfig({ platform: platform!, option: option! });
     const mobile = platform === PLATFORMS.MOBILE;
-
+    // TODO: aspect ration. take height into account as well, it can be mobile but be flipped
     return (
         <>
             <Button onClick={open} className="h-10 px-5 2xs:h-11 2xs:px-8">

@@ -1,9 +1,14 @@
 import { describe, expect, vi, afterEach, it } from 'vitest';
-import { cn, buildQueryString } from '@/lib/utils';
+import { cn, buildQueryString, isMacOS } from '@/lib/utils';
 
-const { clsxMock, twMergeMock } = vi.hoisted(() => ({
+const { clsxMock, twMergeMock, windowMock } = vi.hoisted(() => ({
     clsxMock: vi.fn(),
-    twMergeMock: vi.fn()
+    twMergeMock: vi.fn(),
+    windowMock: vi.fn()
+}));
+
+vi.mock('window', () => ({
+    window: windowMock
 }));
 
 vi.mock('tailwind-merge', () => ({
