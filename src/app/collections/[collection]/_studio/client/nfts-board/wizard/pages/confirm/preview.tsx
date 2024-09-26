@@ -87,13 +87,14 @@ export const Preview = React.memo(() => {
                 onOpenChange={toggle}
                 title={content}
                 description={content}
-                className={`cursor-auto rounded-none border-0 bg-transparent px-6 py-16 md:p-6`}
+                className={`${mobile ? 'max-h-[95vh] min-h-[85vh]' : 'min-w-[95vw] max-w-[95vw]'} cursor-auto rounded-none border-0 bg-transparent px-6 py-16`}
             >
                 <Image
+                    variant={'contain'}
                     width={width}
                     height={height}
                     src={selectedNFT.src}
-                    alt={`Preview Creation of NFT #${selectedNFT.id}`}
+                    alt={`Preview creation of NFT #${selectedNFT.id}`}
                     customUsageLoader={getPreviewLoader({
                         src: encodeURI(selectedNFT.src),
                         width,
@@ -106,7 +107,7 @@ export const Preview = React.memo(() => {
                         ...cacheStrategy
                     })}
                 />
-                <span className="absolute bottom-2 w-full px-6 text-center text-sm">
+                <span className="absolute -bottom-3 w-full px-6 text-center text-sm">
                     Ordered image will not have any watermark and will have 100% quality.
                 </span>
             </Modal>
