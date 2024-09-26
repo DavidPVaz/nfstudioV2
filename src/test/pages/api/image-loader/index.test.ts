@@ -307,7 +307,7 @@ describe('pages/api/image-loader/index', () => {
     it('should load an optimized image', async () => {
         // setup
         const query = { maxAge: '100', sMaxAge: '200', src: 'source', width: '500', quality: '50' };
-        const expectedQuery = { maxAge: 100, sMaxAge: 200, src: 'source', width: 500, quality: 50 };
+        const expectedQuery = { src: 'source', width: 500, quality: 50 };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -359,7 +359,7 @@ describe('pages/api/image-loader/index', () => {
         // setup
         const error = { error: 'optimize error' };
         const query = { maxAge: '100', sMaxAge: '200', src: 'source', width: '500', quality: '50' };
-        const expectedQuery = { maxAge: 100, sMaxAge: 200, src: 'source', width: 500, quality: 50 };
+        const expectedQuery = { src: 'source', width: 500, quality: 50 };
         optimizeMock.mockRejectedValueOnce(error);
         const { req, res } = createMocks({
             query
