@@ -1,9 +1,11 @@
 import { buildQueryString } from '@/lib/utils';
 import type { ImageLoaderProps, ImageLoader } from 'next/image';
 
-type LoaderProps = ImageLoaderProps & {
+type LoaderProps = Omit<ImageLoaderProps, 'width'> & {
     maxAge?: number | string;
     sMaxAge?: number | string;
+    width?: number | string;
+    quality?: number | string;
 };
 
 /**
@@ -12,9 +14,9 @@ type LoaderProps = ImageLoaderProps & {
  * @param data data to compose custom loader query
  * @param data.src image source
  * @param data.width intended image width
- * @param [data.quality] intended image quality
- * @param [data.maxAge] number of seconds of browser cache
- * @param [data.sMaxAge] number of seconds of server cache
+ * @param data.quality intended image quality
+ * @param data.maxAge number of seconds of browser cache
+ * @param data.sMaxAge number of seconds of server cache
  */
 export const getLoader =
     ({ src, width, quality, maxAge, sMaxAge }: LoaderProps): ImageLoader =>

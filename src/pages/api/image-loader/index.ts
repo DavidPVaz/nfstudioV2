@@ -34,10 +34,10 @@ export default async function handler(request: NextApiRequest, response: NextApi
         return response.status(400).send('Bad request.');
     }
 
-    const { maxAge = 31536000, sMaxAge = 31536000 } = query;
+    const { maxAge = 31536000, sMaxAge = 31536000, ...optimizeOptions } = query;
 
     try {
-        const optimized = await optimize(query);
+        const optimized = await optimize(optimizeOptions);
 
         response.setHeader(
             'Cache-Control',
