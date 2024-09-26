@@ -17,7 +17,7 @@ export const SearchCollections = ({ collections }: { collections: CollectionConf
     const { push } = useRouter();
 
     useEffect(() => {
-        setIsMac(isMacOS());
+        setIsMac(isMacOS(navigator.userAgent));
     }, []);
 
     useEffect(() => {

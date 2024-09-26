@@ -73,4 +73,10 @@ describe('lib/utils', () => {
         // exercise && verify
         expect(buildQueryString(queryArgs)).toEqual(expectedQueryString);
     });
+
+    it('should check if user agent contains Mac OS', () => {
+        // exercise && verify
+        expect(isMacOS('it is not mac os')).toEqual(false);
+        expect(isMacOS('it is Mac OS')).toEqual(true);
+    });
 });
