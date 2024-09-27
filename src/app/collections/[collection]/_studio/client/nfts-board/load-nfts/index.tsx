@@ -4,6 +4,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/atoms
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
 import { Modal } from '@/components/molecules/modal';
+import type { NotificationProps } from '@/components/atoms/notification';
 import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
 import { useNetworkState } from '@/hooks/use-network-state';
@@ -33,7 +34,8 @@ const Content = () => (
 
 const notification = {
     title: 'You are offline.',
-    description: 'Please try to load the NFTs when you come back online.'
+    description: 'Please retry loading the NFTs when you come back online.',
+    variant: 'offline' as NotificationProps['variant']
 };
 
 export const LoadNFTs = () => {

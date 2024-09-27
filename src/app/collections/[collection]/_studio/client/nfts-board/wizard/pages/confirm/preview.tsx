@@ -82,7 +82,8 @@ export const Preview = React.memo(() => {
         if (!isOnline) {
             notify({
                 title: 'You are offline.',
-                description: 'Please try to preview your creation when you come back online.'
+                description: 'Please retry previewing when you come back online.',
+                variant: 'offline'
             });
             return;
         }
