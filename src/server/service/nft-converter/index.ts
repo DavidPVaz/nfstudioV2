@@ -33,7 +33,7 @@ export type CreateOptions = {
  * @param options.blur - wether to blur the created image
  * @param options.collection - the nft collection name
  */
-export const create = async ({
+const create = async ({
     src,
     width,
     height,
