@@ -9,13 +9,13 @@ const { width, height } = getOptionsMinMaxAvailableDimensions();
 const PREVIEW_IMAGE = Buffer.from('test');
 
 const previewData = {
-    src: 'nft image src',
+    src: 'https://asadasdasd.png',
     width: `${width.min + 10}`,
     height: `${height.min + 10}`,
     atRight: 'true',
     coverStyle: 'false',
     mobile: 'true',
-    logoSrc: 'logo src',
+    logoSrc: 'url/name-logo.png',
     collection: 'collection_name'
 };
 
@@ -481,14 +481,14 @@ describe('pages/api/preview/index', () => {
         // setup
         const query = { ...previewData, maxAge: '100', sMaxAge: '200' };
         const expectedQuery = {
-            src: 'nft image src',
+            src: previewData.src,
             width: width.min + 10,
             height: height.min + 10,
             atRight: true,
             coverStyle: false,
             mobile: true,
-            logoSrc: 'logo src',
-            collection: 'collection_name'
+            logoSrc: previewData.logoSrc,
+            collection: previewData.collection
         };
         const { req, res } = createMocks({
             query
@@ -516,14 +516,14 @@ describe('pages/api/preview/index', () => {
         const defaultCacheValue = 31536000;
         const query = previewData;
         const expectedQuery = {
-            src: 'nft image src',
+            src: previewData.src,
             width: width.min + 10,
             height: height.min + 10,
             atRight: true,
             coverStyle: false,
             mobile: true,
-            logoSrc: 'logo src',
-            collection: 'collection_name'
+            logoSrc: previewData.logoSrc,
+            collection: previewData.collection
         };
         const { req, res } = createMocks({
             query
@@ -551,14 +551,14 @@ describe('pages/api/preview/index', () => {
         const error = { error: 'optimize error' };
         const query = previewData;
         const expectedQuery = {
-            src: 'nft image src',
+            src: previewData.src,
             width: width.min + 10,
             height: height.min + 10,
             atRight: true,
             coverStyle: false,
             mobile: true,
-            logoSrc: 'logo src',
-            collection: 'collection_name'
+            logoSrc: previewData.logoSrc,
+            collection: previewData.collection
         };
         previewMock.mockRejectedValueOnce(error);
         const { req, res } = createMocks({

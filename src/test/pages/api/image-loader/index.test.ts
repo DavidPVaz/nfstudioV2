@@ -19,6 +19,8 @@ vi.mock('@sentry/nextjs', () => ({
     captureException: captureExceptionMock
 }));
 
+const loaderData = { src: 'some-valid/image.webp' };
+
 describe('pages/api/image-loader/index', () => {
     afterEach(() => {
         vi.clearAllMocks();
@@ -66,7 +68,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if width is not a number', async () => {
         // setup
-        const query = { src: 'src', width: 'invalid' };
+        const query = { ...loaderData, width: 'invalid' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -86,7 +88,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if width is below min', async () => {
         // setup
-        const query = { src: 'src', width: '49' };
+        const query = { ...loaderData, width: '49' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -106,7 +108,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if width is above max', async () => {
         // setup
-        const query = { src: 'src', width: '1001' };
+        const query = { ...loaderData, width: '1001' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -126,7 +128,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if quality is not a number', async () => {
         // setup
-        const query = { src: 'src', quality: 'invalid' };
+        const query = { ...loaderData, quality: 'invalid' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -146,7 +148,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if quality is below min', async () => {
         // setup
-        const query = { src: 'src', quality: '9' };
+        const query = { ...loaderData, quality: '9' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -166,7 +168,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if quality is above max', async () => {
         // setup
-        const query = { src: 'src', quality: '101' };
+        const query = { ...loaderData, quality: '101' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -186,7 +188,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if maxAge is not a number', async () => {
         // setup
-        const query = { src: 'src', maxAge: 'invalid' };
+        const query = { ...loaderData, maxAge: 'invalid' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -206,7 +208,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if maxAge is below min', async () => {
         // setup
-        const query = { src: 'src', maxAge: '-1' };
+        const query = { ...loaderData, maxAge: '-1' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -226,7 +228,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if maxAge is above max', async () => {
         // setup
-        const query = { src: 'src', maxAge: '31536001' };
+        const query = { ...loaderData, maxAge: '31536001' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -246,7 +248,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if sMaxAge is not a number', async () => {
         // setup
-        const query = { src: 'src', sMaxAge: 'invalid' };
+        const query = { ...loaderData, sMaxAge: 'invalid' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -266,7 +268,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if sMaxAge is below min', async () => {
         // setup
-        const query = { src: 'src', sMaxAge: '-1' };
+        const query = { ...loaderData, sMaxAge: '-1' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -286,7 +288,7 @@ describe('pages/api/image-loader/index', () => {
 
     it('should return 400 if sMaxAge is above max', async () => {
         // setup
-        const query = { src: 'src', maxAge: '31536001' };
+        const query = { ...loaderData, maxAge: '31536001' };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -306,8 +308,8 @@ describe('pages/api/image-loader/index', () => {
 
     it('should load an optimized image', async () => {
         // setup
-        const query = { maxAge: '100', sMaxAge: '200', src: 'source', width: '500', quality: '50' };
-        const expectedQuery = { src: 'source', width: 500, quality: 50 };
+        const query = { ...loaderData, maxAge: '100', sMaxAge: '200', width: '500', quality: '50' };
+        const expectedQuery = { ...loaderData, width: 500, quality: 50 };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -332,8 +334,8 @@ describe('pages/api/image-loader/index', () => {
     it('should load an optimized image and set the cache control to the default values', async () => {
         // setup
         const defaultCacheValue = 31536000;
-        const query = { src: 'source', width: '500', quality: '50' };
-        const expectedQuery = { src: 'source', width: 500, quality: 50 };
+        const query = { ...loaderData, width: '500', quality: '50' };
+        const expectedQuery = { ...loaderData, width: 500, quality: 50 };
         const { req, res } = createMocks({
             query
         }) as { req: NextApiRequest; res: NextApiResponse };
@@ -358,8 +360,8 @@ describe('pages/api/image-loader/index', () => {
     it('should return 500 on error', async () => {
         // setup
         const error = { error: 'optimize error' };
-        const query = { maxAge: '100', sMaxAge: '200', src: 'source', width: '500', quality: '50' };
-        const expectedQuery = { src: 'source', width: 500, quality: 50 };
+        const query = { ...loaderData, maxAge: '100', sMaxAge: '200', width: '500', quality: '50' };
+        const expectedQuery = { ...loaderData, width: 500, quality: 50 };
         optimizeMock.mockRejectedValueOnce(error);
         const { req, res } = createMocks({
             query

@@ -6,25 +6,8 @@ import { getOptionsMinMaxAvailableDimensions } from '@/enums';
 
 const { width, height } = getOptionsMinMaxAvailableDimensions();
 
-const itCannotBeConvertedToNumber = (input: string) => Number.isNaN(Number.parseInt(input));
-const transformStringValidation = (input: string) => {
-    if (itCannotBeConvertedToNumber(input)) {
-        return input;
-    }
-
-    throw Error();
-};
-const isBoolean = (input: string) => input === 'true' || input === 'false';
-const transformBooleanValidation = (input: string) => {
-    if (isBoolean(input)) {
-        return input === 'true';
-    }
-
-    throw Error();
-};
-
 const QueryParamsSchema = v.object({
-    src: v.pipe(v.string(), v.transform(transformStringValidation)),
+    src: v.pipe(v.string(), v.regex(/^https:\/\/.*(\.png|ext=png).*$/)),
     width: v.pipe(
         v.string(),
         v.transform(Number),
@@ -39,11 +22,26 @@ const QueryParamsSchema = v.object({
         v.minValue(height.min),
         v.maxValue(height.max)
     ),
-    atRight: v.pipe(v.string(), v.transform(transformBooleanValidation), v.boolean()),
-    coverStyle: v.pipe(v.string(), v.transform(transformBooleanValidation), v.boolean()),
-    mobile: v.pipe(v.string(), v.transform(transformBooleanValidation), v.boolean()),
+    atRight: v.pipe(
+        v.string(),
+        v.regex(/^(true|false)$/),
+        v.transform(input => input === 'true'),
+        v.boolean()
+    ),
+    coverStyle: v.pipe(
+        v.string(),
+        v.regex(/^(true|false)$/),
+        v.transform(input => input === 'true'),
+        v.boolean()
+    ),
+    mobile: v.pipe(
+        v.string(),
+        v.regex(/^(true|false)$/),
+        v.transform(input => input === 'true'),
+        v.boolean()
+    ),
     collection: v.pipe(v.string(), v.regex(/^[a-zA-Z]+(?:_[a-zA-Z]+)*$/)),
-    logoSrc: v.optional(v.pipe(v.string(), v.transform(transformStringValidation))),
+    logoSrc: v.optional(v.pipe(v.string(), v.regex(/^(?!.*:\/\/).*?-logo.*\.png$/))),
     maxAge: v.optional(
         v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(0), v.maxValue(31536000))
     ),

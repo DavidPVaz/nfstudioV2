@@ -87,35 +87,37 @@ export const createResizedLogo = async ({
         sharp(new Uint8Array(logoBuffer))
     );
 
+    const logoHeightRatio = (logoHeight * 100) / height;
+    const logoWidthRatio = (logoWidth * 100) / width;
+
     const options = {} as { height?: number; width?: number };
     let logo = sharp(new Uint8Array(logoBuffer));
 
-    if (!mobile && (logoHeight * 100) / height > 35) {
-        // not mobile and actual height of the logo is bigger than 35% of the created image height
-        options.height = Math.floor(height * 0.35);
-
-        if ((options.height * (logoWidth / logoHeight) * 100) / width > 25) {
-            // the new logo width taking into account the new height is bigger than 25%
-            delete options.height;
+    if (!mobile) {
+        if (logoHeightRatio > 35) {
+            options.height = Math.floor(height * 0.35);
+            const newWidthRatio = (options.height * (logoWidth / logoHeight) * 100) / width;
+            if (newWidthRatio > 25) {
+                delete options.height;
+                options.width = Math.floor(width * 0.25);
+            }
+        } else if (logoWidthRatio > 25) {
             options.width = Math.floor(width * 0.25);
         }
-    } else if (!mobile && (logoWidth * 100) / width > 25) {
-        // not mobile and actual width of the logo is bigger than 25% of the created image width
-        options.width = Math.floor(width * 0.25);
-    } else if ((logoHeight * 100) / height > 20) {
-        // actual height of the logo is bigger than 20% of the created image height
-        options.height = Math.floor(height * 0.2);
+    }
 
-        if ((options.height * (logoWidth / logoHeight) * 100) / width > 45) {
-            // the new logo width having into account the new height is bigger than 45%
-            delete options.height;
-            options.width = Math.floor(width * 0.45);
+    // For mobile or when not handled by previous condition
+    if (!options.width && !options.height) {
+        if (logoHeightRatio > 20) {
+            options.height = Math.floor(height * 0.2);
+            const newWidthRatio = (options.height * (logoWidth / logoHeight) * 100) / width;
+            if (newWidthRatio > 45) {
+                delete options.height;
+                options.width = Math.floor(width * 0.45);
+            }
+        } else {
+            options.width = Math.floor(width * (mobile ? 0.45 : 0.25));
         }
-    } else {
-        // new logo width will be:
-        // on mobile - 45% of the created image width
-        // not on mobile - 25% of the created image width
-        options.width = Math.floor(width * (mobile ? 0.45 : 0.25));
     }
 
     logo = logo.resize({

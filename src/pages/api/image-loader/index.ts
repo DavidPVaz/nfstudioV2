@@ -4,7 +4,12 @@ import { optimize } from '@/server/service/image-loader';
 import { captureException } from '@sentry/nextjs';
 
 const QueryParamsSchema = v.object({
-    src: v.string(),
+    src: v.pipe(
+        v.string(),
+        v.regex(
+            /(^https:\/\/.*(\.png|ext=png).*$)|(^(?!.*:\/\/).*?-logo.*\.png$)|(^(?!.*:\/\/).*(\/[0-9a-zA-Z]+(?:_[0-9a-zA-Z]+)*)\.webp$)/
+        )
+    ),
     width: v.optional(
         v.pipe(v.string(), v.transform(Number), v.number(), v.minValue(50), v.maxValue(1000))
     ),
