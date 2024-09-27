@@ -19,7 +19,7 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL(process.env.APP_URL!),
+    metadataBase: new URL(process.env.ORIGIN!),
     title: 'NFStudio | Effortlessly Showcase NFTs',
     description:
         'Effortlessly create stunning social media banners, desktop and mobile wallpapers from your favorite NFTs in seconds!',

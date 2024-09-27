@@ -7,6 +7,10 @@ export const isFromVercel = (request: NextRequest) =>
     process.env.VERCEL_ENV === 'development' ||
     request.headers.get('x-vercel-deployment-url') === process.env.VERCEL_URL;
 
+export const isValidOrigin = (request: NextRequest) =>
+    process.env.VERCEL_ENV === 'development' ||
+    !!request.headers.get('origin')?.includes(process.env.ORIGIN!);
+
 export const isFromBrowser = (request: NextRequest) => {
     const { browser } = userAgent(request);
 
@@ -25,4 +29,4 @@ export const isAdmin = (request: NextRequest) => {
 };
 
 export const isAuthorized = (request: NextRequest) =>
-    isAdmin(request) || (isFromVercel(request) && isFromBrowser(request));
+    isAdmin(request) || (isValidOrigin(request) && isFromVercel(request) && isFromBrowser(request));
