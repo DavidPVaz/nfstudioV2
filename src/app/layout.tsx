@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { ColorThemeProvider } from '@/app/color-theme-provider';
 import { ReactQueryClientProvider } from '@/app/query-client-provider';
 import { NotificationProvider } from '@/app/notification-provider';
+import { NetworkStatus } from '@/app/network-status';
 import { Footer } from '@/components/organisms/footer';
 import { Header } from '@/components/organisms/header';
 import { ScrollUp } from '@/components/molecules/scroll-up';
@@ -62,6 +63,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
                 </ReactQueryClientProvider>
             </ColorThemeProvider>
             <NotificationProvider />
+            <NetworkStatus />
             <div id="extra" />
         </body>
     </html>

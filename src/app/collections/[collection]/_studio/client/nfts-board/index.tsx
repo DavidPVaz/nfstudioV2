@@ -37,7 +37,7 @@ export const NftsBoard = () => {
         [nfts, userHasLoadedNFTs]
     );
 
-    const { response, noNetwork } = useFallbackApiRead<LoadMetadataProps, NFT[]>({
+    const { response } = useFallbackApiRead<LoadMetadataProps, NFT[]>({
         method: loadMetadata,
         args: { collection: selectedCollection, nfts, unsupportedTraits },
         enabled: userHasLoadedNFTs && !nftsLoadIsComplete,
@@ -63,14 +63,6 @@ export const NftsBoard = () => {
 
     if (!userHasLoadedNFTs) {
         return <LoadNFTs />;
-    }
-
-    if (noNetwork) {
-        return (
-            <span className="p-8 text-lg">
-                You are offline. Your request will resume as soon as you come back online.
-            </span>
-        );
     }
 
     return (

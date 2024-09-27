@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import type { ImageLoaderProps, ImageLoader } from 'next/image';
 import { buildQueryString } from '@/lib/utils';
 import { PLATFORMS } from '@/enums';
 import { useModal } from '@/hooks/use-modal';
+import { useNotification } from '@/hooks/use-notification';
+import { useNetworkState } from '@/hooks/use-network-state';
 import { Modal } from '@/components/molecules/modal';
 import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
@@ -70,13 +72,28 @@ export const Preview = React.memo(() => {
         data: { selectedNFT, atRight, coverStyle, logo, platform, option }
     } = useWizardContext();
     const { isOpen, open, toggle } = useModal();
+    const { notify } = useNotification();
+    const { isOnline } = useNetworkState();
 
     const { width, height } = getPlatformOptionConfig({ platform: platform!, option: option! });
     const mobile = platform === PLATFORMS.MOBILE;
+
+    const onPreview = useCallback(() => {
+        if (!isOnline) {
+            notify({
+                title: 'You are offline.',
+                description: 'Please try to preview your creation when you come back online.'
+            });
+            return;
+        }
+
+        open();
+    }, [open, isOnline, notify]);
+
     // TODO: aspect ration. take height into account as well, it can be mobile but be flipped
     return (
         <>
-            <Button onClick={open} className="h-10 px-5 2xs:h-11 2xs:px-8">
+            <Button onClick={onPreview} className="h-10 px-5 2xs:h-11 2xs:px-8">
                 PREVIEW
             </Button>
 

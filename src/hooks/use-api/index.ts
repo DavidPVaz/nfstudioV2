@@ -66,7 +66,7 @@ export const useFallbackApiRead = <T extends Record<string, unknown>, R>({
 }: FallbackApiReadProps<T, R>) => {
     const fallback = useRef<R>(initialFallback);
 
-    const { response, isLoading, error, noNetwork } = useApiRead(apiReadProps);
+    const { response, isLoading, error } = useApiRead(apiReadProps);
 
     if (response) {
         fallback.current = response;
@@ -74,7 +74,6 @@ export const useFallbackApiRead = <T extends Record<string, unknown>, R>({
 
     return {
         response: error ? fallback.current : response,
-        isLoading,
-        noNetwork
+        isLoading
     };
 };

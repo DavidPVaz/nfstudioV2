@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { RefreshCcw } from 'lucide-react';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/atoms/card';
 import { Button } from '@/components/atoms/button';
 import { Tooltip } from '@/components/atoms/tooltip';
 import { Modal } from '@/components/molecules/modal';
 import { useModal } from '@/hooks/use-modal';
+import { useNotification } from '@/hooks/use-notification';
+import { useNetworkState } from '@/hooks/use-network-state';
 import { LoadForm } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts/load-form';
 import {
     type IncompleteNFT,
@@ -29,8 +31,27 @@ const Content = () => (
     </>
 );
 
+const notification = {
+    title: 'You are offline.',
+    description: 'Please try to load the NFTs when you come back online.'
+};
+
 export const LoadNFTs = () => {
     const { onIncompleteNFTsLoad } = useStudioSessionContext();
+    const { notify } = useNotification();
+    const { isOnline } = useNetworkState();
+
+    const onSubmit = useCallback(
+        (incompleteNFTs: { ids: IncompleteNFT[] }) => {
+            if (!isOnline) {
+                notify(notification);
+                return;
+            }
+
+            onIncompleteNFTsLoad(incompleteNFTs);
+        },
+        [onIncompleteNFTsLoad, isOnline, notify]
+    );
 
     return (
         <div className="container flex w-full items-center justify-center overflow-y-auto">
@@ -39,7 +60,7 @@ export const LoadNFTs = () => {
                     <Content />
                 </CardHeader>
                 <div className="pb-6 pl-0 pr-0 pt-2 2xs:p-6 2xs:pt-3">
-                    <LoadForm onSubmit={onIncompleteNFTsLoad} />
+                    <LoadForm onSubmit={onSubmit} />
                 </div>
             </Card>
         </div>
@@ -51,6 +72,22 @@ const tooltipContent = 'Refresh NFT selection';
 export const RefreshNFTs = React.memo(() => {
     const { onIncompleteNFTsLoad } = useStudioSessionContext();
     const { isOpen, open, toggle, close } = useModal();
+
+    const { notify } = useNotification();
+    const { isOnline } = useNetworkState();
+
+    const onSubmit = useCallback(
+        (incompleteNFTs: { ids: IncompleteNFT[] }) => {
+            if (!isOnline) {
+                notify(notification);
+                return;
+            }
+
+            close();
+            onIncompleteNFTsLoad(incompleteNFTs);
+        },
+        [onIncompleteNFTsLoad, isOnline, notify, close]
+    );
 
     return (
         <>
@@ -72,12 +109,7 @@ export const RefreshNFTs = React.memo(() => {
                         <Content />
                     </CardHeader>
                     <div className="pb-6 pl-6 pr-6 pt-2 2xs:pt-3">
-                        <LoadForm
-                            onSubmit={(incompleteNFTs: { ids: IncompleteNFT[] }) => {
-                                close();
-                                onIncompleteNFTsLoad(incompleteNFTs);
-                            }}
-                        />
+                        <LoadForm onSubmit={onSubmit} />
                     </div>
                 </Card>
             </Modal>
