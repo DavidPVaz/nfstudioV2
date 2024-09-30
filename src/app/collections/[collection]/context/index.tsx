@@ -3,7 +3,7 @@
 import React, { createContext, useContext } from 'react';
 import type { CollectionConfiguration } from '@/server/service/mongo/types';
 
-type StudioContext = {
+type CollectionContext = {
     selectedCollection: CollectionConfiguration['_id'];
     cacheStrategy: CollectionConfiguration['config']['cacheStrategy'];
     logos: CollectionConfiguration['config']['logos'];
@@ -13,17 +13,17 @@ type StudioContext = {
 
 const Context = createContext({});
 
-export const StudioContextProvider = ({
-    collectionConfiguration,
+export const CollectionContextProvider = ({
+    configuration,
     children
 }: {
-    collectionConfiguration: CollectionConfiguration;
+    configuration: CollectionConfiguration;
     children: React.ReactNode;
 }) => {
     const {
         _id: selectedCollection,
         config: { logos, unsupportedTraits, cacheStrategy, paylinkId }
-    } = collectionConfiguration;
+    } = configuration;
 
     const context = {
         selectedCollection,
@@ -39,4 +39,4 @@ export const StudioContextProvider = ({
     return <Context.Provider value={context}>{children}</Context.Provider>;
 };
 
-export const useStudioContext = () => useContext(Context) as StudioContext;
+export const useCollectionContext = () => useContext(Context) as CollectionContext;

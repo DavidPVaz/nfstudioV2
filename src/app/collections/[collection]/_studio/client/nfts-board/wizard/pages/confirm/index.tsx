@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { PAGES, PLATFORMS, type Platform } from '@/enums';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
-import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
+import { useCollectionContext } from '@/app/collections/[collection]/context';
 import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
 import { Switch } from '@/components/molecules/switch';
@@ -162,7 +162,7 @@ const Selectors = ({
 };
 
 export const Confirm = () => {
-    const { cacheStrategy, logos } = useStudioContext();
+    const { cacheStrategy, logos } = useCollectionContext();
     const {
         previous,
         updateData,

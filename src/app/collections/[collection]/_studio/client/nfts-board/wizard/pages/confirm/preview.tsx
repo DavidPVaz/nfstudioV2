@@ -8,7 +8,7 @@ import { useNetworkState } from '@/hooks/use-network-state';
 import { Modal } from '@/components/molecules/modal';
 import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
-import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
+import { useCollectionContext } from '@/app/collections/[collection]/context';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
 import { getPlatformOptionConfig } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/config';
 
@@ -67,7 +67,7 @@ const getPreviewLoader =
 const content = 'Preview';
 
 export const Preview = React.memo(() => {
-    const { selectedCollection, cacheStrategy } = useStudioContext();
+    const { selectedCollection, cacheStrategy } = useCollectionContext();
     const {
         data: { selectedNFT, atRight, coverStyle, logo, platform, option }
     } = useWizardContext();

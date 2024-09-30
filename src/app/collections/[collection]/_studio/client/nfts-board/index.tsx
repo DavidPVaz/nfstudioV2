@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import {
     type SelectedNFTs,
     type NFT,
-    useStudioSessionContext
+    useStudioContext
 } from '@/app/collections/[collection]/_studio/client';
 import { NFTCard, NFTCardSkeleton } from '@/components/molecules/card/nft';
 import {
@@ -15,7 +15,7 @@ import { Wizard } from '@/app/collections/[collection]/_studio/client/nfts-board
 import { loadMetadata, type LoadMetadataProps } from '@/app/_api';
 import { useFallbackApiRead } from '@/hooks/use-api';
 import { useNotification } from '@/hooks/use-notification';
-import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
+import { useCollectionContext } from '@/app/collections/[collection]/context';
 
 const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
     nfts.every(
@@ -27,8 +27,8 @@ const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
 const hasLoadedNFTs = (nfts: SelectedNFTs) => nfts.length > 0;
 
 export const NftsBoard = () => {
-    const { selectedCollection, unsupportedTraits, cacheStrategy } = useStudioContext();
-    const { nfts, onCompleteNFTsLoad, onNFTSelect } = useStudioSessionContext();
+    const { selectedCollection, unsupportedTraits, cacheStrategy } = useCollectionContext();
+    const { nfts, onCompleteNFTsLoad, onNFTSelect } = useStudioContext();
     const { notify } = useNotification();
 
     const userHasLoadedNFTs = useMemo(() => hasLoadedNFTs(nfts), [nfts]);

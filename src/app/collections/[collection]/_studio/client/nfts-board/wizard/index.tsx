@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { Modal } from '@/components/molecules/modal';
 import { Button } from '@/components/atoms/button';
 import { useModal } from '@/hooks/use-modal';
-import { useStudioSessionContext } from '@/app/collections/[collection]/_studio/client';
+import { useStudioContext } from '@/app/collections/[collection]/_studio/client';
 import { useNotification } from '@/hooks/use-notification';
 import { NFStudioSkeleton } from '@/components/molecules/nfstudio-skeleton';
 import type { NFT } from '@/app/collections/[collection]/_studio/client/';
@@ -20,7 +20,7 @@ const WizardContent = dynamic(
 
 export const Wizard = React.memo(
     ({ disabled }: { disabled: boolean }) => {
-        const { nfts } = useStudioSessionContext();
+        const { nfts } = useStudioContext();
         const { notify } = useNotification();
         const { isOpen, open, toggle } = useModal();
 

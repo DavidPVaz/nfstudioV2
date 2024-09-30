@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useCallback, useEffect, useState } from 'react';
 import { NFStudioSkeleton } from '@/components/molecules/nfstudio-skeleton';
-import { useStudioContext } from '@/app/collections/[collection]/_studio/client/context';
+import { useCollectionContext } from '@/app/collections/[collection]/context';
 import { NftsBoard } from '@/app/collections/[collection]/_studio/client/nfts-board';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 
@@ -20,7 +20,7 @@ export type LoadIncompleteNFTs = (incompleteNFTs: { ids: IncompleteNFT[] }) => v
 export type LoadCompleteNFTs = (nfts: NFT[]) => void;
 export type SelectedNFTs = NFT[] | IncompleteNFT[];
 
-type StudioSessionContext = {
+type StudioContext = {
     nfts: SelectedNFTs;
     onCompleteNFTsLoad: LoadCompleteNFTs;
     onIncompleteNFTsLoad: LoadIncompleteNFTs;
@@ -28,7 +28,7 @@ type StudioSessionContext = {
 };
 
 export const StudioContent = () => {
-    const { selectedCollection } = useStudioContext();
+    const { selectedCollection } = useCollectionContext();
     const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(selectedCollection, []);
     const [client, setClient] = useState<boolean>(false);
 
@@ -80,4 +80,4 @@ export const StudioContent = () => {
     );
 };
 
-export const useStudioSessionContext = () => useContext(Context) as StudioSessionContext;
+export const useStudioContext = () => useContext(Context) as StudioContext;

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { queryCollectionsData } from '@/server/service/mongo';
 import { PAGES } from '@/enums';
-import { StudioContextProvider } from '@/app/collections/[collection]/_studio/client/context';
+import { CollectionContextProvider } from '@/app/collections/[collection]/context';
 import { Studio } from '@/app/collections/[collection]/_studio';
 
 type Slug = {
@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 }
 
 const CollectionPage = async ({ params: { collection } }: Slug) => {
-    const [selectedCollection] = await queryCollectionsData({
+    const [selectedCollectionConfig] = await queryCollectionsData({
         filter: { _id: { $eq: collection } },
         projection: {
             config: 1,
@@ -41,14 +41,14 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
         }
     });
 
-    if (!selectedCollection) {
+    if (!selectedCollectionConfig) {
         return redirect(PAGES.COLLECTIONS);
     }
 
     return (
-        <StudioContextProvider collectionConfiguration={selectedCollection}>
-            <Studio collectionConfiguration={selectedCollection} />
-        </StudioContextProvider>
+        <CollectionContextProvider configuration={selectedCollectionConfig}>
+            <Studio configuration={selectedCollectionConfig} />
+        </CollectionContextProvider>
     );
 };
 

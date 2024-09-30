@@ -11,7 +11,7 @@ import { useNetworkState } from '@/hooks/use-network-state';
 import { LoadForm } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts/load-form';
 import {
     type IncompleteNFT,
-    useStudioSessionContext
+    useStudioContext
 } from '@/app/collections/[collection]/_studio/client';
 
 const Content = () => (
@@ -39,7 +39,7 @@ const notification = {
 };
 
 export const LoadNFTs = () => {
-    const { onIncompleteNFTsLoad } = useStudioSessionContext();
+    const { onIncompleteNFTsLoad } = useStudioContext();
     const { notify } = useNotification();
     const { isOnline } = useNetworkState();
 
@@ -72,7 +72,7 @@ export const LoadNFTs = () => {
 const tooltipContent = 'Refresh NFT selection';
 
 export const RefreshNFTs = React.memo(() => {
-    const { onIncompleteNFTsLoad } = useStudioSessionContext();
+    const { onIncompleteNFTsLoad } = useStudioContext();
     const { isOpen, open, toggle, close } = useModal();
 
     const { notify } = useNotification();

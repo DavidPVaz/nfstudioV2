@@ -7,12 +7,8 @@ import { default as TwitterIcon } from '@/resources/TwitterIcon.svg';
 import { default as WebsiteIcon } from '@/resources/WebsiteIcon.svg';
 import { StudioContent } from '@/app/collections/[collection]/_studio/client';
 
-export const Studio = ({
-    collectionConfiguration
-}: {
-    collectionConfiguration: CollectionConfiguration;
-}) => {
-    const { _id, marketplace, discord, twitter, website } = collectionConfiguration;
+export const Studio = ({ configuration }: { configuration: CollectionConfiguration }) => {
+    const { _id, marketplace, discord, twitter, website } = configuration;
     const name = _id.replace('_', ' ');
 
     return (
