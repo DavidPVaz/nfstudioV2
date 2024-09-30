@@ -91,7 +91,6 @@ export const Preview = React.memo(() => {
         open();
     }, [open, isOnline, notify]);
 
-    // TODO: aspect ration. take height into account as well, it can be mobile but be flipped
     return (
         <>
             <Button onClick={onPreview} className="h-10 px-5 2xs:h-11 2xs:px-8">
@@ -105,10 +104,10 @@ export const Preview = React.memo(() => {
                 onOpenChange={toggle}
                 title={content}
                 description={content}
-                className={`${mobile ? 'max-h-[95vh] min-h-[85vh]' : 'min-w-[95vw] max-w-[95vw]'} cursor-auto rounded-none border-0 bg-transparent px-6 py-16`}
+                className="max-h-[95vh] max-w-[95vw] cursor-auto rounded-none border-0 bg-transparent px-6 py-16"
             >
                 <Image
-                    variant={'contain'}
+                    variant="fill_contain"
                     width={width}
                     height={height}
                     src={selectedNFT.src}
@@ -125,6 +124,7 @@ export const Preview = React.memo(() => {
                         ...cacheStrategy
                     })}
                 />
+
                 <span className="absolute -bottom-3 w-full px-6 text-center text-sm">
                     Ordered image will not have any watermark and will have 100% quality.
                 </span>

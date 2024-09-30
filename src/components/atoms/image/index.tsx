@@ -11,7 +11,8 @@ const imageVariants = cva('pointer-events-none object-center', {
     variants: {
         variant: {
             default: 'object-cover',
-            contain: 'object-contain'
+            contain: 'object-contain',
+            fill_contain: 'object-contain !relative !max-h-full !max-w-full'
         }
     },
     defaultVariants: {
