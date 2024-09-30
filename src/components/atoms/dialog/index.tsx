@@ -71,9 +71,9 @@ const DialogContentExtra = React.forwardRef<
             {children}
             <DialogPrimitive.Close
                 aria-label="Close"
-                className="absolute right-2 top-2 z-[100] rounded-sm px-1 py-1 opacity-70 ring-offset-background transition-opacity hover:bg-muted hover:ring-2 hover:ring-ring hover:ring-offset-2 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+                className="hover:bg-primary-brand-white/30 absolute right-2 top-2 z-[100] rounded-sm px-1 py-1 opacity-70 ring-offset-background transition-opacity hover:ring-2 hover:ring-ring hover:ring-offset-2 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
             >
-                <X className="h-8 w-8 fill-current" />
+                <X className="stroke-primary-brand-white h-8 w-8" />
                 <span className="sr-only">Close</span>
             </DialogPrimitive.Close>
         </DialogPrimitive.Content>

@@ -41,7 +41,8 @@ const config = {
                     DEFAULT: 'hsl(var(--primary))',
                     foreground: 'hsl(var(--primary-foreground))',
                     brand: 'hsl(var(--brand))',
-                    'brand-blue': 'hsl(var(--brand-blue))'
+                    'brand-blue': 'hsl(var(--brand-blue))',
+                    'brand-white': 'hsl(var(--brand-white))'
                 },
                 secondary: {
                     DEFAULT: 'hsl(var(--secondary))',
