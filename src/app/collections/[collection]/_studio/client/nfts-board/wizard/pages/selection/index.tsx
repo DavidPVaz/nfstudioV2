@@ -1,9 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { type Platform, type Option } from '@/enums';
-import {
-    getAvailablePlatforms,
-    getPlatformAvailableOptions
-} from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/config';
+import { getAvailablePlatforms, getPlatformAvailableOptions } from '@/lib/utils';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
 import { SelectionDropdown } from '@/components/molecules/selection-dropdown';
 

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import type { ImageLoaderProps, ImageLoader } from 'next/image';
-import { buildQueryString } from '@/lib/utils';
+import { buildQueryString, getPlatformOptionConfig } from '@/lib/utils';
 import { PLATFORMS } from '@/enums';
 import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
@@ -10,7 +10,6 @@ import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
 import { useCollectionContext } from '@/app/collections/[collection]/context';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
-import { getPlatformOptionConfig } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/config';
 
 type LoaderProps = ImageLoaderProps & {
     maxAge?: number | string;

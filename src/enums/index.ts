@@ -175,31 +175,6 @@ export const PLATFORM_OPTIONS_MAP: Record<Platform, PlatformOptions> = {
     }
 };
 
-// TODO: move to lib
-export const getOptionsMinMaxAvailableDimensions = () =>
-    Object.values(PLATFORM_OPTIONS_MAP).reduce(
-        (acc, option) => {
-            Object.values(option).forEach(config => {
-                acc.width.min = Math.min(acc.width.min, config.width);
-                acc.width.max = Math.max(acc.width.max, config.width);
-                acc.height.min = Math.min(acc.height.min, config.height);
-                acc.height.max = Math.max(acc.height.max, config.height);
-            });
-
-            return acc;
-        },
-        {
-            width: {
-                min: Infinity,
-                max: -Infinity
-            },
-            height: {
-                min: Infinity,
-                max: -Infinity
-            }
-        }
-    );
-
 export const WIZARD_PAGES = {
     SELECTION: 'selection',
     CONFIRM: 'confirm'

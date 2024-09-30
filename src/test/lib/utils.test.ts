@@ -1,5 +1,14 @@
 import { describe, expect, vi, afterEach, it } from 'vitest';
-import { cn, buildQueryString, isMacOS } from '@/lib/utils';
+import { PLATFORM_DISPLAY_NAME, OPTION_DISPLAY_NAME, PLATFORMS, type Platform } from '@/enums';
+import {
+    cn,
+    buildQueryString,
+    isMacOS,
+    getOptionsMinMaxAvailableDimensions,
+    getAvailablePlatforms,
+    getPlatformAvailableOptions,
+    getPlatformOptionConfig
+} from '@/lib/utils';
 
 const { clsxMock, twMergeMock, windowMock } = vi.hoisted(() => ({
     clsxMock: vi.fn(),
@@ -78,5 +87,39 @@ describe('lib/utils', () => {
         // exercise && verify
         expect(isMacOS('it is not mac os')).toEqual(false);
         expect(isMacOS('it is Mac OS')).toEqual(true);
+    });
+
+    it('should get the correct values for min/max with and height', () => {
+        // setup
+        const expectedMinimumWidth = 640;
+        const expectedMaximumWidth = 4096;
+        const expectedMinimumHeight = 500;
+        const expectedMaximumHeight = 2560;
+
+        // exercise && verify
+        expect(getOptionsMinMaxAvailableDimensions()).toEqual({
+            width: { min: expectedMinimumWidth, max: expectedMaximumWidth },
+            height: { min: expectedMinimumHeight, max: expectedMaximumHeight }
+        });
+    });
+
+    it('should get the correct platform values and their display names', () => {
+        // exercise && verify
+        getAvailablePlatforms().forEach(({ value, display }) => {
+            expect(PLATFORM_DISPLAY_NAME[value]).toEqual(display);
+        });
+    });
+
+    it('should get the correct options values and their display names', () => {
+        // exercise && verify
+        (Object.values(PLATFORMS) as Platform[]).forEach(platform => {
+            const availableOptions = getPlatformAvailableOptions(platform);
+
+            availableOptions.forEach(({ value, display }) => {
+                const { width, height } = getPlatformOptionConfig({ platform, option: value });
+
+                expect(display).toEqual(`${OPTION_DISPLAY_NAME[value]} - ${width}px x ${height}px`);
+            });
+        });
     });
 });

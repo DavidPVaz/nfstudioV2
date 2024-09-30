@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { createMocks, type MockResponse } from 'node-mocks-http';
 import PreviewHandler from '@/pages/api/preview';
-import { getOptionsMinMaxAvailableDimensions } from '@/enums';
+import { getOptionsMinMaxAvailableDimensions } from '@/lib/utils';
 
 const { width, height } = getOptionsMinMaxAvailableDimensions();
 const PREVIEW_IMAGE = Buffer.from('test');

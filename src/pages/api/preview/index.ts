@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 import { preview } from '@/server/service/nft-converter';
 import { captureException } from '@sentry/nextjs';
-import { getOptionsMinMaxAvailableDimensions } from '@/enums';
+import { getOptionsMinMaxAvailableDimensions } from '@/lib/utils';
 
 const { width, height } = getOptionsMinMaxAvailableDimensions();
 
