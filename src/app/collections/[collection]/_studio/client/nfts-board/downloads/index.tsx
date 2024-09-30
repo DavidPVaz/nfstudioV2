@@ -17,7 +17,7 @@ const DownloadsContent = dynamic(
     }
 );
 
-const tooltipContent = 'Access previous downloads';
+const tooltipContent = 'My downloads';
 
 export const Downloads = React.memo(() => {
     const { isOpen, open, toggle } = useModal();

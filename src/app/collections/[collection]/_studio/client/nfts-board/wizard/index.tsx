@@ -26,7 +26,7 @@ export const Wizard = React.memo(
 
         const selectedNFT = useMemo(() => (nfts as NFT[]).find(({ selected }) => selected), [nfts]);
 
-        const onCreate = useCallback(() => {
+        const onStart = useCallback(() => {
             if (!selectedNFT) {
                 notify({
                     title: 'No NFT selected!',
@@ -41,8 +41,8 @@ export const Wizard = React.memo(
 
         return (
             <>
-                <Button disabled={disabled} size="lg" onClick={onCreate}>
-                    CREATE
+                <Button disabled={disabled} size="lg" onClick={onStart}>
+                    START
                 </Button>
                 <Modal
                     open={isOpen}
