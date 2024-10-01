@@ -16,8 +16,8 @@ const BodySchema = v.object({
     mobile: v.boolean(),
     collection: v.pipe(v.string(), v.regex(/^[a-zA-Z]+(?:_[a-zA-Z]+)*$/)),
     logoSrc: v.optional(v.pipe(v.string(), v.regex(/^(?!.*:\/\/).*?-logo.*\.png$/))),
-    statusToken: v.string(), // TODO: see if it can be narrowed
-    transactionSignature: v.string() // TODO: see if it can be narrowed
+    statusToken: v.pipe(v.string(), v.regex(/^[A-Za-z0-9-_]+?\.[A-Za-z0-9-_]+?\.[A-Za-z0-9-_]+$/)), // JWT header.payload.signature Base64 encoded strings
+    transactionSignature: v.pipe(v.string(), v.regex(/^[1-9A-HJ-NP-Za-km-z]{88}$/)) // Solana Tx -> 64-byte array, encoded in Base58 with exactly 88 characters
 });
 
 /**
@@ -34,7 +34,6 @@ export default async function handler(request: NextApiRequest, response: NextApi
     } catch {
         return response.status(400).send('Bad request.');
     }
-
     const { statusToken, transactionSignature, ...orderOptions } = body;
 
     // TODO: logic to fetch and validate blockchain transaction
