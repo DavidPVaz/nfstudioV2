@@ -25,7 +25,10 @@ export const useNotification = () => ({
                     notification: { ...props, id }
                 });
             const dismiss = () =>
-                dispatch({ type: ACTION_TYPES.DISMISS_NOTIFICATION, notificationId: id });
+                dispatch({
+                    type: ACTION_TYPES.DISMISS_NOTIFICATION,
+                    notification: { ...notification, id }
+                });
 
             dispatch({
                 type: ACTION_TYPES.ADD_NOTIFICATION,
@@ -57,9 +60,5 @@ export const useNotificationProvider = () => {
 
     useEffect(() => addListener(setState), [setState]);
 
-    return {
-        ...state,
-        dismiss: (notificationId?: string) =>
-            dispatch({ type: ACTION_TYPES.DISMISS_NOTIFICATION, notificationId })
-    };
+    return state;
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as NotificationPrimitives from '@radix-ui/react-toast';
 import { X } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -44,17 +44,14 @@ const notificationVariants = cva(
 const Notification = React.forwardRef<
     React.ElementRef<typeof NotificationPrimitives.Root>,
     React.ComponentPropsWithoutRef<typeof NotificationPrimitives.Root> &
-        VariantProps<typeof notificationVariants>
->(({ className, variant, ...props }, ref) => {
-    return (
-        <NotificationPrimitives.Root
-            ref={ref}
-            className={cn(notificationVariants({ variant }), className)}
-            {...props}
-        />
-    );
-});
-Notification.displayName = NotificationPrimitives.Root.displayName;
+        VariantProps<typeof notificationVariants> & { onCleanup?: () => void }
+>(({ className, variant, onCleanup, ...props }, ref) => (
+    <NotificationPrimitives.Root
+        ref={ref}
+        className={cn(notificationVariants({ variant }), className)}
+        {...props}
+    />
+));
 
 const NotificationAction = React.forwardRef<
     React.ElementRef<typeof NotificationPrimitives.Action>,

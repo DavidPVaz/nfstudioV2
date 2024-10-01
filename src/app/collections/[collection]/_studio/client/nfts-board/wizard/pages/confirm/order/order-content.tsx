@@ -55,21 +55,20 @@ export const OrderContent = ({ close }: { close: () => void }) => {
             const downloadRef = window.URL.createObjectURL(
                 new Blob([buffer], { type: 'image/png' })
             );
-            const downloadName = `${selectedNFT.id}_${option}_${new Date().toISOString()}`;
+            const downloadName = `${selectedNFT.id}_${option}_${new Date().toISOString().split('.')[0] + 'Z'}`;
             // save this data in its own storage to be used in downloads folder
-
-            // notify available download with download action
-            /* ACTION
-            <a id={downloadName} href={downloadRef} download={downloadName}>
-                download
-            </a>
-            */
 
             notify({
                 title: 'Download is ready!',
                 description:
                     'Your image is now available to download. You can download it now or access it later in downloads folder.',
-                duration: 15000
+                duration: 15000,
+                action: (
+                    <a href={downloadRef} download={downloadName}>
+                        Download
+                    </a>
+                ),
+                onCleanup: () => window.URL.revokeObjectURL(downloadRef)
             });
         },
         [selectedNFT, option, notify]

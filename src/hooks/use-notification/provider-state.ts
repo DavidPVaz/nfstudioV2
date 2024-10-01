@@ -35,11 +35,11 @@ type Action =
       }
     | {
           type: ActionType['DISMISS_NOTIFICATION'];
-          notificationId?: Notification['id'];
+          notification: Notification;
       }
     | {
           type: ActionType['REMOVE_NOTIFICATION'];
-          notificationId?: Notification['id'];
+          notification?: Notification;
       };
 
 export type State = {
@@ -48,20 +48,20 @@ export type State = {
 
 const notificationTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
-const addToRemoveQueue = (notificationId: string) => {
-    if (notificationTimeouts.has(notificationId)) {
+const addToRemoveQueue = (notification: Notification) => {
+    if (notificationTimeouts.has(notification.id)) {
         return;
     }
 
     const timeout = setTimeout(() => {
-        notificationTimeouts.delete(notificationId);
+        notificationTimeouts.delete(notification.id);
         dispatch({
             type: ACTION_TYPES.REMOVE_NOTIFICATION,
-            notificationId
+            notification
         });
     }, NOTIFICATION_REMOVE_DELAY);
 
-    notificationTimeouts.set(notificationId, timeout);
+    notificationTimeouts.set(notification.id, timeout);
 };
 
 const reducer = (state: State, action: Action): State => {
@@ -84,20 +84,20 @@ const reducer = (state: State, action: Action): State => {
             };
 
         case ACTION_TYPES.DISMISS_NOTIFICATION: {
-            const { notificationId } = action;
+            const { id } = action.notification;
 
-            if (notificationId) {
-                addToRemoveQueue(notificationId);
+            if (id) {
+                addToRemoveQueue(action.notification);
             } else {
                 state.notifications.forEach(notification => {
-                    addToRemoveQueue(notification.id);
+                    addToRemoveQueue(notification);
                 });
             }
 
             return {
                 ...state,
                 notifications: state.notifications.map(notification =>
-                    notification.id === notificationId || notificationId === undefined
+                    notification.id === id || id === undefined
                         ? {
                               ...notification,
                               open: false
@@ -106,18 +106,25 @@ const reducer = (state: State, action: Action): State => {
                 )
             };
         }
-        case ACTION_TYPES.REMOVE_NOTIFICATION:
-            if (action.notificationId === undefined) {
+        case ACTION_TYPES.REMOVE_NOTIFICATION: {
+            if (action.notification === undefined) {
                 return {
                     ...state,
                     notifications: []
                 };
             }
 
+            const { id, onCleanup } = action.notification;
+
+            if (onCleanup) {
+                onCleanup();
+            }
+
             return {
                 ...state,
-                notifications: state.notifications.filter(t => t.id !== action.notificationId)
+                notifications: state.notifications.filter(t => t.id !== id)
             };
+        }
     }
 };
 

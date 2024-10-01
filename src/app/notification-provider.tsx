@@ -3,6 +3,7 @@
 import { useNotificationProvider } from '@/hooks/use-notification';
 import {
     Notification,
+    NotificationAction,
     NotificationClose,
     NotificationDescription,
     Provider,
@@ -25,7 +26,11 @@ export const NotificationProvider = () => {
                         )}
                         <NotificationTimer duration={props.duration} />
                     </div>
-                    {action}
+                    {action && (
+                        <NotificationAction altText="Action" asChild>
+                            {action}
+                        </NotificationAction>
+                    )}
                     <NotificationClose />
                 </Notification>
             ))}
