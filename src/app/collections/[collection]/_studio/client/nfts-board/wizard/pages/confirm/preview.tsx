@@ -95,7 +95,6 @@ export const Preview = React.memo(() => {
             <Button onClick={onPreview} className="h-10 px-5 2xs:h-11 2xs:px-8">
                 PREVIEW
             </Button>
-
             <Modal
                 extraContainer
                 dialog

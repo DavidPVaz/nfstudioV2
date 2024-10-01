@@ -13,14 +13,14 @@ const OrderContent = dynamic(
             '@/app/collections/[collection]/_studio/client/nfts-board/wizard/pages/confirm/order/order-content'
         ).then(module => module.OrderContent),
     {
-        loading: NFStudioSkeleton // TODO: Not showing
+        loading: NFStudioSkeleton
     }
 );
 
 const content = 'Order';
 
 export const Order = React.memo(() => {
-    const { isOpen, open, toggle } = useModal();
+    const { isOpen, open, toggle, close } = useModal();
     const { notify } = useNotification();
     const { isOnline } = useNetworkState();
 
@@ -42,7 +42,6 @@ export const Order = React.memo(() => {
             <Button onClick={onOrder} className="h-10 px-5 2xs:h-11 2xs:px-8">
                 ORDER
             </Button>
-
             <Modal
                 extraContainer
                 dialog
@@ -50,9 +49,9 @@ export const Order = React.memo(() => {
                 onOpenChange={toggle}
                 title={content}
                 description={content}
-                className="min-h-[476px] min-w-[380px] max-w-[400px] cursor-auto items-center justify-center rounded-none border-0 bg-transparent px-0 py-16"
+                className="min-h-[476px] min-w-[380px] max-w-[400px] cursor-auto rounded-none border-0 bg-transparent px-0 py-16"
             >
-                <OrderContent />
+                <OrderContent close={close} />
             </Modal>
         </>
     );
