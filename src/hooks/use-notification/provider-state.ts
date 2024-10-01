@@ -3,7 +3,7 @@
 import React from 'react';
 import type { NotificationActionElement, NotificationProps } from '@/components/atoms/notification';
 
-const NOTIFICATION_LIMIT = 1;
+const NOTIFICATION_LIMIT = 2;
 const NOTIFICATION_REMOVE_DELAY = 10000;
 
 export type Notification = NotificationProps & {

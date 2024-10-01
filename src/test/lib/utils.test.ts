@@ -4,7 +4,7 @@ import {
     cn,
     buildQueryString,
     isMacOS,
-    getOptionsMinMaxAvailableDimensions,
+    getOptionsMinMaxConfig,
     getAvailablePlatforms,
     getPlatformAvailableOptions,
     getPlatformOptionConfig
@@ -95,9 +95,12 @@ describe('lib/utils', () => {
         const expectedMaximumWidth = 4096;
         const expectedMinimumHeight = 500;
         const expectedMaximumHeight = 2560;
+        const expectedMinimumDpi = 72;
+        const expectedMaximumDpi = 458;
 
         // exercise && verify
-        expect(getOptionsMinMaxAvailableDimensions()).toEqual({
+        expect(getOptionsMinMaxConfig()).toEqual({
+            dpi: { min: expectedMinimumDpi, max: expectedMaximumDpi },
             width: { min: expectedMinimumWidth, max: expectedMaximumWidth },
             height: { min: expectedMinimumHeight, max: expectedMaximumHeight }
         });

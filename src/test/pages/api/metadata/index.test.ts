@@ -372,7 +372,9 @@ describe('pages/api/metadata/index', () => {
 
         // verify
         expect(response.statusCode).toBe(500);
-        expect(response._getData()).toEqual('An error occurred while fetching metadata.');
+        expect(response._getData()).toEqual(
+            'An unexpected error occurred while fetching metadata.'
+        );
         expect(response._isEndCalled()).toBe(true);
         expect(queryMetadataMock).toHaveBeenNthCalledWith(1, expectedQuery);
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error);

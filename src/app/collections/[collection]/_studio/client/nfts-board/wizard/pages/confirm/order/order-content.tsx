@@ -6,6 +6,7 @@ import { useWizardContext } from '@/app/collections/[collection]/_studio/client/
 import { useNotification } from '@/hooks/use-notification';
 import { useApiWrite } from '@/hooks/use-api';
 import { getPlatformOptionConfig } from '@/lib/utils';
+import { order, type OrderProps } from '@/app/_api';
 
 const HELIO_CHECKOUT_STORE_VARIABLES = [
     'wagmi.store',
@@ -22,6 +23,7 @@ const destroyHelioFootprint = () => {
     // clear script+iframe
     document.getElementById('verify-api')?.remove();
     document.getElementById('helio-checkout-react-v1')?.remove();
+    // TODO: remove stripe shit
 
     // clear store variables
     HELIO_CHECKOUT_STORE_VARIABLES.forEach(property => window.localStorage.removeItem(property));
@@ -36,24 +38,42 @@ export const OrderContent = ({ close }: { close: () => void }) => {
 
     useEffect(() => destroyHelioFootprint, []);
 
-    const onConversionError = useCallback(() => {
-        notify({
-            title: 'Whoops!',
-            description:
-                'An unexpected error occurred while creating your image. You will be automatically refunded.',
-            duration: 6000,
-            variant: 'destructive'
-        });
-    }, [notify]);
+    const onConversionError = useCallback(
+        (error: Error) => {
+            notify({
+                title: 'Whoops!',
+                description: `${error.message ?? 'An unexpected error occurred while creating your image'}. You will be automatically refunded.`,
+                duration: 7000,
+                variant: 'destructive'
+            });
+        },
+        [notify]
+    );
 
-    const onConversionSuccess = useCallback((buffer: ArrayBuffer) => {
-        // save this data in its own storage to be used in downloads folder
-        updateData({
-            downloadRef: window.URL.createObjectURL(new Blob([buffer], { type: 'image/png' })),
-            downloadName: `${selectedNFT.id}_${option}_${new Date().toISOString()}`
-        });
-        // notify available download with download action
-    }, []);
+    const onConversionSuccess = useCallback(
+        (buffer: ArrayBuffer) => {
+            const downloadRef = window.URL.createObjectURL(
+                new Blob([buffer], { type: 'image/png' })
+            );
+            const downloadName = `${selectedNFT.id}_${option}_${new Date().toISOString()}`;
+            // save this data in its own storage to be used in downloads folder
+
+            // notify available download with download action
+            /* ACTION
+            <a id={downloadName} href={downloadRef} download={downloadName}>
+                download
+            </a>
+            */
+
+            notify({
+                title: 'Download is ready!',
+                description:
+                    'Your image is now available to download. You can download it now or access it later in downloads folder.',
+                duration: 15000
+            });
+        },
+        [selectedNFT, option, notify]
+    );
 
     const data = useMemo(
         () => ({
@@ -68,11 +88,9 @@ export const OrderContent = ({ close }: { close: () => void }) => {
         [platform, option, selectedNFT, atRight, coverStyle, logo, selectedCollection]
     );
 
-    const { send, reset } = useApiWrite<
-        typeof data & { transactionSignature: string; statusToken: string },
-        ArrayBuffer
-    >({
-        method: () => {},
+    const { send, reset } = useApiWrite<OrderProps, ArrayBuffer>({
+        key: `order-${Object.values(data).join('-')}`,
+        method: order,
         onError: onConversionError,
         onSuccess: onConversionSuccess
     });
@@ -88,8 +106,8 @@ export const OrderContent = ({ close }: { close: () => void }) => {
             close();
             notify({
                 title: 'Whoops!',
-                description: `An unexpected error occurred while processing your payment. Please retry. ${errorMessage ? errorMessage : ''}`,
-                duration: 6000,
+                description: `${errorMessage ?? 'An unexpected error occurred while processing your payment. Please try again'}.`,
+                duration: 7000,
                 variant: 'destructive'
             });
         },
@@ -97,27 +115,27 @@ export const OrderContent = ({ close }: { close: () => void }) => {
     );
 
     const onPaymentSuccess = useCallback(
-        async ({
+        ({
             data: { statusToken, transactionSignature }
         }: {
-            data: { statusToken: string; transactionSignature: string };
+            data: {
+                statusToken: OrderProps['statusToken'];
+                transactionSignature: OrderProps['transactionSignature'];
+            };
         }) => {
+            send({
+                ...data,
+                transactionSignature,
+                statusToken
+            });
             close();
             notify({
                 title: 'Payment is complete!',
                 description:
                     "NFStudio will now begin creating your image. We'll notify you once your download is available."
             });
-
-            await send({
-                ...data,
-                transactionSignature,
-                statusToken
-            });
-
-            reset();
         },
-        [close, notify, send, data, reset]
+        [close, notify, send, data]
     );
 
     const config = useMemo(

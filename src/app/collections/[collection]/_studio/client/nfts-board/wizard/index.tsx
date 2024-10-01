@@ -30,8 +30,7 @@ export const Wizard = React.memo(
             if (!selectedNFT) {
                 notify({
                     title: 'No NFT selected!',
-                    description: 'Select the NFT before starting the creation.',
-                    duration: 3000
+                    description: 'Select the NFT before starting the creation.'
                 });
                 return;
             }

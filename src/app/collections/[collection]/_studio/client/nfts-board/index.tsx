@@ -46,7 +46,7 @@ export const NftsBoard = () => {
             notify({
                 title: 'Whoops!',
                 description: error.message,
-                duration: 6000,
+                duration: 7000,
                 variant: 'destructive'
             })
     });

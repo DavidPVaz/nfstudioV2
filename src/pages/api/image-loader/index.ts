@@ -54,6 +54,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
     } catch (error) {
         captureException(error);
 
-        return response.status(500).send('An error occurred while optimizing the image.');
+        return response
+            .status(500)
+            .send('An unexpected error occurred while optimizing the image.');
     }
 }

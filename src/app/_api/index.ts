@@ -1,7 +1,12 @@
 import { buildQueryString } from '@/lib/utils';
 import type { CollectionMetadata, CollectionConfiguration } from '@/server/service/mongo/types';
 import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/_studio/client';
-import { FetchError, EmptyMetadataError, UnsupportedTraitsError } from '@/app/_errors';
+import {
+    FetchMetadataError,
+    EmptyMetadataError,
+    UnsupportedTraitsError,
+    OrderError
+} from '@/app/_errors';
 
 export type LoadMetadataProps = {
     collection: string;
@@ -34,7 +39,7 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
         )) ?? {};
 
     if (response.status !== 200) {
-        throw new FetchError();
+        throw new FetchMetadataError();
     }
 
     const metadata = (await response.json()) as CollectionMetadata[];
@@ -76,4 +81,40 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
     }
 
     return withoutUnsupportedTraits;
+};
+
+export type OrderProps = {
+    src: string;
+    atRight: boolean;
+    coverStyle: boolean;
+    logoSrc: string | undefined;
+    mobile: boolean;
+    collection: string;
+    width: number;
+    height: number;
+    dpi: number;
+    statusToken: string;
+    transactionSignature: string;
+};
+
+/**
+ * Performs a http request to order the client's nft banner/wallpaper.
+ *
+ * @param data - the configuration data to apply when creating the banner/wallpaper
+ *
+ * @throws {Error} if request failed
+ */
+export const order = async (data: OrderProps) => {
+    const response =
+        (await fetch('/api/order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            body: JSON.stringify(data)
+        })) ?? {};
+
+    if (response.status !== 201) {
+        throw new OrderError(response.statusText);
+    }
+
+    return response.arrayBuffer();
 };

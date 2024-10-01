@@ -375,7 +375,9 @@ describe('pages/api/image-loader/index', () => {
 
         // verify
         expect(response.statusCode).toBe(500);
-        expect(response._getData()).toEqual('An error occurred while optimizing the image.');
+        expect(response._getData()).toEqual(
+            'An unexpected error occurred while optimizing the image.'
+        );
         expect(response._isEndCalled()).toBe(true);
         expect(optimizeMock).toHaveBeenNthCalledWith(1, expectedQuery);
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error);

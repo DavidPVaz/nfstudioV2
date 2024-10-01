@@ -3,9 +3,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { createMocks, type MockResponse } from 'node-mocks-http';
 import PreviewHandler from '@/pages/api/preview';
-import { getOptionsMinMaxAvailableDimensions } from '@/lib/utils';
+import { getOptionsMinMaxConfig } from '@/lib/utils';
 
-const { width, height } = getOptionsMinMaxAvailableDimensions();
+const { width, height } = getOptionsMinMaxConfig();
 const PREVIEW_IMAGE = Buffer.from('test');
 
 const previewData = {
@@ -573,7 +573,9 @@ describe('pages/api/preview/index', () => {
 
         // verify
         expect(response.statusCode).toBe(500);
-        expect(response._getData()).toEqual('An error occurred while creating the preview.');
+        expect(response._getData()).toEqual(
+            'An unexpected error occurred while creating the preview.'
+        );
         expect(response._isEndCalled()).toBe(true);
         expect(previewMock).toHaveBeenNthCalledWith(1, expectedQuery);
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error);

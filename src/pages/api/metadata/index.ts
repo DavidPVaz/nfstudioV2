@@ -36,6 +36,6 @@ export default async function handler(request: NextApiRequest, response: NextApi
     } catch (error) {
         captureException(error);
 
-        return response.status(500).send('An error occurred while fetching metadata.');
+        return response.status(500).send('An unexpected error occurred while fetching metadata.');
     }
 }

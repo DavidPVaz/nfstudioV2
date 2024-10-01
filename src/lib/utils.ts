@@ -79,9 +79,9 @@ export const buildQueryString = (data: QueryStringProps) => {
 export const isMacOS = (userAgent: string) => userAgent.includes('Mac OS');
 
 /**
- * Gets the minimum and max width and height of all the available creation options in NFStudio.
+ * Gets the minimum and max of all the available creation configuration options in NFStudio.
  */
-export const getOptionsMinMaxAvailableDimensions = () =>
+export const getOptionsMinMaxConfig = () =>
     Object.values(PLATFORM_OPTIONS_MAP).reduce(
         (acc, option) => {
             Object.values(option).forEach(config => {
@@ -89,11 +89,17 @@ export const getOptionsMinMaxAvailableDimensions = () =>
                 acc.width.max = Math.max(acc.width.max, config.width);
                 acc.height.min = Math.min(acc.height.min, config.height);
                 acc.height.max = Math.max(acc.height.max, config.height);
+                acc.dpi.min = Math.min(acc.dpi.min, config.dpi);
+                acc.dpi.max = Math.max(acc.dpi.max, config.dpi);
             });
 
             return acc;
         },
         {
+            dpi: {
+                min: Infinity,
+                max: -Infinity
+            },
             width: {
                 min: Infinity,
                 max: -Infinity

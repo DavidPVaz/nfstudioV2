@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef } from 'react';
 import { useQuery, useMutation, type Query } from '@tanstack/react-query';
 
 type ApiReadProps<T extends Record<string, unknown>, R> = {
@@ -79,6 +79,7 @@ export const useFallbackApiRead = <T extends Record<string, unknown>, R>({
 };
 
 type ApiWriteProps<T extends Record<string, unknown>, R> = {
+    key: string;
     method: (data: T) => Promise<R>;
     onSuccess?: (data: R) => void;
     onError?: (error: Error) => void;
@@ -88,22 +89,29 @@ type ApiWriteProps<T extends Record<string, unknown>, R> = {
  * Manages the lifecycle of an API request to write data.
  *
  * @param options
+ * @param options.key - the name of the API resource identifying the data being written
  * @param options.method - the function responsible for sending the request
  * @param options.onSuccess - the function to call after write operation is successfully completed
  * @param options.onError - the function to call to handle operation error
  */
 export const useApiWrite = <T extends Record<string, unknown>, R>({
+    key,
     method,
     onSuccess,
     onError
 }: ApiWriteProps<T, R>) => {
-    const { isPending, mutateAsync, reset, error } = useMutation({
+    const {
+        isPending,
+        mutate: send,
+        reset,
+        error
+    } = useMutation({
+        mutationKey: [key],
         mutationFn: method,
+        throwOnError: false,
         onError: error => onError?.(error),
         onSuccess: (data: R) => onSuccess?.(data)
     });
-
-    const send = useCallback((args: T) => mutateAsync(args), [mutateAsync]);
 
     return {
         isPending,

@@ -2,9 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 import { preview } from '@/server/service/nft-converter';
 import { captureException } from '@sentry/nextjs';
-import { getOptionsMinMaxAvailableDimensions } from '@/lib/utils';
+import { getOptionsMinMaxConfig } from '@/lib/utils';
 
-const { width, height } = getOptionsMinMaxAvailableDimensions();
+const { width, height } = getOptionsMinMaxConfig();
 
 const QueryParamsSchema = v.object({
     src: v.pipe(v.string(), v.regex(/^https:\/\/.*(\.png|ext=png).*$/)),
@@ -80,6 +80,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
     } catch (error) {
         captureException(error);
 
-        return response.status(500).send('An error occurred while creating the preview.');
+        return response
+            .status(500)
+            .send('An unexpected error occurred while creating the preview.');
     }
 }
