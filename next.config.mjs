@@ -7,6 +7,7 @@ import Analyzer from '@next/bundle-analyzer';
 const withBundleAnalyzer = Analyzer({ enabled: process.env.ANALYZE === 'true' });
 
 const config = {
+    reactStrictMode: false,
     experimental: {
         instrumentationHook: true
     },

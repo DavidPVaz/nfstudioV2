@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useEffect } from 'react';
 import { PLATFORMS } from '@/enums';
 import { HelioCheckout } from '@heliofi/checkout-react';
 import { useCollectionContext } from '@/app/collections/[collection]/context';
+import { useStudioContext } from '@/app/collections/[collection]/_studio/client';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
 import { useNotification } from '@/hooks/use-notification';
 import { useApiWrite } from '@/hooks/use-api';
@@ -31,6 +32,7 @@ const destroyHelioFootprint = () => {
 
 export const OrderContent = ({ close }: { close: () => void }) => {
     const { selectedCollection, paylinkId } = useCollectionContext();
+    const { onDownloadData } = useStudioContext();
     const {
         data: { platform, option, atRight, coverStyle, logo, selectedNFT }
     } = useWizardContext();
@@ -55,8 +57,9 @@ export const OrderContent = ({ close }: { close: () => void }) => {
             const downloadRef = window.URL.createObjectURL(
                 new Blob([buffer], { type: 'image/png' })
             );
-            const downloadName = `${selectedNFT.id}_${option}_${new Date().toISOString().split('.')[0] + 'Z'}`;
-            // save this data in its own storage to be used in downloads folder
+            const name = `${selectedNFT.id}_${option}_${new Date().toISOString().split('.')[0] + 'Z'}`;
+
+            onDownloadData({ name, data: Array.from(new Uint8Array(buffer)) });
 
             notify({
                 title: 'Download is ready!',
@@ -64,14 +67,14 @@ export const OrderContent = ({ close }: { close: () => void }) => {
                     'Your image is now available to download. You can download it now or access it later in downloads folder.',
                 duration: 15000,
                 action: (
-                    <a href={downloadRef} download={downloadName}>
+                    <a href={downloadRef} download={name}>
                         Download
                     </a>
                 ),
                 onCleanup: () => window.URL.revokeObjectURL(downloadRef)
             });
         },
-        [selectedNFT, option, notify]
+        [selectedNFT, option, onDownloadData, notify]
     );
 
     const data = useMemo(

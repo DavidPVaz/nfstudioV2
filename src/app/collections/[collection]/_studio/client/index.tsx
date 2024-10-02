@@ -8,6 +8,11 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 
 const Context = createContext({});
 
+export type Download = {
+    name: string;
+    data: number[];
+};
+
 export type NFT = {
     id: number;
     src: string;
@@ -25,11 +30,17 @@ type StudioContext = {
     onCompleteNFTsLoad: LoadCompleteNFTs;
     onIncompleteNFTsLoad: LoadIncompleteNFTs;
     onNFTSelect: (selectedId: number) => void;
+    download: Download | null;
+    onDownloadData: (data: Download) => void;
 };
 
 export const StudioContent = () => {
     const { selectedCollection } = useCollectionContext();
     const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(selectedCollection, []);
+    const [download, setDownload] = useLocalStorage<Download | null>(
+        `${selectedCollection}-download`,
+        null
+    );
     const [client, setClient] = useState<boolean>(false);
 
     useEffect(() => {
@@ -64,11 +75,18 @@ export const StudioContent = () => {
         [setNfts]
     );
 
+    const onDownloadData = useCallback(
+        (download: Download) => setDownload(download),
+        [setDownload]
+    );
+
     const context = {
         nfts,
         onCompleteNFTsLoad,
         onIncompleteNFTsLoad,
-        onNFTSelect
+        onNFTSelect,
+        download,
+        onDownloadData
     };
 
     return !client ? (
