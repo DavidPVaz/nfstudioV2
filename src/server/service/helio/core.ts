@@ -16,8 +16,6 @@ export class TransactionValidationError extends NFStudioRequestError {
     }
 }
 
-type HelioResponse<T> = T;
-
 type HelioApiGetRequest = {
     path: string;
     retries?: number;
@@ -34,7 +32,7 @@ type HelioApiGetRequest = {
  */
 export async function helioApiGETRequest<T>({ path, retries = 1 }: HelioApiGetRequest) {
     try {
-        return await customFetch<HelioResponse<T>>({
+        return await customFetch<T>({
             retries,
             options: {
                 url: `${process.env.HELIO_API_ENDPOINT}/${path}?publicKey=${process.env.HELIO_PUBLIC_API_KEY}`,
@@ -49,13 +47,13 @@ export async function helioApiGETRequest<T>({ path, retries = 1 }: HelioApiGetRe
         });
     } catch (error) {
         if (error instanceof NFStudioRequestError) {
-            const Constructor =
+            const SpecificError =
                 // if the response code from HELIO api call are 401 || 404, it means it was not a transaction from NFStudio, which is invalid
                 error.code === 401 || error.code === 404
                     ? TransactionValidationError
                     : HelioApiRequestError;
 
-            throw new Constructor(error.message, error.code);
+            throw new SpecificError(error.message, error.code);
         }
 
         throw error;
