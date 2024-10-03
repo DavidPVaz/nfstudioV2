@@ -5,12 +5,11 @@ import { cn } from '@/lib/utils';
 
 type DownloadCardProps = {
     className?: string;
-    imgSrc: string;
     href: string;
     name: string;
 };
 
-export const DownloadCard = ({ className, imgSrc, href, name }: DownloadCardProps) => (
+export const DownloadCard = ({ className, href, name }: DownloadCardProps) => (
     <Card
         className={cn(
             'min-w-full transition-all hover:bg-muted hover:shadow-border-extension',
@@ -19,18 +18,20 @@ export const DownloadCard = ({ className, imgSrc, href, name }: DownloadCardProp
         asChild
     >
         <a
-            className="relative flex flex-col gap-y-2 p-2 sm:p-4"
+            className="relative flex items-center p-2 sm:p-4"
             aria-label={`Download ${name}`}
             href={href}
             download={name}
         >
-            <Image
-                variant={'fill_contain'}
-                className="rounded-lg"
-                src={imgSrc}
-                alt={`${name} download card`}
-                useCustomLoader={false}
-            />
+            <div className="relative flex max-h-full max-w-full">
+                <Image
+                    variant={'fill_contain'}
+                    className="rounded-none"
+                    src={href}
+                    alt={`${name} download card`}
+                    useCustomLoader={false}
+                />
+            </div>
         </a>
     </Card>
 );

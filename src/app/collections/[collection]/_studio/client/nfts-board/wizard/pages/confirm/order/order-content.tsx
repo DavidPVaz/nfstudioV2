@@ -57,9 +57,7 @@ export const OrderContent = ({ close }: { close: () => void }) => {
             const downloadRef = window.URL.createObjectURL(
                 new Blob([buffer], { type: 'image/png' })
             );
-            const name = `${selectedNFT.id}_${option}_${new Date().toISOString().split('.')[0] + 'Z'}`;
-
-            onDownloadData({ name, data: Array.from(new Uint8Array(buffer)) });
+            const name = `${selectedNFT.id}_${option}}`;
 
             notify({
                 title: 'Download is ready!',
@@ -72,6 +70,12 @@ export const OrderContent = ({ close }: { close: () => void }) => {
                     </a>
                 ),
                 onCleanup: () => window.URL.revokeObjectURL(downloadRef)
+            });
+
+            onDownloadData({
+                name,
+                data: Array.from(new Uint8Array(buffer)),
+                createdAt: new Date().getTime()
             });
         },
         [selectedNFT, option, onDownloadData, notify]

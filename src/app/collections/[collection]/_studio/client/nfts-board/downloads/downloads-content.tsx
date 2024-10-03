@@ -15,20 +15,13 @@ const NoDownloadsFound = () => (
 );
 
 const prepareDownloads = (downloads: Download[]) =>
-    downloads.map(({ name, data }) => {
-        const buffer = Buffer.from(data);
-
-        return {
-            name,
-            imgSrc: `data:image/png;base64,${buffer.toString('base64')}`,
-            href: window.URL.createObjectURL(new Blob([buffer], { type: 'image/png' }))
-        };
-    });
+    downloads.map(({ name, data }) => ({
+        name,
+        href: window.URL.createObjectURL(new Blob([Buffer.from(data)], { type: 'image/png' }))
+    }));
 
 const Downloads = ({ downloads }: { downloads: Download[] }) => {
-    const data = useRef<{ name: string; imgSrc: string; href: string }[]>(
-        prepareDownloads(downloads)
-    );
+    const data = useRef<{ name: string; href: string }[]>(prepareDownloads(downloads));
 
     useEffect(() => () => data.current.forEach(({ href }) => window.URL.revokeObjectURL(href), []));
 
@@ -41,23 +34,22 @@ const Downloads = ({ downloads }: { downloads: Download[] }) => {
                 </div>
             </div>
 
-            <div className="grid w-full auto-rows-[14rem] grid-cols-2 gap-3 transition-all md:grid-cols-3 lg:grid-cols-4">
-                <div className="relative flex h-full w-full">
-                    {data.current.map(({ name, imgSrc, href }) => (
-                        <DownloadCard key={name} name={name} imgSrc={imgSrc} href={href} />
-                    ))}
-                </div>
+            <div className="grid w-full auto-rows-[10rem] grid-cols-2 gap-3 transition-all 2xs:auto-rows-[11rem] 2xs:grid-cols-3 md:auto-rows-[13rem] lg:auto-rows-[15rem] lg:grid-cols-4">
+                {data.current.map(({ name, href }) => (
+                    <DownloadCard key={name} name={name} href={href} />
+                ))}
             </div>
         </div>
     );
 };
 
 export const DownloadsContent = () => {
-    const { download } = useStudioContext();
+    const { downloads } = useStudioContext();
 
     const Component = useMemo(
-        () => (!download ? NoDownloadsFound : () => <Downloads downloads={[download]} />),
-        [download]
+        () =>
+            downloads.length === 0 ? NoDownloadsFound : () => <Downloads downloads={downloads} />,
+        [downloads]
     );
 
     return <Component />;

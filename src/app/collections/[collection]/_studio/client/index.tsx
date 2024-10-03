@@ -6,11 +6,13 @@ import { useCollectionContext } from '@/app/collections/[collection]/context';
 import { NftsBoard } from '@/app/collections/[collection]/_studio/client/nfts-board';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 
+const MAX_DOWNLOADS_IN_STORE = 2;
 const Context = createContext({});
 
 export type Download = {
     name: string;
     data: number[];
+    createdAt: number;
 };
 
 export type NFT = {
@@ -30,16 +32,16 @@ type StudioContext = {
     onCompleteNFTsLoad: LoadCompleteNFTs;
     onIncompleteNFTsLoad: LoadIncompleteNFTs;
     onNFTSelect: (selectedId: number) => void;
-    download: Download | null;
+    downloads: Download[];
     onDownloadData: (data: Download) => void;
 };
 
 export const StudioContent = () => {
     const { selectedCollection } = useCollectionContext();
     const [nfts, setNfts] = useLocalStorage<SelectedNFTs>(selectedCollection, []);
-    const [download, setDownload] = useLocalStorage<Download | null>(
-        `${selectedCollection}-download`,
-        null
+    const [downloads, setDownloads] = useLocalStorage<Download[]>(
+        `${selectedCollection}-downloads`,
+        []
     );
     const [client, setClient] = useState<boolean>(false);
 
@@ -76,8 +78,20 @@ export const StudioContent = () => {
     );
 
     const onDownloadData = useCallback(
-        (download: Download) => setDownload(download),
-        [setDownload]
+        (newDownload: Download) => {
+            setDownloads(currentDownloads => {
+                const newDownloadsData = [...currentDownloads, newDownload].sort(
+                    (a, b) => b.createdAt - a.createdAt
+                );
+
+                if (newDownloadsData.length <= MAX_DOWNLOADS_IN_STORE) {
+                    return newDownloadsData;
+                }
+
+                return newDownloadsData.slice(0, MAX_DOWNLOADS_IN_STORE);
+            });
+        },
+        [setDownloads]
     );
 
     const context = {
@@ -85,7 +99,7 @@ export const StudioContent = () => {
         onCompleteNFTsLoad,
         onIncompleteNFTsLoad,
         onNFTSelect,
-        download,
+        downloads,
         onDownloadData
     };
 
