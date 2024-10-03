@@ -11,6 +11,7 @@ import { Header } from '@/components/organisms/header';
 import { ScrollUp } from '@/components/molecules/scroll-up';
 import '@/styles/globals.css';
 
+// TODO: sidebar
 // TODO: PWA
 // TODO: CI/CD
 // TODO: MOBILE USE CASES - can't download inside wallet's application browser

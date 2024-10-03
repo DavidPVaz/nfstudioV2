@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     title: 'FAQ | NFStudio'
 };
 
+// TODO: review all this
 const FAQS = [
     {
         question: 'What is NFStudio?',

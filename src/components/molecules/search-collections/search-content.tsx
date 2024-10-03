@@ -76,11 +76,11 @@ const ChainFilter = ({
                         key={chain}
                         aria-label={`Filter by ${chain} chain`}
                         variant="ghost"
-                        className={`${chainIsSelected ? 'bg-accent' : ''} w-full gap-x-2 rounded-none hover:bg-accent/${chainIsSelected ? '100' : '50'}`}
+                        className={`${chainIsSelected ? 'bg-accent/80 hover:bg-accent/80' : 'hover:bg-accent/40'} w-full gap-x-2 rounded-none`}
                         onClick={() => onChain(chain as Chain)}
                     >
                         <Icon
-                            className={`${chainIsSelected ? 'fill-foreground' : 'fill-foreground/70'} h-full group-hover:fill-foreground`}
+                            className={`${chainIsSelected ? 'fill-primary-brand dark:fill-foreground' : 'fill-primary-brand/70 dark:fill-foreground/70'} h-full group-hover:fill-primary-brand dark:group-hover:fill-foreground`}
                         />
                         {chainIsSelected && (
                             <p className="hidden text-sm text-foreground sm:inline">{chain}</p>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as NotificationPrimitives from '@radix-ui/react-toast';
 import { X } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -45,7 +45,7 @@ const Notification = React.forwardRef<
     React.ElementRef<typeof NotificationPrimitives.Root>,
     React.ComponentPropsWithoutRef<typeof NotificationPrimitives.Root> &
         VariantProps<typeof notificationVariants> & { onCleanup?: () => void }
->(({ className, variant, onCleanup, ...props }, ref) => (
+>(({ className, variant, ...props }, ref) => (
     <NotificationPrimitives.Root
         ref={ref}
         className={cn(notificationVariants({ variant }), className)}
@@ -117,7 +117,7 @@ const NotificationTimer = ({ duration = 5000 }: { duration?: number }) => (
         <div className="absolute top-0 h-[5px] w-full bg-white/30" />
         <div className="absolute top-0 h-[5px] w-full">
             <div
-                className="h-full w-full origin-left transform animate-[round-time_linear_forwards] bg-white will-change-transform group-hover:[animation-play-state:paused]"
+                className="h-full w-full origin-left transform animate-[round-time_linear_forwards] bg-primary-brand will-change-transform group-hover:[animation-play-state:paused]"
                 style={{ animationDuration: `${duration}ms` }}
             />
         </div>

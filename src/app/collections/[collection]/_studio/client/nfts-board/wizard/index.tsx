@@ -40,7 +40,11 @@ export const Wizard = React.memo(
 
         return (
             <>
-                <Button disabled={disabled} size="lg" onClick={onStart}>
+                <Button
+                    className="h-11 rounded-lg px-5 2xs:px-8"
+                    disabled={disabled}
+                    onClick={onStart}
+                >
                     START
                 </Button>
                 <Modal

@@ -28,7 +28,7 @@ const Downloads = ({ downloads }: { downloads: Download[] }) => {
     return (
         <div className="relative flex flex-col gap-y-4 p-2 2xs:gap-y-8 2xs:p-4">
             <div className="flex flex-row items-center gap-2 bg-muted p-2">
-                <Info className="h-10 w-10 2xs:h-7 2xs:w-7 lg:h-5 lg:w-5" />
+                <Info className="h-7 w-7 2xs:h-5 2xs:w-5" />
                 <div className="relative text-sm 2xs:text-base">
                     Click on your creations to download.
                 </div>
