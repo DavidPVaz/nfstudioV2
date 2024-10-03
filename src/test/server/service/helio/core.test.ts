@@ -31,8 +31,6 @@ describe('server/service/helio/core', () => {
         vi.clearAllMocks();
     });
 
-    /** */
-
     it('should perform a Helio Api GET Request', async () => {
         // setup
         const path = 'some/path';
