@@ -72,6 +72,7 @@ export const OrderContent = ({ close }: { close: () => void }) => {
                 onCleanup: () => window.URL.revokeObjectURL(downloadRef)
             });
 
+            // TODO: Low priority. Add auth and persist the created image somewhere and request when authenticated users access downloads folder? This solution will still be available to unauthenticated users.
             onDownloadData({
                 name,
                 data: Array.from(new Uint8Array(buffer)),

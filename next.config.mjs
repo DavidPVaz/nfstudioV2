@@ -38,6 +38,18 @@ const headers = [
         value: '1; mode=block'
     },
     {
+        key: 'X-Content-Type-Options',
+        value: 'nosniff'
+    },
+    {
+        key: 'X-Frame-Options',
+        value: 'DENY'
+    },
+    {
+        key: 'Referrer-Policy',
+        value: 'strict-origin-when-cross-origin'
+    },
+    {
         key: 'Content-Security-Policy',
         value: ContentSecurityPolicy.replace(/\s{2,}/g, ' ').trim()
     }
@@ -64,7 +76,7 @@ const config = {
     async headers() {
         return [
             {
-                source: '/:path*',
+                source: '/(.*)',
                 headers
             },
             // no matter the environment, all these sources will have X-Robot-Tag = noindex

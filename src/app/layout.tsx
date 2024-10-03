@@ -11,6 +11,12 @@ import { Header } from '@/components/organisms/header';
 import { ScrollUp } from '@/components/molecules/scroll-up';
 import '@/styles/globals.css';
 
+// TODO: PWA
+// TODO: CI/CD
+// TODO: MOBILE USE CASES - can't download inside wallet's application browser
+// TODO: e2e
+// TODO: Containerize
+
 const fontSans = FontSans({
     subsets: ['latin'],
     weight: ['400', '700'],
