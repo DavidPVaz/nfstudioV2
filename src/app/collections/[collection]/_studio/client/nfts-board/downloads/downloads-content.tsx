@@ -35,8 +35,8 @@ const Downloads = ({ downloads }: { downloads: Download[] }) => {
             </div>
 
             <div className="grid w-full auto-rows-[10rem] grid-cols-2 gap-3 transition-all 2xs:auto-rows-[11rem] 2xs:grid-cols-3 md:auto-rows-[13rem] lg:auto-rows-[15rem] lg:grid-cols-4">
-                {data.current.map(({ name, href }) => (
-                    <DownloadCard key={name} name={name} href={href} />
+                {data.current.map(({ name, href }, index) => (
+                    <DownloadCard key={`${name}-${index}`} name={name} href={href} />
                 ))}
             </div>
         </div>

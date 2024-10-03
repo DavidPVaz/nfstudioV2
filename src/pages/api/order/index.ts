@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
+import { getVerifiedNFStudioRefundTransaction } from '@/server/service/helio';
+import { TransactionValidationError } from '@/server/service/helio/core';
+import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
 import { order } from '@/server/service/nft-converter';
-import { captureException } from '@sentry/nextjs';
+import { captureException, Scope } from '@sentry/nextjs';
 import { getOptionsMinMaxConfig } from '@/lib/utils';
 
 const { width, height, dpi } = getOptionsMinMaxConfig();
@@ -37,7 +40,42 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
     const { statusToken, transactionSignature, ...orderOptions } = body;
 
-    // TODO: logic to fetch and validate blockchain transaction
+    let transaction: NFStudioVerifiedRefundTransaction;
+
+    try {
+        transaction = await getVerifiedNFStudioRefundTransaction({
+            payloadTx: transactionSignature,
+            statusToken
+        });
+    } catch (error) {
+        const scope = new Scope();
+        scope.setContext('transaction', {
+            id: transactionSignature,
+            statusToken
+        });
+
+        if (error instanceof TransactionValidationError) {
+            captureException(error, scope);
+            return response.status(401).send('Unauthorized.');
+        }
+
+        // save tx as unverified. It can be authentic, but due to error we need to re-evaluate
+        try {
+            /*
+            await insertRefundTransaction({
+                _id: transactionSignature,
+                statusToken,
+                createdAt: new Date().toISOString()
+            });*/
+        } catch (error) {
+            // transaction data wasn't persisted
+            captureException(error, scope);
+        }
+
+        captureException(error, scope);
+
+        return response.status(500).send('An error occurred while validating the transaction.');
+    }
 
     try {
         const buffer = await order(orderOptions);
@@ -45,7 +83,17 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
         return response.status(201).send(buffer);
     } catch (error) {
-        captureException(error);
+        const scope = new Scope();
+        scope.setContext('transaction', transaction);
+
+        try {
+            //await insertRefundTransaction(transaction);
+        } catch (error) {
+            // transaction data wasn't persisted
+            captureException(error, scope);
+        }
+
+        captureException(error, scope);
 
         return response.status(500).send('An unexpected error occurred while creating the image.');
     }
