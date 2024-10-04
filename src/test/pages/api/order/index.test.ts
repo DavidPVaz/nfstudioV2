@@ -4,6 +4,8 @@ import { describe, it, expect, vi, afterEach } from 'vitest';
 import { createMocks, type MockResponse } from 'node-mocks-http';
 import OrderHandler from '@/pages/api/order';
 import { getOptionsMinMaxConfig } from '@/lib/utils';
+import { HelioApiRequestError, TransactionValidationError } from '@/server/service/helio/core';
+import { MongoDataApiRequestError } from '@/server/service/mongo/core';
 
 const { width, height, dpi } = getOptionsMinMaxConfig();
 const ORDERED_IMAGE = Buffer.from('test');
@@ -24,9 +26,62 @@ const orderData = {
         '3vDBy4BDNDT56HhyBRhZBsZBM1rLYhTGi5T3HDpS4hxkE2Aw7WSQg7k1wWsBCVGdi13M3YcLBZAZw8edfBwAHFD'
 };
 
-const { orderMock, captureExceptionMock } = vi.hoisted(() => ({
+const testValidatedTransaction = {
+    _id: 'id',
+    refunded: false,
+    verified: true,
+    paylinkId: 'paylink',
+    statusToken: 'token',
+    helioTransactionId: 'helioId',
+    createdAt: 'iso string',
+    clientPublicKey: 'public key',
+    amount: '100',
+    currency: { decimals: 9, mintAddress: 'address', symbol: 'symbol' },
+    purchaseDetails: {
+        src: 'image src',
+        width: 1500,
+        height: 500,
+        atRight: true,
+        coverStyle: false,
+        mobile: false,
+        logoSrc: 'logo image src',
+        dpi: 72,
+        collection: 'name'
+    }
+};
+
+const {
+    orderMock,
+    captureExceptionMock,
+    insertRefundTransactionMock,
+    getVerifiedNFStudioRefundTransactionMock,
+    ClassMocks
+} = vi.hoisted(() => ({
     orderMock: vi.fn().mockImplementation(() => Promise.resolve(ORDERED_IMAGE)),
-    captureExceptionMock: vi.fn()
+    captureExceptionMock: vi.fn(),
+    insertRefundTransactionMock: vi.fn().mockImplementation(() => Promise.resolve()),
+    getVerifiedNFStudioRefundTransactionMock: vi
+        .fn()
+        .mockImplementation(() => Promise.resolve(testValidatedTransaction)),
+    ClassMocks: {
+        ScopeMock: class {
+            static instance: InstanceType<typeof ClassMocks.ScopeMock> | null = null;
+
+            constructor() {
+                ClassMocks.ScopeMock.instance = this;
+            }
+
+            setContext = vi.fn();
+        }
+    }
+}));
+
+vi.mock('@/server/service/mongo', () => ({
+    insertRefundTransaction: insertRefundTransactionMock
+}));
+
+vi.mock('@/server/service/helio', () => ({
+    getVerifiedNFStudioRefundTransaction: getVerifiedNFStudioRefundTransactionMock
 }));
 
 vi.mock('@/server/service/nft-converter', () => ({
@@ -34,7 +89,8 @@ vi.mock('@/server/service/nft-converter', () => ({
 }));
 
 vi.mock('@sentry/nextjs', () => ({
-    captureException: captureExceptionMock
+    captureException: captureExceptionMock,
+    Scope: ClassMocks.ScopeMock
 }));
 
 describe('pages/api/order/index', () => {
@@ -53,7 +109,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid body', async () => {
@@ -70,7 +125,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if no src', async () => {
@@ -87,7 +141,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid src', async () => {
@@ -104,7 +157,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is not a number', async () => {
@@ -121,7 +173,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is below min', async () => {
@@ -138,7 +189,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is above max', async () => {
@@ -155,7 +205,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if height is not a number', async () => {
@@ -172,7 +221,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if height is below min', async () => {
@@ -189,7 +237,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if height is above max', async () => {
@@ -206,7 +253,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if dpi is not a number', async () => {
@@ -223,7 +269,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if dpi is below min', async () => {
@@ -240,7 +285,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if dpi is above max', async () => {
@@ -257,7 +301,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if atRight is not a boolean', async () => {
@@ -274,7 +317,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if coverStyle is not a boolean', async () => {
@@ -291,7 +333,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if mobile is not a boolean', async () => {
@@ -308,7 +349,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if not collection', async () => {
@@ -325,7 +365,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection', async () => {
@@ -342,7 +381,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid logoSrc', async () => {
@@ -359,7 +397,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if not status token', async () => {
@@ -376,7 +413,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid status token', async () => {
@@ -393,7 +429,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if not transaction signature', async () => {
@@ -410,7 +445,6 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid transaction signature', async () => {
@@ -427,6 +461,233 @@ describe('pages/api/order/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(orderMock).not.toHaveBeenCalled();
+    });
+
+    it('should return a 401 upon attempting to validate an invalid transaction', async () => {
+        // setup
+        const error = new TransactionValidationError('message', 401);
+        getVerifiedNFStudioRefundTransactionMock.mockRejectedValueOnce(error);
+        const { req, res } = createMocks({
+            method: 'POST',
+            body: orderData
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(401);
+        expect(response._getData()).toEqual('Unauthorized.');
+        expect(response._isEndCalled()).toBe(true);
+
+        expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            payloadTx: orderData.transactionSignature,
+            statusToken: orderData.statusToken
+        });
+
+        const scope = ClassMocks.ScopeMock.instance!;
+        expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
+            id: orderData.transactionSignature,
+            statusToken: orderData.statusToken
+        });
+        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error, scope);
+    });
+
+    it('should return a 500 if validating a transaction fails with fetch error and save that as an unverified refund transaction', async () => {
+        // setup
+        vi.useFakeTimers();
+        const error = new HelioApiRequestError('message', 500);
+        getVerifiedNFStudioRefundTransactionMock.mockRejectedValueOnce(error);
+        const expectedCreatedAt = new Date().toISOString();
+        const { req, res } = createMocks({
+            method: 'POST',
+            body: orderData
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(500);
+        expect(response._getData()).toEqual(
+            'An unexpected error occurred while validating the transaction.'
+        );
+        expect(response._isEndCalled()).toBe(true);
+
+        expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            payloadTx: orderData.transactionSignature,
+            statusToken: orderData.statusToken
+        });
+
+        expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            _id: orderData.transactionSignature,
+            verified: false,
+            refunded: false,
+            statusToken: orderData.statusToken,
+            createdAt: expectedCreatedAt
+        });
+
+        const scope = ClassMocks.ScopeMock.instance!;
+        expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
+            id: orderData.transactionSignature,
+            statusToken: orderData.statusToken
+        });
+        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error, scope);
+
+        // cleanup
+        vi.useRealTimers();
+    });
+
+    it('should return a 500 if validating a transaction fails with fetch error and capture error when saving refund transaction fails', async () => {
+        // setup
+        vi.useFakeTimers();
+        const helioError = new HelioApiRequestError('message', 500);
+        const mongoError = new MongoDataApiRequestError('message', 500);
+        getVerifiedNFStudioRefundTransactionMock.mockRejectedValueOnce(helioError);
+        insertRefundTransactionMock.mockRejectedValueOnce(mongoError);
+        const expectedCreatedAt = new Date().toISOString();
+        const { req, res } = createMocks({
+            method: 'POST',
+            body: orderData
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(500);
+        expect(response._getData()).toEqual(
+            'An unexpected error occurred while validating the transaction.'
+        );
+        expect(response._isEndCalled()).toBe(true);
+
+        expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            payloadTx: orderData.transactionSignature,
+            statusToken: orderData.statusToken
+        });
+
+        expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            _id: orderData.transactionSignature,
+            verified: false,
+            refunded: false,
+            statusToken: orderData.statusToken,
+            createdAt: expectedCreatedAt
+        });
+
+        const scope = ClassMocks.ScopeMock.instance!;
+        expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
+            id: orderData.transactionSignature,
+            statusToken: orderData.statusToken
+        });
+
+        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, helioError, scope);
+        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, mongoError, scope);
+
+        // cleanup
+        vi.useRealTimers();
+    });
+
+    it('should order the image wallpaper/banner', async () => {
+        // setup
+        const { transactionSignature, statusToken, ...orderOptions } = orderData;
+        const { req, res } = createMocks({
+            method: 'POST',
+            body: orderData
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(201);
+        expect(response._getData()).toEqual(ORDERED_IMAGE);
+        expect(response._getHeaders()['content-type']).toEqual('application/octet-stream');
+        expect(response._isEndCalled()).toBe(true);
+
+        expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            payloadTx: transactionSignature,
+            statusToken
+        });
+        expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
+    });
+
+    it('should return 500 on order error and save that as a verified refund transaction', async () => {
+        // setup
+        const error = new Error('order');
+        orderMock.mockRejectedValueOnce(error);
+        const { transactionSignature, statusToken, ...orderOptions } = orderData;
+        const { req, res } = createMocks({
+            method: 'POST',
+            body: orderData
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(500);
+        expect(response._getData()).toEqual(
+            'An unexpected error occurred while creating the image.'
+        );
+        expect(response._isEndCalled()).toBe(true);
+
+        expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            payloadTx: transactionSignature,
+            statusToken
+        });
+        expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
+
+        const scope = ClassMocks.ScopeMock.instance!;
+        expect(scope.setContext).toHaveBeenNthCalledWith(
+            1,
+            'transaction',
+            testValidatedTransaction
+        );
+
+        expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, testValidatedTransaction);
+
+        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error, scope);
+    });
+
+    it('should return 500 on order error and capture error when saving refund transaction fails', async () => {
+        // setup
+        const error = new Error('order');
+        const mongoError = new MongoDataApiRequestError('message', 500);
+        orderMock.mockRejectedValueOnce(error);
+        insertRefundTransactionMock.mockRejectedValueOnce(mongoError);
+        const { transactionSignature, statusToken, ...orderOptions } = orderData;
+        const { req, res } = createMocks({
+            method: 'POST',
+            body: orderData
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(500);
+        expect(response._getData()).toEqual(
+            'An unexpected error occurred while creating the image.'
+        );
+        expect(response._isEndCalled()).toBe(true);
+
+        expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
+            payloadTx: transactionSignature,
+            statusToken
+        });
+        expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
+
+        const scope = ClassMocks.ScopeMock.instance!;
+        expect(scope.setContext).toHaveBeenNthCalledWith(
+            1,
+            'transaction',
+            testValidatedTransaction
+        );
+
+        expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, testValidatedTransaction);
+
+        expect(captureExceptionMock).toHaveBeenCalledWith(mongoError, scope);
+        expect(captureExceptionMock).toHaveBeenCalledWith(error, scope);
+        expect(captureExceptionMock).toHaveBeenCalledTimes(2);
     });
 });

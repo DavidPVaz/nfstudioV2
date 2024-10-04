@@ -76,9 +76,9 @@ export type PurchaseDetails = {
 };
 
 export type NFStudioVerifiedRefundTransaction = {
+    _id: Transaction['meta']['transactionSignature'];
     verified: boolean;
     refunded: boolean;
-    _id: Transaction['meta']['transactionSignature'];
     paylinkId: Transaction['paylinkId'];
     statusToken: string;
     helioTransactionId: Transaction['id'];
@@ -91,9 +91,9 @@ export type NFStudioVerifiedRefundTransaction = {
 };
 
 export type NFStudioUnverifiedRefundTransaction = {
+    _id: Transaction['meta']['transactionSignature'];
     verified: boolean;
     refunded: boolean;
-    _id: Transaction['meta']['transactionSignature'];
     statusToken: string;
     createdAt: Transaction['createdAt'];
     canDelete?: boolean;

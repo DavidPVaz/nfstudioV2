@@ -3,6 +3,7 @@ import * as v from 'valibot';
 import { getVerifiedNFStudioRefundTransaction } from '@/server/service/helio';
 import { TransactionValidationError } from '@/server/service/helio/core';
 import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
+import { insertRefundTransaction } from '@/server/service/mongo';
 import { order } from '@/server/service/nft-converter';
 import { captureException, Scope } from '@sentry/nextjs';
 import { getOptionsMinMaxConfig } from '@/lib/utils';
@@ -61,12 +62,13 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
         // save tx as unverified. It can be authentic, but due to error we need to re-evaluate
         try {
-            /*
             await insertRefundTransaction({
                 _id: transactionSignature,
+                verified: false,
+                refunded: false,
                 statusToken,
                 createdAt: new Date().toISOString()
-            });*/
+            });
         } catch (error) {
             // transaction data wasn't persisted
             captureException(error, scope);
@@ -74,7 +76,9 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
         captureException(error, scope);
 
-        return response.status(500).send('An error occurred while validating the transaction.');
+        return response
+            .status(500)
+            .send('An unexpected error occurred while validating the transaction.');
     }
 
     try {
@@ -87,7 +91,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
         scope.setContext('transaction', transaction);
 
         try {
-            //await insertRefundTransaction(transaction);
+            await insertRefundTransaction(transaction);
         } catch (error) {
             // transaction data wasn't persisted
             captureException(error, scope);
