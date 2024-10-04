@@ -36,9 +36,10 @@ export default async function handler(request: NextApiRequest, response: NextApi
         return response.status(401).send('Unauthorized.');
     }
 
+    response.setHeader('Cache-Control', 'no-store');
+
     try {
         await response.revalidate(query.path);
-        response.setHeader('Cache-Control', 'no-store');
 
         return response.status(200).json({ revalidated: true });
     } catch (error) {

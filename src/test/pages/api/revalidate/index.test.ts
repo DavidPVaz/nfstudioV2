@@ -185,7 +185,7 @@ describe('pages/api/revalidate/index', () => {
 
     it('should return 500 on error', async () => {
         // setup
-        const error = { error: 'cause' };
+        const error = new Error('cause');
         revalidateMock.mockRejectedValueOnce(error);
         const query = { secret: 'correct', path: '/' };
         const { req, res } = createMocks({ query }) as {
@@ -203,6 +203,7 @@ describe('pages/api/revalidate/index', () => {
         // verify
         expect(response.statusCode).toBe(500);
         expect(response._getData()).toEqual(`Error revalidating ${query.path}`);
+        expect(response._getHeaders()['cache-control']).toEqual('no-store');
         expect(response._isEndCalled()).toBe(true);
         expect(revalidateMock).toHaveBeenNthCalledWith(1, query.path);
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error);
