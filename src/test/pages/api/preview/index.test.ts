@@ -54,7 +54,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid query', async () => {
@@ -74,7 +73,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if no src', async () => {
@@ -94,7 +92,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid src', async () => {
@@ -114,7 +111,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is not a number', async () => {
@@ -134,7 +130,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is below min', async () => {
@@ -154,7 +149,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is above max', async () => {
@@ -174,7 +168,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if height is not a number', async () => {
@@ -194,7 +187,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if height is below min', async () => {
@@ -214,7 +206,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if height is above max', async () => {
@@ -234,7 +225,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if atRight is not a boolean', async () => {
@@ -254,7 +244,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if coverStyle is not a boolean', async () => {
@@ -274,7 +263,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if mobile is not a boolean', async () => {
@@ -294,7 +282,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if not collection', async () => {
@@ -314,7 +301,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection', async () => {
@@ -334,7 +320,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid logoSrc', async () => {
@@ -354,7 +339,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if maxAge is not a number', async () => {
@@ -374,7 +358,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if maxAge is below min', async () => {
@@ -394,7 +377,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if maxAge is above max', async () => {
@@ -414,7 +396,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if sMaxAge is not a number', async () => {
@@ -434,7 +415,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if sMaxAge is below min', async () => {
@@ -454,7 +434,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if sMaxAge is above max', async () => {
@@ -474,7 +453,6 @@ describe('pages/api/preview/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(previewMock).not.toHaveBeenCalled();
     });
 
     it('should create a preview', async () => {

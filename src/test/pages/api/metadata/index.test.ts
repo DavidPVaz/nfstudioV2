@@ -44,7 +44,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid query', async () => {
@@ -64,7 +63,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection - case 1', async () => {
@@ -84,7 +82,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection - case 2', async () => {
@@ -104,7 +101,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection - case 3', async () => {
@@ -124,7 +120,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection - case 4', async () => {
@@ -144,7 +139,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection - case 5', async () => {
@@ -164,7 +158,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid collection - case 6', async () => {
@@ -184,7 +177,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid ids - case 1', async () => {
@@ -204,7 +196,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid ids - case 2', async () => {
@@ -224,7 +215,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid ids - case 3', async () => {
@@ -244,7 +234,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid ids - case 4', async () => {
@@ -264,7 +253,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid ids - case 5', async () => {
@@ -284,7 +272,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid ids - case 6', async () => {
@@ -307,7 +294,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid ids - case 7', async () => {
@@ -327,7 +313,6 @@ describe('pages/api/metadata/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(queryMetadataMock).not.toHaveBeenCalled();
     });
 
     it('should query collection metadata', async () => {

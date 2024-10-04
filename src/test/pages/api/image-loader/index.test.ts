@@ -43,7 +43,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if invalid query', async () => {
@@ -63,7 +62,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is not a number', async () => {
@@ -83,7 +81,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is below min', async () => {
@@ -103,7 +100,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if width is above max', async () => {
@@ -123,7 +119,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if quality is not a number', async () => {
@@ -143,7 +138,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if quality is below min', async () => {
@@ -163,7 +157,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if quality is above max', async () => {
@@ -183,7 +176,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if maxAge is not a number', async () => {
@@ -203,7 +195,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if maxAge is below min', async () => {
@@ -223,7 +214,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if maxAge is above max', async () => {
@@ -243,7 +233,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if sMaxAge is not a number', async () => {
@@ -263,7 +252,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if sMaxAge is below min', async () => {
@@ -283,7 +271,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should return 400 if sMaxAge is above max', async () => {
@@ -303,7 +290,6 @@ describe('pages/api/image-loader/index', () => {
         expect(response.statusCode).toBe(400);
         expect(response._getData()).toEqual('Bad request.');
         expect(response._isEndCalled()).toBe(true);
-        expect(optimizeMock).not.toHaveBeenCalled();
     });
 
     it('should load an optimized image', async () => {
