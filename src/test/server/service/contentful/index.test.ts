@@ -42,6 +42,21 @@ describe('server/service/contentful/index', () => {
         });
     });
 
+    it('should bubble errors when querying for a document', async () => {
+        // setup
+        const title = 'Terms of Service';
+        const message = 'message';
+        const code = 500;
+        contentfulApiGETRequestMock.mockRejectedValueOnce(
+            new ContentfulApiRequestError(message, code)
+        );
+
+        // exercise && verify
+        await expect(queryDocument({ title })).rejects.toThrowError(
+            new ContentfulApiRequestError(message, code)
+        );
+    });
+
     it('should throw ContenfulApiError if no document has been found', async () => {
         // setup
         const title = 'Terms of Service';

@@ -9,6 +9,10 @@ import {
     type CollectionMetadata
 } from '@/server/service/mongo/types';
 import { mongoApiRequest } from '@/server/service/mongo/core';
+import type {
+    NFStudioVerifiedRefundTransaction,
+    NFStudioUnverifiedRefundTransaction
+} from '@/server/service/helio/types';
 
 type CollectionsDataProps = {
     filter?: MongoFilter;
@@ -81,3 +85,22 @@ export const queryMetadata = async ({ collection, ids }: MetadataProps) => {
 
     return metadata;
 };
+
+/**
+ * Performs an insert query to NFStudio database to save a refund transaction.
+ *
+ * @param transaction - the NFStudio refund transaction to persist
+ *
+ * @throws {Error | MongoDataApiRequestError} if request failed
+ */
+export const insertRefundTransaction = (
+    transaction: NFStudioVerifiedRefundTransaction | NFStudioUnverifiedRefundTransaction
+) =>
+    mongoApiRequest({
+        action: ACTIONS.INSERT_ONE,
+        data: {
+            database: DATABASES.REFUNDS,
+            collection: `transactions${process.env.VERCEL_ENV === 'production' ? '' : '-staging'}`,
+            document: transaction
+        }
+    });

@@ -1,5 +1,11 @@
 import { describe, expect, vi, afterEach, it } from 'vitest';
-import { queryCollectionsData, queryMetadata } from '@/server/service/mongo';
+import {
+    queryCollectionsData,
+    queryMetadata,
+    insertRefundTransaction
+} from '@/server/service/mongo';
+import { MongoDataApiRequestError } from '@/server/service/mongo/core';
+import type { NFStudioUnverifiedRefundTransaction } from '@/server/service/helio/types';
 
 const { mongoApiRequestMock } = vi.hoisted(() => ({
     mongoApiRequestMock: vi.fn()
@@ -7,9 +13,13 @@ const { mongoApiRequestMock } = vi.hoisted(() => ({
 
 vi.mock('server-only', () => ({}));
 
-vi.mock('@/server/service/mongo/core', () => ({
-    mongoApiRequest: mongoApiRequestMock
-}));
+vi.mock('@/server/service/mongo/core', async importOriginal => {
+    const actual: object = await importOriginal();
+    return {
+        ...actual,
+        mongoApiRequest: mongoApiRequestMock
+    };
+});
 
 const documents = [
     { _id: '1', presentation: 'src1' },
@@ -106,6 +116,18 @@ describe('server/service/mongo/index', () => {
         vi.unstubAllEnvs();
     });
 
+    it('should bubble errors when querying collection data', async () => {
+        // setup
+        const message = 'message';
+        const code = 401;
+        mongoApiRequestMock.mockRejectedValueOnce(new MongoDataApiRequestError(message, code));
+
+        // exercise && verify
+        await expect(queryCollectionsData()).rejects.toThrowError(
+            new MongoDataApiRequestError(message, code)
+        );
+    });
+
     it('should query a collection metadata', async () => {
         // setup
         const collection = 'Name';
@@ -130,5 +152,74 @@ describe('server/service/mongo/index', () => {
         // verify
         expect(metadata).toEqual(documents);
         expect(mongoApiRequestMock).toHaveBeenNthCalledWith(1, expectedOptions);
+    });
+
+    it('should bubble errors when querying collection metadata', async () => {
+        // setup
+        const message = 'message';
+        const code = 401;
+        const collection = 'Name';
+        const ids = [1, 2, 3];
+        mongoApiRequestMock.mockRejectedValueOnce(new MongoDataApiRequestError(message, code));
+
+        // exercise && verify
+        await expect(queryMetadata({ collection, ids })).rejects.toThrowError(
+            new MongoDataApiRequestError(message, code)
+        );
+    });
+
+    it('should insert a refund transaction', async () => {
+        // setup
+        const transaction = { data: 'data' } as unknown as NFStudioUnverifiedRefundTransaction;
+        const expectedOptions = {
+            action: 'insertOne',
+            data: {
+                database: 'refunds',
+                collection: 'transactions-staging',
+                document: transaction
+            }
+        };
+
+        // exercise
+        await insertRefundTransaction(transaction);
+
+        // verify
+        expect(mongoApiRequestMock).toHaveBeenNthCalledWith(1, expectedOptions);
+    });
+
+    it('should insert a refund transaction to the correct collection if in production environment', async () => {
+        // setup
+        vi.stubEnv('VERCEL_ENV', 'production');
+        const transaction = { data: 'data' } as unknown as NFStudioUnverifiedRefundTransaction;
+        const expectedOptions = {
+            action: 'insertOne',
+            data: {
+                database: 'refunds',
+                collection: 'transactions',
+                document: transaction
+            }
+        };
+
+        // exercise
+        await insertRefundTransaction(transaction);
+
+        // verify
+        expect(mongoApiRequestMock).toHaveBeenNthCalledWith(1, expectedOptions);
+
+        // cleanup
+        vi.unstubAllEnvs();
+    });
+
+    it('should bubble errors when inserting refund transactions', async () => {
+        // setup
+        const message = 'message';
+        const code = 401;
+        const transaction = { data: 'data' } as unknown as NFStudioUnverifiedRefundTransaction;
+        mongoApiRequestMock.mockRejectedValueOnce(new MongoDataApiRequestError(message, code));
+
+        // exercise && verify
+        await expect(insertRefundTransaction(transaction)).rejects.toThrowError(
+            new MongoDataApiRequestError(message, code)
+        );
     });
 });
