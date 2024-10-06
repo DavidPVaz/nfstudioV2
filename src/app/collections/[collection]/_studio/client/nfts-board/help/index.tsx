@@ -35,7 +35,7 @@ export const Help = React.memo(() => {
                 onOpenChange={toggle}
                 title={tooltipContent}
                 description={tooltipContent}
-                className="border-0 pl-0 2xs:max-h-[65vh] 2xs:min-h-[65vh] 2xs:max-w-lg 2xs:overflow-y-auto 2xs:border sm:max-w-xl md:max-w-2xl lg:max-w-4xl"
+                className="border-0 2xs:max-h-[65vh] 2xs:min-h-[65vh] 2xs:max-w-lg 2xs:overflow-y-auto 2xs:border sm:max-w-xl md:max-w-2xl lg:max-w-4xl"
             >
                 <HelpContent />
             </Modal>

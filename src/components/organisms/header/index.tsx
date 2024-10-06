@@ -4,6 +4,7 @@ import { Mail } from 'lucide-react';
 import { PAGES } from '@/enums';
 import { ToggleColorTheme } from '@/components/molecules/toggle-color-theme';
 import { Button } from '@/components/atoms/button';
+import { Sidebar } from '@/components/organisms/sidebar';
 import { default as NFStudioIcon } from '@/resources/NFStudioIcon.svg';
 import { default as NFStudioLettersIcon } from '@/resources/NFStudioLettersIcon.svg';
 import { default as TwitterIcon } from '@/resources/TwitterIcon.svg';
@@ -20,17 +21,17 @@ export const Header = () => (
                     </Link>
                 </Button>
                 <Button
-                    className="hidden text-lg font-semibold text-foreground sm:flex"
+                    className="hidden text-lg font-medium text-foreground 2xs:flex"
                     variant="link"
                     asChild
                 >
-                    <Link aria-label="Go to collections page" href={PAGES.COLLECTIONS}>
-                        Collections
+                    <Link aria-label="Go to collections" href={PAGES.COLLECTIONS}>
+                        COLLECTIONS
                     </Link>
                 </Button>
             </nav>
 
-            <div className="flex flex-row items-center">
+            <div className="hidden flex-row items-center 2xs:flex">
                 <Button variant="ghost" size="icon2x" asChild>
                     <a
                         href={'mailto:info@nfstudio.xyz'}
@@ -54,6 +55,8 @@ export const Header = () => (
 
                 <ToggleColorTheme />
             </div>
+
+            <Sidebar />
         </div>
     </header>
 );

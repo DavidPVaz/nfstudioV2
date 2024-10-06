@@ -4,7 +4,7 @@ import { useStudioContext, type Download } from '@/app/collections/[collection]/
 import { DownloadCard } from '@/components/molecules/card/download';
 
 const NoDownloadsFound = () => (
-    <div className="flex h-full w-full flex-col items-center justify-start gap-y-4 pt-10 2xs:justify-center 2xs:pt-0">
+    <div className="flex h-full w-full flex-col items-center justify-start gap-y-4 p-10 2xs:justify-center 2xs:p-0">
         <span className="relative text-center text-lg 2xs:text-xl">
             You still haven&#39;t created an image!
         </span>
@@ -27,7 +27,7 @@ const Downloads = ({ downloads }: { downloads: Download[] }) => {
 
     return (
         <div className="relative flex flex-col gap-y-4 p-2 2xs:gap-y-8 2xs:p-4">
-            <div className="flex flex-row items-center gap-2 bg-muted p-2">
+            <div className="flex flex-row items-center gap-2 bg-accent/70 p-2">
                 <Info className="h-7 w-7 2xs:h-5 2xs:w-5" />
                 <div className="relative text-sm 2xs:text-base">
                     Click on your creations to download.
