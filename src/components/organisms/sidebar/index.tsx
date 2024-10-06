@@ -40,7 +40,10 @@ export const Sidebar = () => {
             </Button>
 
             <Sheet open={isOpen} onOpenChange={toggle}>
-                <SheetContent side={'left'} className="flex h-full w-full flex-col gap-y-5 pt-24">
+                <SheetContent
+                    side={'left'}
+                    className="flex h-full w-full flex-col gap-y-5 bg-background/90 pt-24 backdrop-blur-sm dark:bg-background/70 dark:backdrop-blur-md"
+                >
                     <SheetHeader className="m-0 flex flex-row items-center">
                         <Button variant="ghost" size="icon2x" asChild>
                             <a
