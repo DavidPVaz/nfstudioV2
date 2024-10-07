@@ -8,6 +8,19 @@ type PaymentRequestType = 'PAYLINK' | 'PAYSTREAM';
 type TransactionType = 'REFUND' | 'PAYLINK';
 type TransactionStatus = 'INITIATED' | 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELED' | 'SETTLED';
 
+/**
+ * Supported currency symbols
+ */
+export const SUPPORTED_CURRENCIES = {
+    SOL: 'SOL',
+    USDC: 'USDC',
+    USDT: 'USDT',
+    JUP: 'JUP',
+    Bonk: 'Bonk'
+} as const;
+
+type SupportedCurrencySymbol = (typeof SUPPORTED_CURRENCIES)[keyof typeof SUPPORTED_CURRENCIES];
+
 type TransactionMeta = {
     id: string;
     transactionSignature: string; // transaction hash on the blockchain
@@ -40,7 +53,7 @@ type TransactionMeta = {
     currency: {
         decimals: number;
         mintAddress: string;
-        symbol: string;
+        symbol: SupportedCurrencySymbol;
     };
     transactionType?: TransactionType;
     tokenQuote: TokenQuoteMeta;
