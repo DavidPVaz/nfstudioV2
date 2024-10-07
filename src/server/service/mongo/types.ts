@@ -1,4 +1,4 @@
-import { type Chain, type Platform, type Option } from '@/enums';
+import { type Chain } from '@/enums';
 
 export const DATABASES = {
     COLLECTIONS: 'collections',
@@ -37,40 +37,9 @@ export type CollectionMetadata = {
     _id: number;
     uri: string;
 };
-export type TransactionData = {
-    _id: string;
-    refunded: boolean;
-    verified: boolean;
-    paylinkId: string;
-    statusToken: string;
-    helioTransactionId: string;
-    createdAt: string;
-    clientPublicKey: string;
-    amount: string;
-    currency: {
-        decimals: number;
-        mintAddress: string;
-        symbol: string; // TODO: change for enum type when transactions are included
-    };
-    purchaseDetails: {
-        collection: string;
-        creationOptions: {
-            src: string;
-            width: number;
-            height: number;
-            dpi: number;
-            platform: Platform;
-            option: Option;
-            atRight: boolean;
-            coverStyle: boolean;
-            logo?: string;
-        };
-    };
-    associatedRefundTransactionSignature: string;
-};
 
 export type MongoDocument = Record<string, unknown>;
-export type MongoFilter = Record<string, Record<string, boolean | number[] | string>>;
+export type MongoFilter = Record<string, Record<string, boolean | number[] | string | string[]>>;
 export type MongoSort = Record<string, number | string>;
 export type MongoLimit = number | null;
 export type MongoProjection<T> = Record<keyof T, 0 | 1> | object;

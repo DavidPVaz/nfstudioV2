@@ -104,3 +104,117 @@ export const insertRefundTransaction = (
             document: transaction
         }
     });
+
+/**
+ * Performs a query to NFStudio database to fetch verified refund transactions to be processed.
+ *
+ * @throws {Error | MongoDataApiRequestError} if request failed
+ */
+export const queryVerifiedRefundTransactionsToProcess = async () => {
+    const { documents: transactions } = await mongoApiRequest<NFStudioVerifiedRefundTransaction>({
+        action: ACTIONS.FIND,
+        data: {
+            database: DATABASES.REFUNDS,
+            collection: `transactions${process.env.VERCEL_ENV === 'production' ? '' : '-staging'}`,
+            filter: {
+                verified: { $eq: true },
+                refunded: { $eq: false },
+                associatedRefundTransactionSignature: { $ne: true }
+            },
+            sort: {
+                createdAt: -1
+            }
+        }
+    });
+
+    return transactions;
+};
+
+/**
+ * Performs a query to NFStudio database to fetch unverified refund transactions to be re-evaluated.
+ * It ignores the ones flagged for deletion because that means they are already reevaluated.
+ *
+ * @throws {Error | MongoDataApiRequestError} if request failed
+ */
+export const queryUnverifiedRefundTransactionsToReevaluate = async () => {
+    const { documents: transactions } = await mongoApiRequest<NFStudioUnverifiedRefundTransaction>({
+        action: ACTIONS.FIND,
+        data: {
+            database: DATABASES.REFUNDS,
+            collection: `transactions${process.env.VERCEL_ENV === 'production' ? '' : '-staging'}`,
+            filter: { verified: { $eq: false }, canDelete: { $ne: true } },
+            sort: {
+                createdAt: -1
+            }
+        }
+    });
+
+    return transactions;
+};
+/**
+ * Performs an updateMany query to NFStudio database to update the new refund transactions state.
+ * Updates multiple refund transactions with the same state.
+ *
+ * @param options
+ * @param options.ids - the transactions id to update
+ * @param options.newState - the transactions new state
+ *
+ * @throws {Error | MongoDataApiRequestError} if request failed
+ */
+export const updateManyRefundTransactions = ({
+    ids,
+    newState
+}: {
+    ids: NFStudioVerifiedRefundTransaction['_id'][];
+    newState: Partial<NFStudioVerifiedRefundTransaction>;
+}) =>
+    mongoApiRequest({
+        action: ACTIONS.UPDATE_MANY,
+        data: {
+            database: DATABASES.REFUNDS,
+            collection: `transactions${process.env.VERCEL_ENV === 'production' ? '' : '-staging'}`,
+            filter: { _id: { $in: ids } },
+            update: {
+                $set: newState
+            }
+        }
+    });
+
+/**
+ * Performs an updateOne query to NFStudio database to update the new refund transaction state.
+ * Update one refund transactions with its own state.
+ *
+ * @param refundTransaction transaction to update
+ *
+ * @throws {Error | MongoDataApiRequestError} if request failed
+ */
+export const updateOneRefundTransaction = ({
+    _id,
+    ...newState
+}: NFStudioVerifiedRefundTransaction | NFStudioUnverifiedRefundTransaction) =>
+    mongoApiRequest({
+        action: ACTIONS.UPDATE_ONE,
+        data: {
+            database: DATABASES.REFUNDS,
+            collection: `transactions${process.env.VERCEL_ENV === 'production' ? '' : '-staging'}`,
+            filter: { _id: { $eq: _id } },
+            update: {
+                $set: newState
+            }
+        }
+    });
+
+/**
+ * Performs a deleteMany query to NFStudio database to delete any invalid refund transactions flagged for deletion.
+ *
+ * @throws {Error | MongoDataApiRequestError} if request failed
+ */
+export const deleteInvalidRefundTransactions = () =>
+    mongoApiRequest({
+        action: ACTIONS.DELETE_MANY,
+        data: {
+            database: DATABASES.REFUNDS,
+            collection: `transactions${process.env.VERCEL_ENV === 'production' ? '' : '-staging'}`,
+            filter: { canDelete: { $eq: true } }
+        }
+    });
