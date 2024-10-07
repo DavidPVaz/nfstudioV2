@@ -43,7 +43,6 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
     try {
         const optimized = await optimize(optimizeOptions);
-
         response.setHeader(
             'Cache-Control',
             `max-age=${maxAge}, s-maxage=${sMaxAge}, public, stale-while-revalidate=60`

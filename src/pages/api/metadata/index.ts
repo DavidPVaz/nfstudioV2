@@ -29,7 +29,6 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
     try {
         const metadata = await queryMetadata(query);
-
         response.setHeader('Cache-Control', 'max-age=0, s-maxage=31536000, public');
 
         return response.status(200).json(metadata);
