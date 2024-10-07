@@ -45,6 +45,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
     } catch (error) {
         captureException(error);
 
-        return response.status(500).send(`Error revalidating ${query.path}`);
+        return response
+            .status(500)
+            .send(`An unexpected error occurred while revalidating ${query.path}`);
     }
 }

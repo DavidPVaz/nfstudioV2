@@ -202,7 +202,9 @@ describe('pages/api/revalidate/index', () => {
 
         // verify
         expect(response.statusCode).toBe(500);
-        expect(response._getData()).toEqual(`Error revalidating ${query.path}`);
+        expect(response._getData()).toEqual(
+            `An unexpected error occurred while revalidating ${query.path}`
+        );
         expect(response._getHeaders()['cache-control']).toEqual('no-store');
         expect(response._isEndCalled()).toBe(true);
         expect(revalidateMock).toHaveBeenNthCalledWith(1, query.path);
