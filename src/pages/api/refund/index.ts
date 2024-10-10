@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 import {
-    queryVerifiedRefundTransactionsToProcess
-    //updateManyRefundTransactions
+    queryVerifiedRefundTransactionsToProcess,
+    updateManyRefundTransactions
 } from '@/server/service/mongo';
-//import { refund, getRefundedIdsFromProcessedTransactions } from '@/server/service/blockchain';
+import { refund, getRefundedIdsFromProcessedTransactions } from '@/server/service/blockchain';
 import { captureException } from '@sentry/nextjs';
 
 const HeadersSchema = v.object({
@@ -35,12 +35,9 @@ export default async function handler(request: NextApiRequest, response: NextApi
             return response.status(200).send('No refunds to process.');
         }
 
-        /*
         const refundTransactionSignatures = await refund({ refundsToProcess });
 
-        const refunded = await getRefundedIdsFromProcessedTransactions({
-            refundTransactionSignatures
-        });
+        const refunded = await getRefundedIdsFromProcessedTransactions(refundTransactionSignatures);
 
         await Promise.all(
             refunded.map(({ associatedRefundTransactionSignature, confirmed, refundedIds }) =>
@@ -51,7 +48,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
             )
         );
 
-        return response.status(200).json({ refunded });*/
+        return response.status(200).json({ refunded });
     } catch (error) {
         captureException(error);
 

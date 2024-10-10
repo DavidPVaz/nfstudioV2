@@ -61,8 +61,8 @@ const TEST_REFUNDED = [
 const {
     queryVerifiedRefundTransactionsToProcessMock,
     updateManyRefundTransactionsMock,
-    //refundMock,
-    //getRefundedIdsFromProcessedTransactionsMock,
+    refundMock,
+    getRefundedIdsFromProcessedTransactionsMock,
     captureExceptionMock
 } = vi.hoisted(() => ({
     rateLimitMock: vi.fn().mockImplementation(() => Promise.resolve()),
@@ -81,11 +81,11 @@ vi.mock('@/server/service/mongo', () => ({
     queryVerifiedRefundTransactionsToProcess: queryVerifiedRefundTransactionsToProcessMock,
     updateManyRefundTransactions: updateManyRefundTransactionsMock
 }));
-/*
+
 vi.mock('@/server/service/blockchain', () => ({
     refund: refundMock,
     getRefundedIdsFromProcessedTransactions: getRefundedIdsFromProcessedTransactionsMock
-}));*/
+}));
 
 vi.mock('@sentry/nextjs', () => ({
     captureException: captureExceptionMock
@@ -161,5 +161,66 @@ describe('pages/api/reevaluate-refund/index', () => {
         expect(response._getHeaders()['cache-control']).toEqual('no-store');
         expect(response._isEndCalled()).toBe(true);
         expect(queryVerifiedRefundTransactionsToProcessMock).toHaveBeenNthCalledWith(1);
+    });
+
+    it('should process refunds', async () => {
+        // setup
+        const { req, res } = createMocks({
+            headers: {
+                authorization: 'Bearer correct'
+            }
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await RefundHandler(
+            req,
+            res
+        )) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(200);
+        expect(response._getJSONData()).toEqual({ refunded: TEST_REFUNDED });
+        expect(response._getHeaders()['cache-control']).toEqual('no-store');
+        expect(response._isEndCalled()).toBe(true);
+        expect(queryVerifiedRefundTransactionsToProcessMock).toHaveBeenNthCalledWith(1);
+        expect(refundMock).toHaveBeenNthCalledWith(1, { refundsToProcess: TEST_REFUNDS });
+        expect(getRefundedIdsFromProcessedTransactionsMock).toHaveBeenNthCalledWith(
+            1,
+            TEST_REFUND_TX_SIGNATURES
+        );
+        TEST_REFUNDED.forEach(
+            ({ associatedRefundTransactionSignature, confirmed, refundedIds }) => {
+                expect(updateManyRefundTransactionsMock).toHaveBeenCalledWith({
+                    ids: refundedIds,
+                    newState: { refunded: confirmed, associatedRefundTransactionSignature }
+                });
+            }
+        );
+        expect(updateManyRefundTransactionsMock).toHaveBeenCalledTimes(TEST_REFUNDED.length);
+    });
+
+    it('should return 500 on error', async () => {
+        // setup
+        const error = new Error('cause');
+        queryVerifiedRefundTransactionsToProcessMock.mockRejectedValueOnce(error);
+        const { req, res } = createMocks({
+            headers: {
+                authorization: 'Bearer correct'
+            }
+        }) as { req: NextApiRequest; res: NextApiResponse };
+
+        // exercise
+        const response = (await RefundHandler(
+            req,
+            res
+        )) as unknown as MockResponse<NextApiResponse>;
+
+        // verify
+        expect(response.statusCode).toBe(500);
+        expect(response._getData()).toEqual('Error processing refunds.');
+        expect(response._getHeaders()['cache-control']).toEqual('no-store');
+        expect(response._isEndCalled()).toBe(true);
+        expect(queryVerifiedRefundTransactionsToProcessMock).toHaveBeenNthCalledWith(1);
+        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error);
     });
 });
