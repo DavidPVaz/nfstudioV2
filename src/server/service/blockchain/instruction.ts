@@ -35,7 +35,6 @@ export const createSolTransfer = ({
  * @param options.connection - rpc connection
  * @param options.signer - NFStudio wallet key pair
  * @param options.transactionData - NFStudio refund transaction data
-
  */
 export const createTokenTransfer = async ({
     connection,

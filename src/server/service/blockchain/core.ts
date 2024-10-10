@@ -11,13 +11,6 @@ import {
 } from '@/server/service/helio/types';
 
 /**
- * NFStudio custom rpc endpoint to perform requests to the solana network.
- */
-const NFSTUDIO_CUSTOM_RPC_ENDPOINT = `https://${process.env.CLUSTER_TYPE}.helius-rpc.com/?api-key=${process.env.HELIUS_RPC_API_KEY}`;
-const NFSTUDIO_QUICKNODE_RPC_ENDPOINT =
-    'https://multi-omniscient-sailboat.solana-mainnet.quiknode.pro/7b234653e521c056b62eff5d533ba3ef281f71c4/';
-
-/**
  * Pointer for a loaded RPC connection in memory.
  */
 let connection: Connection | null = null;
@@ -160,12 +153,7 @@ export const prepareNFStudioTransactionBatches = ({
  */
 export const getRpcConnection = () =>
     connection ??
-    (connection = new Connection(
-        process.env.VERCEL_ENV === 'production'
-            ? NFSTUDIO_QUICKNODE_RPC_ENDPOINT
-            : NFSTUDIO_CUSTOM_RPC_ENDPOINT,
-        {
-            disableRetryOnRateLimit: false,
-            commitment: 'confirmed'
-        }
-    ));
+    (connection = new Connection(process.env.NFSTUDIO_RPC_ENDPOINT!, {
+        disableRetryOnRateLimit: false,
+        commitment: 'confirmed'
+    }));
