@@ -14,7 +14,7 @@ export default defineConfig({
                 'src/lib/**/**',
                 'src/pages/api/**/**'
             ],
-            exclude: ['src/server/service/**/types.*', 'src/server/middleware/index.js']
+            exclude: ['src/server/service/**/types.*']
         },
         testTimeout: 30000,
         setupFiles: ['dotenv/config'],

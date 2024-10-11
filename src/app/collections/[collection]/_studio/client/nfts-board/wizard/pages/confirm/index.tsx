@@ -129,7 +129,7 @@ const Selectors = ({
     );
 
     return (
-        <div className="relative flex w-full flex-col items-center gap-y-[2rem] lg:gap-y-6">
+        <div className="relative flex w-full flex-col items-center gap-y-2 lg:gap-y-6">
             <div className="relative flex w-full flex-col items-center gap-y-3 lg:gap-y-4">
                 <span className="text-base 2xs:text-xl">{switchLabel}</span>
                 {userSelectedMobilePlatform ? (

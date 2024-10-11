@@ -102,10 +102,10 @@ export const Preview = React.memo(() => {
                 onOpenChange={toggle}
                 title={content}
                 description={content}
-                className="max-h-[95vh] max-w-[95vw] cursor-auto rounded-none border-0 bg-transparent px-6 py-16"
+                className={`${mobile ? 'max-h-[95vh] min-h-[95vh] 3xl:max-h-[85vh] 3xl:min-h-[85vh]' : 'max-w-[95vw] 3xl:max-w-[85vw]'} cursor-auto rounded-none border-0 bg-transparent px-6 py-16`}
             >
                 <Image
-                    variant="fill_contain"
+                    variant={mobile ? 'fill_contain_h' : 'fill_contain_w'}
                     width={width}
                     height={height}
                     src={selectedNFT.src}
@@ -123,7 +123,7 @@ export const Preview = React.memo(() => {
                     })}
                 />
 
-                <span className="absolute -bottom-3 w-full px-6 text-center text-sm">
+                <span className="absolute bottom-3 w-full px-6 text-center text-sm">
                     Ordered image will not have any watermark and will have 100% quality.
                 </span>
             </Modal>
