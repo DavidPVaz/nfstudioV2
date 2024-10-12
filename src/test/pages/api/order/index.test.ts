@@ -53,27 +53,17 @@ const testValidatedTransaction = {
 const {
     orderMock,
     captureExceptionMock,
+    getCurrentScopeMock,
     insertRefundTransactionMock,
-    getVerifiedNFStudioRefundTransactionMock,
-    ClassMocks
+    getVerifiedNFStudioRefundTransactionMock
 } = vi.hoisted(() => ({
     orderMock: vi.fn().mockImplementation(() => Promise.resolve(ORDERED_IMAGE)),
     captureExceptionMock: vi.fn(),
+    getCurrentScopeMock: vi.fn(),
     insertRefundTransactionMock: vi.fn().mockImplementation(() => Promise.resolve()),
     getVerifiedNFStudioRefundTransactionMock: vi
         .fn()
-        .mockImplementation(() => Promise.resolve(testValidatedTransaction)),
-    ClassMocks: {
-        ScopeMock: class {
-            static instance: InstanceType<typeof ClassMocks.ScopeMock> | null = null;
-
-            constructor() {
-                ClassMocks.ScopeMock.instance = this;
-            }
-
-            setContext = vi.fn();
-        }
-    }
+        .mockImplementation(() => Promise.resolve(testValidatedTransaction))
 }));
 
 vi.mock('@/server/service/mongo', () => ({
@@ -90,7 +80,7 @@ vi.mock('@/server/service/nft-converter', () => ({
 
 vi.mock('@sentry/nextjs', () => ({
     captureException: captureExceptionMock,
-    Scope: ClassMocks.ScopeMock
+    getCurrentScope: getCurrentScopeMock
 }));
 
 describe('pages/api/order/index', () => {
@@ -466,6 +456,8 @@ describe('pages/api/order/index', () => {
     it('should return a 401 upon attempting to validate an invalid transaction', async () => {
         // setup
         const error = new TransactionValidationError('message', 401);
+        const scope = { setContext: vi.fn() };
+        getCurrentScopeMock.mockImplementationOnce(() => scope);
         getVerifiedNFStudioRefundTransactionMock.mockRejectedValueOnce(error);
         const { req, res } = createMocks({
             method: 'POST',
@@ -485,7 +477,6 @@ describe('pages/api/order/index', () => {
             statusToken: orderData.statusToken
         });
 
-        const scope = ClassMocks.ScopeMock.instance!;
         expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
             id: orderData.transactionSignature,
             statusToken: orderData.statusToken
@@ -497,6 +488,8 @@ describe('pages/api/order/index', () => {
         // setup
         vi.useFakeTimers();
         const error = new HelioApiRequestError('message', 500);
+        const scope = { setContext: vi.fn() };
+        getCurrentScopeMock.mockImplementationOnce(() => scope);
         getVerifiedNFStudioRefundTransactionMock.mockRejectedValueOnce(error);
         const expectedCreatedAt = new Date().toISOString();
         const { req, res } = createMocks({
@@ -527,7 +520,6 @@ describe('pages/api/order/index', () => {
             createdAt: expectedCreatedAt
         });
 
-        const scope = ClassMocks.ScopeMock.instance!;
         expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
             id: orderData.transactionSignature,
             statusToken: orderData.statusToken
@@ -543,6 +535,8 @@ describe('pages/api/order/index', () => {
         vi.useFakeTimers();
         const helioError = new HelioApiRequestError('message', 500);
         const mongoError = new MongoDataApiRequestError('message', 500);
+        const scope = { setContext: vi.fn() };
+        getCurrentScopeMock.mockImplementationOnce(() => scope);
         getVerifiedNFStudioRefundTransactionMock.mockRejectedValueOnce(helioError);
         insertRefundTransactionMock.mockRejectedValueOnce(mongoError);
         const expectedCreatedAt = new Date().toISOString();
@@ -574,7 +568,6 @@ describe('pages/api/order/index', () => {
             createdAt: expectedCreatedAt
         });
 
-        const scope = ClassMocks.ScopeMock.instance!;
         expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
             id: orderData.transactionSignature,
             statusToken: orderData.statusToken
@@ -614,6 +607,8 @@ describe('pages/api/order/index', () => {
     it('should return 500 on order error and save that as a verified refund transaction', async () => {
         // setup
         const error = new Error('order');
+        const scope = { setContext: vi.fn() };
+        getCurrentScopeMock.mockImplementationOnce(() => scope);
         orderMock.mockRejectedValueOnce(error);
         const { transactionSignature, statusToken, ...orderOptions } = orderData;
         const { req, res } = createMocks({
@@ -637,7 +632,6 @@ describe('pages/api/order/index', () => {
         });
         expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
 
-        const scope = ClassMocks.ScopeMock.instance!;
         expect(scope.setContext).toHaveBeenNthCalledWith(
             1,
             'transaction',
@@ -653,6 +647,8 @@ describe('pages/api/order/index', () => {
         // setup
         const error = new Error('order');
         const mongoError = new MongoDataApiRequestError('message', 500);
+        const scope = { setContext: vi.fn() };
+        getCurrentScopeMock.mockImplementationOnce(() => scope);
         orderMock.mockRejectedValueOnce(error);
         insertRefundTransactionMock.mockRejectedValueOnce(mongoError);
         const { transactionSignature, statusToken, ...orderOptions } = orderData;
@@ -677,7 +673,6 @@ describe('pages/api/order/index', () => {
         });
         expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
 
-        const scope = ClassMocks.ScopeMock.instance!;
         expect(scope.setContext).toHaveBeenNthCalledWith(
             1,
             'transaction',

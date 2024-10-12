@@ -5,7 +5,7 @@ import { TransactionValidationError } from '@/server/service/helio/core';
 import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
 import { insertRefundTransaction } from '@/server/service/mongo';
 import { order } from '@/server/service/nft-converter';
-import { captureException, Scope } from '@sentry/nextjs';
+import { captureException, getCurrentScope } from '@sentry/nextjs';
 import { getOptionsMinMaxConfig } from '@/lib/utils';
 
 const { width, height, dpi } = getOptionsMinMaxConfig();
@@ -49,7 +49,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
             statusToken
         });
     } catch (error) {
-        const scope = new Scope();
+        const scope = getCurrentScope();
         scope.setContext('transaction', {
             id: transactionSignature,
             statusToken
@@ -87,7 +87,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
         return response.status(201).send(buffer);
     } catch (error) {
-        const scope = new Scope();
+        const scope = getCurrentScope();
         scope.setContext('transaction', transaction);
 
         try {
