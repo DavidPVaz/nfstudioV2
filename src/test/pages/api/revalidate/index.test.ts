@@ -14,7 +14,7 @@ vi.mock('@sentry/nextjs', () => ({
 
 describe('pages/api/revalidate/index', () => {
     beforeAll(() => {
-        vi.stubEnv('REVALIDATE_SECRET', 'correct');
+        vi.stubEnv('SECRET', 'correct');
     });
 
     afterEach(() => {

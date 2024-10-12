@@ -27,7 +27,13 @@ describe('server/service/mongo/core', () => {
             retries: 1,
             options: {
                 url: `${process.env.MONGO_API}/find`,
-                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_READ } },
+                init: {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': process.env.MONGO_API_KEY_READ
+                    }
+                },
                 data: {
                     database: 'collections',
                     collection: 'some collection',
@@ -55,7 +61,13 @@ describe('server/service/mongo/core', () => {
             retries: 2,
             options: {
                 url: `${process.env.MONGO_API}/insertOne`,
-                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_WRITE } },
+                init: {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': process.env.MONGO_API_KEY_WRITE
+                    }
+                },
                 data: {
                     database: 'refunds',
                     collection: 'some collection',
@@ -86,7 +98,13 @@ describe('server/service/mongo/core', () => {
             retries: 1,
             options: {
                 url: `${process.env.MONGO_API}/insertOne`,
-                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_WRITE } },
+                init: {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': process.env.MONGO_API_KEY_WRITE
+                    }
+                },
                 data: {
                     database: 'refunds',
                     collection: 'some collection',
@@ -113,7 +131,13 @@ describe('server/service/mongo/core', () => {
             retries: 1,
             options: {
                 url: `${process.env.MONGO_API}/insertOne`,
-                init: { method: 'POST', headers: { 'api-key': process.env.MONGO_API_KEY_WRITE } },
+                init: {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': process.env.MONGO_API_KEY_WRITE
+                    }
+                },
                 data: {
                     database: 'refunds',
                     collection: 'some collection',

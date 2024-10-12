@@ -17,7 +17,7 @@ const QueryParamsSchema = v.object({
     path: v.pipe(v.string(), v.regex(possiblePaths)),
     secret: v.pipe(
         v.string(),
-        v.check(secret => secret === process.env.REVALIDATE_SECRET)
+        v.check(secret => secret === process.env.SECRET)
     )
 });
 

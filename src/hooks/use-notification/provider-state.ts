@@ -11,6 +11,7 @@ export type Notification = NotificationProps & {
     title?: React.ReactNode;
     description?: React.ReactNode;
     action?: NotificationActionElement;
+    cleanup?: () => void;
 };
 
 export const ACTION_TYPES = {
@@ -114,10 +115,10 @@ const reducer = (state: State, action: Action): State => {
                 };
             }
 
-            const { id, onCleanup } = action.notification;
+            const { id, cleanup } = action.notification;
 
-            if (onCleanup) {
-                onCleanup();
+            if (cleanup) {
+                cleanup();
             }
 
             return {

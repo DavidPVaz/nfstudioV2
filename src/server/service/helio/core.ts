@@ -39,7 +39,6 @@ export async function helioApiGETRequest<T>({ path, retries = 1 }: HelioApiGetRe
                 init: {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json;',
                         Authorization: `Bearer ${process.env.HELIO_SECRET_API_KEY}`
                     }
                 }

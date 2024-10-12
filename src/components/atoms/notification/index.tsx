@@ -44,7 +44,7 @@ const notificationVariants = cva(
 const Notification = React.forwardRef<
     React.ElementRef<typeof NotificationPrimitives.Root>,
     React.ComponentPropsWithoutRef<typeof NotificationPrimitives.Root> &
-        VariantProps<typeof notificationVariants> & { onCleanup?: () => void }
+        VariantProps<typeof notificationVariants>
 >(({ className, variant, ...props }, ref) => (
     <NotificationPrimitives.Root
         ref={ref}

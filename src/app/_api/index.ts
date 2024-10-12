@@ -108,12 +108,15 @@ export const order = async (data: OrderProps) => {
     const response =
         (await fetch('/api/order', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            headers: {
+                Accept: 'application/octet-stream',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(data)
         })) ?? {};
 
     if (response.status !== 201) {
-        throw new OrderError(response.statusText);
+        throw new OrderError(response.statusText, response.status);
     }
 
     return response.arrayBuffer();

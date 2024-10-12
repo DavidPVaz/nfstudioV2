@@ -41,7 +41,6 @@ describe('server/service/helio/core', () => {
                 init: {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json;',
                         Authorization: `Bearer ${process.env.HELIO_SECRET_API_KEY}`
                     }
                 }
@@ -70,7 +69,6 @@ describe('server/service/helio/core', () => {
                 init: {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json;',
                         Authorization: `Bearer ${process.env.HELIO_SECRET_API_KEY}`
                     }
                 }
@@ -97,7 +95,6 @@ describe('server/service/helio/core', () => {
                 init: {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json;',
                         Authorization: `Bearer ${process.env.HELIO_SECRET_API_KEY}`
                     }
                 }
@@ -124,7 +121,6 @@ describe('server/service/helio/core', () => {
                 init: {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json;',
                         Authorization: `Bearer ${process.env.HELIO_SECRET_API_KEY}`
                     }
                 }
@@ -150,7 +146,6 @@ describe('server/service/helio/core', () => {
                 init: {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json;',
                         Authorization: `Bearer ${process.env.HELIO_SECRET_API_KEY}`
                     }
                 }

@@ -8,6 +8,7 @@ import { useNotification } from '@/hooks/use-notification';
 import { useApiWrite } from '@/hooks/use-api';
 import { getPlatformOptionConfig } from '@/lib/utils';
 import { order, type OrderProps } from '@/app/_api';
+import { OrderError } from '@/app/_errors';
 
 const HELIO_CHECKOUT_STORE_VARIABLES = [
     'wagmi.store',
@@ -24,7 +25,6 @@ const destroyHelioFootprint = () => {
     // clear script+iframe
     document.getElementById('verify-api')?.remove();
     document.getElementById('helio-checkout-react-v1')?.remove();
-    // TODO: remove stripe shit
 
     // clear store variables
     HELIO_CHECKOUT_STORE_VARIABLES.forEach(property => window.localStorage.removeItem(property));
@@ -41,14 +41,13 @@ export const OrderContent = ({ close }: { close: () => void }) => {
     useEffect(() => destroyHelioFootprint, []);
 
     const onConversionError = useCallback(
-        (error: Error) => {
+        (error: OrderError) =>
             notify({
                 title: 'Whoops!',
-                description: `${error.message ?? 'An unexpected error occurred while creating your image'}. You will be automatically refunded.`,
+                description: `An unexpected error occurred while creating the image.${error.code === 401 ? '' : ' You will be automatically refunded.'}`,
                 duration: 7000,
                 variant: 'destructive'
-            });
-        },
+            }),
         [notify]
     );
 
@@ -69,10 +68,9 @@ export const OrderContent = ({ close }: { close: () => void }) => {
                         Download
                     </a>
                 ),
-                onCleanup: () => window.URL.revokeObjectURL(downloadRef)
+                cleanup: () => window.URL.revokeObjectURL(downloadRef)
             });
 
-            // TODO: Low priority. Add auth and persist the created image somewhere and request when authenticated users access downloads folder? This solution will still be available to unauthenticated users.
             onDownloadData({
                 name,
                 data: Array.from(new Uint8Array(buffer)),

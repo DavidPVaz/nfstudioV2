@@ -44,6 +44,7 @@ export async function mongoApiRequest<T>({ action, data, retries = 1 }: MongoApi
                 init: {
                     method: 'POST',
                     headers: {
+                        'Content-Type': 'application/json',
                         'api-key': action === ACTIONS.FIND ? ACCESS_KEY.APP : ACCESS_KEY.ADMIN
                     }
                 },

@@ -20,7 +20,7 @@ const getExpectedFetchArguments = ({
     url,
     {
         method,
-        headers: { 'Content-Type': 'application/json', ...headers },
+        headers: { Accept: 'application/json', ...headers },
         body: JSON.stringify(data)
     }
 ];
