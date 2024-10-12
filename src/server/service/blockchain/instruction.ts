@@ -1,12 +1,7 @@
-import {
-    PublicKey,
-    TransactionInstruction,
-    SystemProgram,
-    Keypair,
-    Connection
-} from '@solana/web3.js';
+import { PublicKey, TransactionInstruction, SystemProgram, Keypair } from '@solana/web3.js';
 import { getOrCreateAssociatedTokenAccount, createTransferInstruction } from '@solana/spl-token';
 import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
+import { getRpcConnection } from '@/server/service/blockchain/core';
 
 /**
  * Create a transaction instruction to transfer SOL in solana network.
@@ -32,12 +27,10 @@ export const createSolTransfer = ({
  * Create a transaction instruction to transfer TOKEN in solana network.
  *
  * @param options
- * @param options.connection - rpc connection
  * @param options.signer - NFStudio wallet key pair
  * @param options.transactionData - NFStudio refund transaction data
  */
 export const createTokenTransfer = async ({
-    connection,
     signer,
     transactionData: {
         clientPublicKey,
@@ -45,11 +38,11 @@ export const createTokenTransfer = async ({
         currency: { mintAddress }
     }
 }: {
-    connection: Connection;
     signer: Keypair;
     transactionData: NFStudioVerifiedRefundTransaction;
 }) => {
     const tokenMintAddress = new PublicKey(mintAddress);
+    const connection = getRpcConnection();
 
     const [nfstudioTokenAccount, toClientTokenAccount] = await Promise.all([
         getOrCreateAssociatedTokenAccount(connection, signer, tokenMintAddress, signer.publicKey),

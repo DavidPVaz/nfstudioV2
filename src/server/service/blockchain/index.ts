@@ -17,11 +17,12 @@ export const refund = async ({
     maxInstructionsPerTransaction?: number;
 }) => {
     const connection = getRpcConnection();
+    const blockhashWithExpiryBlockHeight = await connection.getLatestBlockhash('confirmed');
 
     const refundTransactions = await createRefundTransactions({
         refundsToProcess,
         maxInstructionsPerTransaction,
-        connection
+        ...blockhashWithExpiryBlockHeight
     });
 
     const refundTransactionsOutput = await Promise.all(
@@ -37,7 +38,10 @@ export const refund = async ({
         refundTransactionsOutput.map(async signature => {
             const {
                 value: { err }
-            } = await connection.confirmTransaction({ signature }, 'confirmed');
+            } = await connection.confirmTransaction(
+                { ...blockhashWithExpiryBlockHeight, signature },
+                'confirmed'
+            );
 
             return { signature, confirmed: err === null };
         })

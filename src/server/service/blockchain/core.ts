@@ -32,14 +32,12 @@ export const SYMBOL_TRANSFER_METHOD = {
  * Create a transfer transaction instruction to be executed by NFStudio.
  *
  * @param options
- * @param options.connection - rpc connection
  * @param options.signer - NFStudio wallet key pair
  * @param options.transactionData - NFStudio refund transaction data
  *
  * @throws {InvalidCurrencyError} Will throw an error if currency is not supported
  */
 export const createNFStudioTransferInstruction = (options: {
-    connection: Connection;
     signer: Keypair;
     transactionData: NFStudioVerifiedRefundTransaction;
 }) => {
@@ -64,18 +62,21 @@ export const createNFStudioTransferInstruction = (options: {
  * @param options
  * @param options.refundsToProcess - verified transactions fetched from NFStudio database to be refunded
  * @param options.maxInstructionsPerTransaction - max number of instructions per transaction which also refers to the number of instructions in each batch
- * @param options.connection - rpc connection
+ * @param options.blockhash - solana recent blockhash
+ * @param options.lastValidBlockHeight - solana's last block chain can advance to before tx is declared expired
  * @param options.signer - wallet that will sign the transactions - defaults to NFStudio wallet
  */
 export const createRefundTransactions = async ({
     refundsToProcess,
     maxInstructionsPerTransaction,
-    connection,
+    blockhash,
+    lastValidBlockHeight,
     signer = Keypair.fromSecretKey(bs58.decode(process.env.NFSTUDIO_WALLET_PRIVATE_KEY!))
 }: {
     refundsToProcess: NFStudioVerifiedRefundTransaction[];
     maxInstructionsPerTransaction: number;
-    connection: Connection;
+    blockhash: string;
+    lastValidBlockHeight: number;
     signer?: Keypair;
 }) => {
     const nfstudioTransactionBatches = prepareNFStudioTransactionBatches({
@@ -89,7 +90,6 @@ export const createRefundTransactions = async ({
                 const transferInstructions = await Promise.all(
                     batch.map(transactionData =>
                         createNFStudioTransferInstruction({
-                            connection,
                             signer,
                             transactionData
                         })
@@ -109,10 +109,9 @@ export const createRefundTransactions = async ({
         )
     );
 
-    const blockhash = (await connection.getLatestBlockhash('confirmed')).blockhash;
-
     transactions.forEach(transaction => {
         transaction.recentBlockhash = blockhash;
+        transaction.lastValidBlockHeight = lastValidBlockHeight;
         transaction.feePayer = signer.publicKey;
         transaction.sign(signer);
     });
