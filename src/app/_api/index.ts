@@ -48,7 +48,7 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
         throw new EmptyMetadataError();
     }
 
-    const withoutUnsupportedTraits = (await Promise.all(
+    const withoutUnsupportedTraits = await Promise.all(
         metadata.map(async ({ _id: id, uri }) => {
             const { image: src, attributes } = await fetch(uri).then(
                 response => response.json() as Promise<TokenMetadata>
@@ -73,8 +73,9 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
             return null;
         })
     ).then(collection =>
-        collection.filter(nft => !!nft).sort(({ id: first }, { id: second }) => first - second)
-    )) as NFT[];
+        // ts is not smart enough to recognize a filter has taken place and gives an error on type check, hence cast
+        (collection.filter(nft => nft !== null) as NFT[]).sort((a, b) => a.id - b.id)
+    );
 
     if (withoutUnsupportedTraits.length === 0) {
         throw new UnsupportedTraitsError();

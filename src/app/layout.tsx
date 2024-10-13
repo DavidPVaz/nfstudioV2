@@ -32,11 +32,17 @@ export const metadata: Metadata = {
         'Effortlessly create stunning social media banners, desktop and mobile wallpapers from your favorite NFTs in seconds!',
     keywords: [
         'NFT',
+        'nft',
         'NFT wallpaper',
+        'nft wallpaper',
         'NFT banner',
+        'nft banner',
         'NFTs',
+        'nfts',
         'NFTs wallpapers',
+        'nfts wallpapers',
         'NFTs banners',
+        'nfts banners',
         'blockchain'
     ],
     robots: {
