@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { describe, expect, vi, afterEach, it, Mock } from 'vitest';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import {
@@ -9,19 +8,17 @@ import {
     createMemoInstruction
 } from '@/server/service/blockchain/instruction';
 import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
-import type { Connection } from '@solana/web3.js';
 
 const {
     SystemProgramMock,
-    ConnectionMock,
     TransactionInstructionMock,
     getOrCreateAssociatedTokenAccountMock,
-    createTransferInstructionMock
+    createTransferInstructionMock,
+    getRpcConnectionMock
 } = vi.hoisted(() => ({
     SystemProgramMock: class {
         static transfer = vi.fn();
     },
-    ConnectionMock: class {},
     TransactionInstructionMock: class {
         static constructorMock = vi.fn();
         constructor(instructionConfig: unknown) {
@@ -29,7 +26,8 @@ const {
         }
     },
     getOrCreateAssociatedTokenAccountMock: vi.fn(),
-    createTransferInstructionMock: vi.fn()
+    createTransferInstructionMock: vi.fn(),
+    getRpcConnectionMock: vi.fn()
 }));
 
 vi.mock('@solana/web3.js', async importOriginal => {
@@ -37,7 +35,6 @@ vi.mock('@solana/web3.js', async importOriginal => {
     return {
         ...actual,
         SystemProgram: SystemProgramMock,
-        Connection: ConnectionMock,
         TransactionInstruction: TransactionInstructionMock
     };
 });
@@ -50,6 +47,10 @@ vi.mock('@solana/spl-token', async importOriginal => {
         createTransferInstruction: createTransferInstructionMock
     };
 });
+
+vi.mock('@/server/service/blockchain/core', () => ({
+    getRpcConnection: getRpcConnectionMock
+}));
 
 describe('server/service/blockchain/instruction', () => {
     const signer = Keypair.generate();
@@ -81,7 +82,8 @@ describe('server/service/blockchain/instruction', () => {
 
     it('should create a TOKEN transfer instruction', async () => {
         // setup
-        const connection = new ConnectionMock() as unknown as Connection;
+        const connection = {};
+        getRpcConnectionMock.mockImplementationOnce(() => connection);
         const transactionData = {
             clientPublicKey: '2Jt9K7DHVmX34XDURAryKEMtk4unvYsFt9d3MmCWY8Kk',
             amount: '500',
@@ -98,9 +100,10 @@ describe('server/service/blockchain/instruction', () => {
         const tokenMintAddress = new PublicKey(transactionData.currency.mintAddress);
 
         // exercise
-        await createTokenTransfer({ connection, signer, transactionData });
+        await createTokenTransfer({ signer, transactionData });
 
         // verify
+        expect(getRpcConnectionMock).toHaveBeenNthCalledWith(1);
         expect(getOrCreateAssociatedTokenAccountMock).toHaveBeenCalledWith(
             connection,
             signer,

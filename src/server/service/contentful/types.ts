@@ -1,4 +1,5 @@
 import { Document as ContentfulDocument } from '@contentful/rich-text-types';
+
 export const CONTENT_TYPES = {
     DOCUMENT: 'document'
 } as const;

@@ -6,8 +6,6 @@ const { customFetchMock } = vi.hoisted(() => ({
     customFetchMock: vi.fn()
 }));
 
-vi.mock('server-only', () => ({}));
-
 vi.mock('@/server/service/shared/http', async importOriginal => {
     const actual: object = await importOriginal();
     return {

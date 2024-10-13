@@ -61,10 +61,6 @@ const {
         constructor(...args) {
             ConnectionMock.constructorMock(...args);
         }
-
-        getLatestBlockhash = vi
-            .fn()
-            .mockImplementation(() => Promise.resolve({ blockhash: '12345' }));
     },
     TransactionMock: class {
         instructions: unknown[] = [];
@@ -169,7 +165,6 @@ describe('server/service/blockchain/core', () => {
 
     it('should create signed refund transactions', async () => {
         // setup
-        const connection = new ConnectionMock() as unknown as Connection;
         const nfstudioTransactionBatches = [[TEST_REFUNDS[0]], [TEST_REFUNDS[1]]];
         const signer = Keypair.generate();
         const expectedTransactions = [
@@ -193,18 +188,17 @@ describe('server/service/blockchain/core', () => {
         const transactions = await createRefundTransactions({
             refundsToProcess: TEST_REFUNDS,
             maxInstructionsPerTransaction: 1,
-            connection,
+            blockhash: '12345',
+            lastValidBlockHeight: 12345,
             signer
         });
 
         // verify
         expect(createSolTransferMock).toHaveBeenNthCalledWith(1, {
-            connection,
             signer,
             transactionData: TEST_REFUNDS[0]
         });
         expect(createTokenTransferMock).toHaveBeenNthCalledWith(1, {
-            connection,
             signer,
             transactionData: TEST_REFUNDS[1]
         });
@@ -219,8 +213,6 @@ describe('server/service/blockchain/core', () => {
         });
         expect(createMemoInstructionMock).toHaveBeenCalledTimes(nfstudioTransactionBatches.length);
 
-        expect(connection.getLatestBlockhash).toHaveBeenNthCalledWith(1, 'confirmed');
-
         expect(transactions.length).toEqual(nfstudioTransactionBatches.length);
 
         transactions.forEach((transaction, index) => {
@@ -229,6 +221,7 @@ describe('server/service/blockchain/core', () => {
                 ...expectedTransactions[index].instructions
             );
             expect(transaction.recentBlockhash).toEqual('12345');
+            expect(transaction.lastValidBlockHeight).toEqual(12345);
             expect(transaction.feePayer).toEqual(signer.publicKey);
             expect(transaction.sign).toHaveBeenNthCalledWith(1, signer);
         });

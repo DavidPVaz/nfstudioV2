@@ -7,6 +7,11 @@ const ConnectionMock = class {
     sendRawTransaction = vi.fn();
     confirmTransaction = vi.fn();
     getParsedTransaction = vi.fn();
+    getLatestBlockhash = vi
+        .fn()
+        .mockImplementation(() =>
+            Promise.resolve({ blockhash: '12345', lastValidBlockHeight: 12345 })
+        );
 };
 const connectionMock = new ConnectionMock();
 
@@ -112,10 +117,12 @@ describe('server/service/blockchain/index', () => {
         // verify
         expect(result).toEqual(TEST_REFUND_TRANSACTIONS_OUTPUT);
         expect(getRpcConnectionMock).toHaveBeenNthCalledWith(1);
+        expect(connectionMock.getLatestBlockhash).toHaveBeenNthCalledWith(1, 'confirmed');
         expect(createRefundTransactionsMock).toHaveBeenNthCalledWith(1, {
             refundsToProcess: TEST_REFUNDS,
             maxInstructionsPerTransaction: 1,
-            connection: connectionMock
+            blockhash: '12345',
+            lastValidBlockHeight: 12345
         });
 
         TEST_REFUND_TRANSACTIONS.forEach(testTransaction => {
@@ -133,7 +140,7 @@ describe('server/service/blockchain/index', () => {
 
         TEST_REFUND_TRANSACTIONS_OUTPUT.forEach(output => {
             expect(connectionMock.confirmTransaction).toHaveBeenCalledWith(
-                { signature: output.signature },
+                { signature: output.signature, blockhash: '12345', lastValidBlockHeight: 12345 },
                 'confirmed'
             );
         });

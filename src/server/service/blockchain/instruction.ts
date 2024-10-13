@@ -1,7 +1,7 @@
-import { PublicKey, TransactionInstruction, SystemProgram, Keypair } from '@solana/web3.js';
+import { PublicKey, TransactionInstruction, SystemProgram, type Keypair } from '@solana/web3.js';
 import { getOrCreateAssociatedTokenAccount, createTransferInstruction } from '@solana/spl-token';
-import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
 import { getRpcConnection } from '@/server/service/blockchain/core';
+import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
 
 /**
  * Create a transaction instruction to transfer SOL in solana network.

@@ -16,8 +16,6 @@ const { mongoApiRequestMock } = vi.hoisted(() => ({
     mongoApiRequestMock: vi.fn()
 }));
 
-vi.mock('server-only', () => ({}));
-
 vi.mock('@/server/service/mongo/core', async importOriginal => {
     const actual: object = await importOriginal();
     return {
