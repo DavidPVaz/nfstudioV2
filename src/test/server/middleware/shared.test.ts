@@ -6,7 +6,6 @@ import { describe, expect, vi, afterEach, it } from 'vitest';
 import {
     getIP,
     isFromVercel,
-    isValidOrigin,
     isFromBrowser,
     isAdmin,
     isAuthorized
@@ -76,35 +75,6 @@ describe('server/middleware/shared', () => {
 
         vi.stubEnv('VERCEL_ENV', 'development');
         expect(isFromVercel(buildRequest({}))).toEqual(true);
-
-        // cleanup
-        vi.unstubAllEnvs();
-    });
-
-    it('should evaluate if a request has a valid origin', () => {
-        // setup
-        vi.stubEnv('VERCEL_ENV', 'production');
-        vi.stubEnv('ORIGIN', 'valid');
-
-        // exercise && verify
-        expect(
-            isValidOrigin(
-                buildRequest({
-                    origin: 'valid'
-                })
-            )
-        ).toEqual(true);
-        expect(
-            isValidOrigin(
-                buildRequest({
-                    origin: 'wrong origin'
-                })
-            )
-        ).toEqual(false);
-        expect(isValidOrigin(buildRequest({}))).toEqual(false);
-
-        vi.stubEnv('VERCEL_ENV', 'development');
-        expect(isValidOrigin(buildRequest({}))).toEqual(true);
 
         // cleanup
         vi.unstubAllEnvs();
@@ -180,7 +150,6 @@ describe('server/middleware/shared', () => {
         vi.stubEnv('VERCEL_URL', 'deployment-url');
         vi.stubEnv('SECRET', 'super-secret');
         vi.stubEnv('CRON_SECRET', 'super-cron-secret');
-        vi.stubEnv('ORIGIN', 'valid');
 
         // exercise && verify
 
@@ -190,8 +159,7 @@ describe('server/middleware/shared', () => {
                 buildRequest({
                     authorization: 'Bearer super-secret',
                     'x-vercel-deployment-url': 'wrong value',
-                    'user-agent': 'not a valid user agent',
-                    origin: 'not valid origin'
+                    'user-agent': 'not a valid user agent'
                 })
             )
         ).toEqual(true);
@@ -200,8 +168,7 @@ describe('server/middleware/shared', () => {
                 buildRequest({
                     authorization: 'Bearer super-cron-secret',
                     'x-vercel-deployment-url': 'wrong value',
-                    'user-agent': 'not a valid user agent',
-                    origin: 'not valid origin'
+                    'user-agent': 'not a valid user agent'
                 })
             )
         ).toEqual(true);
@@ -210,21 +177,19 @@ describe('server/middleware/shared', () => {
                 buildRequest(
                     {
                         'x-vercel-deployment-url': 'wrong value',
-                        'user-agent': 'not a valid user agent',
-                        origin: 'not valid origin'
+                        'user-agent': 'not a valid user agent'
                     },
                     new NextURL('http://localhost:3000?secret=super-secret')
                 )
             )
         ).toEqual(true);
-        // invalid Admin and not from vercel and invalid ua and invalid origin
+        // invalid Admin and not from vercel and invalid ua
         expect(
             isAuthorized(
                 buildRequest({
                     authorization: 'Bearer super-wrong-secret',
                     'x-vercel-deployment-url': 'wrong value',
-                    'user-agent': 'not a valid user agent',
-                    origin: 'not valid origin'
+                    'user-agent': 'not a valid user agent'
                 })
             )
         ).toEqual(false);
@@ -233,8 +198,7 @@ describe('server/middleware/shared', () => {
                 buildRequest({
                     authorization: 'Bearer super-wrong-cron-secret',
                     'x-vercel-deployment-url': 'wrong value',
-                    'user-agent': 'not a valid user agent',
-                    origin: 'not valid origin'
+                    'user-agent': 'not a valid user agent'
                 })
             )
         ).toEqual(false);
@@ -243,62 +207,47 @@ describe('server/middleware/shared', () => {
                 buildRequest(
                     {
                         'x-vercel-deployment-url': 'wrong value',
-                        'user-agent': 'not a valid user agent',
-                        origin: 'not valid origin'
+                        'user-agent': 'not a valid user agent'
                     },
                     new NextURL('http://localhost:3000?secret=super-wrong-secret')
                 )
             )
         ).toEqual(false);
-        // invalid Admin and from vercel and valid ua and valid origin
+        // invalid Admin and from vercel and valid ua
         expect(
             isAuthorized(
                 buildRequest({
                     'x-vercel-deployment-url': 'deployment-url',
                     'user-agent':
-                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
-                    origin: 'valid'
+                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
                 })
             )
         ).toEqual(true);
-        // invalid Admin and not from vercel and valid ua and invalid origin
+        // invalid Admin and not from vercel and valid ua
         expect(
             isAuthorized(
                 buildRequest({
                     'x-vercel-deployment-url': 'wrong value',
                     'user-agent':
-                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
-                    origin: 'not valid origin'
+                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
                 })
             )
         ).toEqual(false);
-        // invalid Admin and from vercel and invalid ua and invalid origin
+        // invalid Admin and from vercel and invalid ua
         expect(
             isAuthorized(
                 buildRequest({
                     'x-vercel-deployment-url': 'deployment-url',
-                    'user-agent': 'not a valid user agent',
-                    origin: 'not valid origin'
+                    'user-agent': 'not a valid user agent'
                 })
             )
         ).toEqual(false);
-        // invalid Admin and not from vercel and invalid ua and valid origin
-        expect(
-            isAuthorized(
-                buildRequest({
-                    'x-vercel-deployment-url': 'deployment-url',
-                    'user-agent': 'not a valid user agent',
-                    origin: 'valid'
-                })
-            )
-        ).toEqual(false);
-        // invalid Admin and not from vercel and invalid ua and invalid origin
+        // invalid Admin and not from vercel and invalid ua
         expect(
             isAuthorized(
                 buildRequest({
                     'x-vercel-deployment-url': 'wrong value',
-                    'user-agent': 'not a valid user agent',
-                    origin: 'not valid origin'
+                    'user-agent': 'not a valid user agent'
                 })
             )
         ).toEqual(false);

@@ -1,13 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import {
-    isAuthorized,
-    getIP,
-    isValidOrigin,
-    isFromVercel,
-    isFromBrowser
-} from '@/server/middleware/shared';
+import { isAuthorized, getIP } from '@/server/middleware/shared';
 import { RateLimit } from '@/server/middleware/rate-limit';
-import { captureException } from '@sentry/nextjs';
 
 const isApiEndpoint = (request: NextRequest) => request.nextUrl.pathname.startsWith('/api');
 const isImageLoaderEndpoint = (request: NextRequest) =>
@@ -18,11 +11,6 @@ const ApiLimiter = RateLimit({ keyGenerator: getIP, limit: 5, windowMs: 60000 })
 
 export function middleware(request: NextRequest) {
     if (!isAuthorized(request)) {
-        captureException({
-            isValidOrigin: isValidOrigin(request),
-            isFromVercel: isFromVercel(request),
-            isFromBrowser: isFromBrowser(request)
-        });
         return new NextResponse(null, { status: 401 });
     }
 
