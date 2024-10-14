@@ -7,7 +7,7 @@ import sharp from 'sharp';
  * Collections with customization on banner/wallpaper generation.
  */
 export const COLLECTIONS = {
-    FROGANAS: 'froganas'
+    FROGANAS: 'Froganas'
 } as const;
 
 /**

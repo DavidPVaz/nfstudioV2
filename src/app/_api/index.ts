@@ -98,6 +98,10 @@ export type OrderProps = {
     transactionSignature: string;
 };
 
+const STATUS_MESSAGE = {
+    500: 'An unexpected error occurred while creating the image. You will be automatically refunded.'
+};
+
 /**
  * Performs a http request to order the client's nft banner/wallpaper.
  *
@@ -117,7 +121,10 @@ export const order = async (data: OrderProps) => {
         })) ?? {};
 
     if (response.status !== 201) {
-        throw new OrderError(response.statusText, response.status);
+        throw new OrderError(
+            (STATUS_MESSAGE[response.status] as string) ??
+                'An unexpected error occurred while creating the image.'
+        );
     }
 
     return response.arrayBuffer();

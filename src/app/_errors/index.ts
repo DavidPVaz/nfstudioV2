@@ -1,33 +1,25 @@
-class ApiError extends Error {
-    code?: number;
-
-    constructor(message: string, code?: number) {
-        super(message);
-        this.code = code;
-    }
-}
-export class FetchMetadataError extends ApiError {
+export class FetchMetadataError extends Error {
     constructor() {
         super('An error has ocurred while fetching the NFT(s). Please try again.');
     }
 }
 
-export class EmptyMetadataError extends ApiError {
+export class EmptyMetadataError extends Error {
     constructor() {
         super("We couldn't find any NFT(s) with the provided ID(s).");
     }
 }
 
-export class UnsupportedTraitsError extends ApiError {
+export class UnsupportedTraitsError extends Error {
     constructor() {
         super(
-            'The NFT(s) you requested to load have unsupported traits, and cannot be used at this time.'
+            'All the NFT(s) you requested to load have unsupported traits, and cannot be used at this time.'
         );
     }
 }
 
-export class OrderError extends ApiError {
-    constructor(message: string, code: number) {
-        super(message, code);
+export class OrderError extends Error {
+    constructor(message: string) {
+        super(message);
     }
 }

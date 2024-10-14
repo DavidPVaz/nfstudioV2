@@ -44,7 +44,7 @@ export const OrderContent = ({ close }: { close: () => void }) => {
         (error: OrderError) =>
             notify({
                 title: 'Whoops!',
-                description: `An unexpected error occurred while creating the image.${error.code === 401 ? '' : ' You will be automatically refunded.'}`,
+                description: error.message,
                 duration: 7000,
                 variant: 'destructive'
             }),
@@ -56,7 +56,7 @@ export const OrderContent = ({ close }: { close: () => void }) => {
             const downloadRef = window.URL.createObjectURL(
                 new Blob([buffer], { type: 'image/png' })
             );
-            const name = `${selectedNFT.id}_${option}}`;
+            const name = `${selectedNFT.id}_${option}`;
 
             notify({
                 title: 'Download is ready!',
@@ -88,7 +88,7 @@ export const OrderContent = ({ close }: { close: () => void }) => {
             coverStyle,
             logoSrc: coverStyle || !logo ? undefined : encodeURI(logo),
             mobile: platform === PLATFORMS.MOBILE,
-            collection: selectedCollection.toLowerCase()
+            collection: selectedCollection
         }),
         [platform, option, selectedNFT, atRight, coverStyle, logo, selectedCollection]
     );

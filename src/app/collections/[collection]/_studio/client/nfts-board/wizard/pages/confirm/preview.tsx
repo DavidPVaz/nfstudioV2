@@ -118,7 +118,7 @@ export const Preview = React.memo(() => {
                         coverStyle,
                         logoSrc: coverStyle || !logo ? undefined : encodeURI(logo),
                         mobile,
-                        collection: selectedCollection.toLowerCase(),
+                        collection: selectedCollection,
                         ...cacheStrategy
                     })}
                 />
