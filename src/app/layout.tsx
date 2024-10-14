@@ -13,7 +13,6 @@ import '@/styles/globals.css';
 
 // TODO: PWA
 // TODO: CI/CD
-// TODO: MOBILE USE CASES - test
 // TODO: e2e
 // TODO: Containerize
 
