@@ -23,9 +23,9 @@ let ContentSecurityPolicy = `
 
 // adds extra conditions both in production and preview(staging) environments
 if (process.env.VERCEL_ENV !== 'development') {
-    //https://github.com/vercel/next.js/discussions/54907
+    // TODO: https://github.com/vercel/next.js/discussions/54907 -> 'unsafe-inline' WARNING -> Next.js needs to add hash support to static rendering
     ContentSecurityPolicy = ContentSecurityPolicy.concat(
-        " script-src https://embed.hel.io/assets/ 'self'; default-src 'none';"
+        ` script-src https://embed.hel.io/assets/ 'self' 'unsafe-inline'; default-src 'none';`
     );
 }
 
@@ -70,7 +70,7 @@ if (process.env.VERCEL_ENV !== 'production') {
 
 const config = {
     typescript: {
-        // !! WARN !! Temporary!! Payments Integration Dependency needs to export types
+        // TODO: !! WARN !! Temporary!! Payments Integration Dependency needs to export types
         // Dangerously allow production builds to successfully complete even if
         // your project has type errors.
         ignoreBuildErrors: true
