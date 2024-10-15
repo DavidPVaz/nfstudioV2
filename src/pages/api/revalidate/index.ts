@@ -20,7 +20,7 @@ const QueryParamsSchema = v.object({
         v.check(secret => secret === process.env.SECRET)
     )
 });
-
+// TODO: move into route. need to use revalidatePath, since pages are built with app router.
 /**
  * API endpoint to perform on-demand revalidation of NFStudio pages.
  *
@@ -44,7 +44,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
         return response.status(200).json({ revalidated: true });
     } catch (error) {
         captureException(error);
-
+        console.log('ERROR: ', error);
         return response
             .status(500)
             .send(`An unexpected error occurred while revalidating ${query.path}`);

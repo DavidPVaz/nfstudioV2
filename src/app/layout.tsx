@@ -11,6 +11,8 @@ import { Header } from '@/components/organisms/header';
 import { ScrollUp } from '@/components/molecules/scroll-up';
 import '@/styles/globals.css';
 
+// TODO: move revalidate into route -> make app SSR instead of SSG. pages with be data cached and be revalidated on demand with revalidate endpoint. this way can use nonce approach for csp.
+
 // TODO: PWA
 // TODO: CI/CD
 // TODO: e2e
