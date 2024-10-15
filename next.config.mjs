@@ -23,8 +23,9 @@ let ContentSecurityPolicy = `
 
 // adds extra conditions both in production and preview(staging) environments
 if (process.env.VERCEL_ENV !== 'development') {
+    // TODO: https://github.com/vercel/next.js/discussions/54907 -> 'unsafe-inline' WARNING -> Next.js needs to add hash support to static rendering
     ContentSecurityPolicy = ContentSecurityPolicy.concat(
-        " script-src https://embed.hel.io/assets/ 'self' 'sha256-q1+DaXsZUnEJs3jpN9ZoWp6ypK1xBwXiRxG+C31xOUA=' 'sha256-Q+8tPsjVtiDsjF/Cv8FMOpg2Yg91oKFKDAJat1PPb2g=' 'sha256-GM6cvhrzw254PefDJRLpnkqyVBa7WZFSiVk9WiSpLVU=' 'sha256-A4WUi5uYgnTcgLcL74xGYqs3Xf6qMFOJTr+2rsRwMtI=' 'sha256-RoWXv+G1t8ZSaCP/E5QJr6it607XhCiDokcg2FDJp28=' 'sha256-XznSMxFWc2rQPrnjA2TWJfvF943X1zunL8MyBQ3/6b4=' 'sha256-ZznfdkxXGM0i9L13l88tc/eYNtVycYk7dfngh784SGA=' 'sha256-/I7su+PDKBJO3iXIaxQhFljf5ZVsCYhkMTpr4ZVpWgo=' 'sha256-kkGuidKZmpfLHMnUk9YsbohrzgU0jeTSFi89bS2wj9A=' 'sha256-VLMAmSdJSO1K1pEKsn0LY9FB+uVp3Yb8UKeNPxLuFm4=' 'sha256-7nxzKmYqBro4tYmjBJ0GFxdb6SejzLbsPthBLXD9EGk=' 'sha256-HJYeq2IVDERbJCttyy3VQeYyMvKXhBNHufHZkUwi608='; default-src 'none';"
+        ` script-src https://embed.hel.io/assets/ 'self' 'unsafe-inline'; default-src 'none';`
     );
 }
 
@@ -69,7 +70,7 @@ if (process.env.VERCEL_ENV !== 'production') {
 
 const config = {
     typescript: {
-        // !! WARN !! Temporary!! Payments Integration Dependency needs to export types
+        // TODO: !! WARN !! Temporary!! Payments Integration Dependency needs to export types
         // Dangerously allow production builds to successfully complete even if
         // your project has type errors.
         ignoreBuildErrors: true
