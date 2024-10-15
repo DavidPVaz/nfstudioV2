@@ -12,7 +12,7 @@ import {
 import { Help } from '@/app/collections/[collection]/_studio/client/nfts-board/help';
 import { Downloads } from '@/app/collections/[collection]/_studio/client/nfts-board/downloads';
 import { Wizard } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard';
-import { loadMetadata, type LoadMetadataProps } from '@/app/_api';
+import { loadMetadata, type LoadMetadataProps } from '@/app/_service';
 import { useFallbackApiRead } from '@/hooks/use-api';
 import { useNotification } from '@/hooks/use-notification';
 import { useCollectionContext } from '@/app/collections/[collection]/context';

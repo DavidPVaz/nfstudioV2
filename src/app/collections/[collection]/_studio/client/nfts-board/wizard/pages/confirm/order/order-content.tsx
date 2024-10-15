@@ -7,7 +7,7 @@ import { useWizardContext } from '@/app/collections/[collection]/_studio/client/
 import { useNotification } from '@/hooks/use-notification';
 import { useApiWrite } from '@/hooks/use-api';
 import { getPlatformOptionConfig } from '@/lib/utils';
-import { order, type OrderProps } from '@/app/_api';
+import { order, type OrderProps } from '@/app/_service';
 import { OrderError } from '@/app/_errors';
 
 const HELIO_CHECKOUT_STORE_VARIABLES = [
