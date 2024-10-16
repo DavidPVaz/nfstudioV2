@@ -27,7 +27,7 @@ const QueryParamsSchema = v.object({
  *
  * @param request - Nextjs request
  */
-export function POST(request: NextRequest) {
+export function GET(request: NextRequest) {
     let query: v.InferOutput<typeof QueryParamsSchema>;
     const path = request.nextUrl.searchParams.get('path');
     const secret = request.nextUrl.searchParams.get('secret');
