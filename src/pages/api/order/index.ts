@@ -35,7 +35,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
     try {
         body = v.parse(BodySchema, request.body);
-    } catch {
+    } catch (error) {
+        captureException(error);
         return response.status(400).send('Bad request.');
     }
 
