@@ -1,29 +1,20 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useSyncExternalStore } from 'react';
+
+const subscribe = (callback: () => void) => {
+    window.addEventListener('scroll', callback);
+
+    return () => {
+        window.removeEventListener('scroll', callback);
+    };
+};
+const getServerSnapshot = () => false;
 
 /**
- * Allows to always know the current window Y scroll position and scroll to the top of the window.
+ * Allows to react to a change in window Y scroll value by asserting a Y position.
+ *
+ * @param selector - selector function that takes the current scrollY
  */
-export const useWindowScroll = () => {
-    const [yPosition, setYPosition] = useState<number | null>(null);
-
-    const scrollToTop = useCallback(
-        () =>
-            window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            }),
-        []
-    );
-
-    useEffect(() => {
-        const handler = () => setYPosition(window.scrollY);
-        window.addEventListener('scroll', handler);
-
-        return () => window.removeEventListener('scroll', handler);
-    }, []);
-
-    return { yPosition, scrollToTop };
-};
+export const useWindowScroll = (selector: (scrollY: number) => boolean) =>
+    useSyncExternalStore(subscribe, () => selector(scrollY), getServerSnapshot);

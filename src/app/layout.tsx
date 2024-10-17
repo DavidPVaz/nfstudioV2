@@ -11,6 +11,8 @@ import { Header } from '@/components/organisms/header';
 import { ScrollUp } from '@/components/molecules/scroll-up';
 import '@/styles/globals.css';
 
+// TODO:  make app SSR instead of SSG.  CSP with nonce
+
 // TODO: PWA
 // TODO: CI/CD
 // TODO: e2e

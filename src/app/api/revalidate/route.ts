@@ -1,4 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextRequest } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import * as v from 'valibot';
 import { captureException } from '@sentry/nextjs';
 import { PAGES } from '@/enums';
@@ -25,28 +26,27 @@ const QueryParamsSchema = v.object({
  * API endpoint to perform on-demand revalidation of NFStudio pages.
  *
  * @param request - Nextjs request
- * @param response - Nextjs response
  */
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+export function GET(request: NextRequest) {
     let query: v.InferOutput<typeof QueryParamsSchema>;
+    const path = request.nextUrl.searchParams.get('path');
+    const secret = request.nextUrl.searchParams.get('secret');
 
     try {
-        query = v.parse(QueryParamsSchema, request.query);
+        query = v.parse(QueryParamsSchema, { path, secret });
     } catch {
-        return response.status(401).send('Unauthorized.');
+        return new Response(null, { status: 401 });
     }
 
-    response.setHeader('Cache-Control', 'no-store');
-
     try {
-        await response.revalidate(query.path);
+        revalidatePath(query.path);
 
-        return response.status(200).json({ revalidated: true });
+        return Response.json({ revalidated: true });
     } catch (error) {
         captureException(error);
 
-        return response
-            .status(500)
-            .send(`An unexpected error occurred while revalidating ${query.path}`);
+        return new Response(`An unexpected error occurred while revalidating ${query.path}`, {
+            status: 500
+        });
     }
 }

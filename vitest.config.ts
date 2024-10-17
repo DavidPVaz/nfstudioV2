@@ -12,7 +12,8 @@ export default defineConfig({
                 'src/server/service/**/**',
                 'src/server/middleware/**',
                 'src/lib/**/**',
-                'src/pages/api/**/**'
+                'src/pages/api/**/**',
+                'src/app/api/**/**'
             ],
             exclude: ['src/server/service/**/types.*']
         },

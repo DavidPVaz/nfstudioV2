@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect, useSyncExternalStore } from 'react';
 
 const subscribe = (callback: () => void) => {
     window.addEventListener('online', callback, { passive: true });
@@ -12,8 +12,11 @@ const subscribe = (callback: () => void) => {
 const getSnapshot = () => navigator.onLine;
 const getServerSnapshot = () => true;
 
+/**
+ * Allows to react to changes in network status.
+ */
 export const useNetworkState = () => {
-    const isOnline = React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    const isOnline = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
     const onlineStatus = useRef<boolean>(isOnline);
 
     useEffect(() => {
