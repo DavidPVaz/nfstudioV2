@@ -106,11 +106,11 @@ export const RefreshNFTs = React.memo(() => {
                 description={tooltipContent}
                 className="max-w-lg border-0 2xs:min-h-[526px] 2xs:border"
             >
-                <Card className="relative h-full w-full border-0 bg-background">
+                <Card className="pb-safe-bottom relative h-full w-full border-0 bg-background">
                     <CardHeader className="gap-y-2 pb-2 pl-6 pr-6 pt-6 sm:gap-y-3">
                         <Content />
                     </CardHeader>
-                    <div className="pb-6 pl-6 pr-6 pt-2 2xs:pt-3">
+                    <div className="pb-6 pl-6 pr-6 pt-2 2xs:pb-6 2xs:pt-3">
                         <LoadForm onSubmit={onSubmit} />
                     </div>
                 </Card>
