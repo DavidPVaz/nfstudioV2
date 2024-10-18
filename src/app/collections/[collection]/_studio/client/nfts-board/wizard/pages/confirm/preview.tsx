@@ -102,7 +102,7 @@ export const Preview = React.memo(() => {
                 onOpenChange={toggle}
                 title={content}
                 description={content}
-                className={`${mobile ? 'max-h-[95vh] min-h-[95vh] 3xl:max-h-[85vh] 3xl:min-h-[85vh]' : 'max-w-[95vw] 3xl:max-w-[85vw]'} cursor-auto rounded-none border-0 bg-transparent px-6 py-16`}
+                className={`${mobile ? 'max-h-[75vh] min-h-[75vh] 3xl:max-h-[85vh] 3xl:min-h-[85vh]' : 'max-w-[95vw] 3xl:max-w-[85vw]'} cursor-auto rounded-none border-0 bg-transparent px-6 py-16`}
             >
                 <Image
                     variant={mobile ? 'fill_contain_h' : 'fill_contain_w'}
