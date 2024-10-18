@@ -64,7 +64,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
         >
             <ColorThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
                 <ReactQueryClientProvider>
-                    <div className="relative flex min-h-screen flex-col">
+                    <div className="pt-safe-top pr-safe-right pl-safe-left pb-safe-bottom relative flex min-h-screen flex-col">
                         <Header />
                         <main className="flex-1 pb-10 sm:pb-20">
                             <div className="container relative">{children}</div>
