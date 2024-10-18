@@ -60,8 +60,8 @@ const ManagedDrawer = ({
     description,
     children
 }: ModalProps) => (
-    <Drawer open={open} onOpenChange={onOpenChange} modal repositionInputs={true}>
-        <DrawerContent className={className} autoFocus={false}>
+    <Drawer open={open} onOpenChange={onOpenChange} modal>
+        <DrawerContent className={className}>
             <Hide>
                 <DrawerTitle>{title}</DrawerTitle>
                 <DrawerDescription>{description}</DrawerDescription>
