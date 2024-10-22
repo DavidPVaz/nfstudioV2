@@ -20,8 +20,6 @@ const TEST_REFUNDS = [
         _id: '3oyRzLcufBx8vy1w14jimc3uyJJioiNaVGc3t2CysueU1dWSe93dkAKUzUdtQCHVSK6AXkr5TavE4WeDeBrRckZi',
         refunded: false,
         verified: true,
-        statusToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cmFuc2FjdGlvblNpZ25hdHVyZSI6IjNveVJ6TGN1ZkJ4OHZ5MXcxNGppbWMzdXlKSmlvaU5hVkdjM3QyQ3lzdWVVMWRXU2U5M2RrQUtVelVkdFFDSFZTSzZBWGtyNVRhdkU0V2VEZUJyUmNrWmkiLCJ0cmFuc2FjdGlvbklkIjoiNjVhNjhkOWM4OTFiZjYyODVkN2QxNjU2IiwiaWF0IjoxNzA1NDE0MDUxLCJleHAiOjE3MDU0MjEyNTF9.j9vse15ncRopMFehMOSLsWEhEiBhXt84eAft_8wg5kY',
         createdAt: '2024-01-16T14:07:24.630Z',
         amount: '20619756',
         clientPublicKey: '2Jt9K7DHVmX34XDURAryKEMtk4unvYsFt9d3MmCWY8Kk',
@@ -36,8 +34,6 @@ const TEST_REFUNDS = [
         _id: '2nz2WYmB9daDEh815sMqgpKrpUWySw5sxgeFXScU1kznQep6mb4P6fNis7x9NzGsDuNHaVVX3aMEpi5k6hqC1Sdr',
         refunded: false,
         verified: true,
-        statusToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cmFuc2FjdGlvblNpZ25hdHVyZSI6IjJuejJXWW1COWRhREVoODE1c01xZ3BLcnBVV3lTdzVzeGdlRlhTY1Uxa3puUWVwNm1iNFA2Zk5pczd4OU56R3NEdU5IYVZWWDNhTUVwaTVrNmhxQzFTZHIiLCJ0cmFuc2FjdGlvbklkIjoiNjVhNjhkNWQ3MWU5ZTlmNTA5NDQyOGIzIiwiaWF0IjoxNzA1NDEzOTk5LCJleHAiOjE3MDU0MjExOTl9.3P8lqXxFOhPzudEIH28-DgqFbNWDm8TZY4hAbCDEkKk',
         createdAt: '2024-01-16T14:06:21.661Z',
         amount: '20622057',
         clientPublicKey: '2Jt9K7DHVmX34XDURAryKEMtk4unvYsFt9d3MmCWY8Kk',

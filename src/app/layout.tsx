@@ -11,8 +11,6 @@ import { Header } from '@/components/organisms/header';
 import { ScrollUp } from '@/components/molecules/scroll-up';
 import '@/styles/globals.css';
 
-// TODO:  make app SSR instead of SSG.  CSP with nonce
-
 // TODO: PWA
 // TODO: CI/CD
 // TODO: e2e
@@ -64,7 +62,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
         >
             <ColorThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
                 <ReactQueryClientProvider>
-                    <div className="pt-safe-top pr-safe-right pl-safe-left pb-safe-bottom relative flex min-h-screen flex-col">
+                    <div className="relative flex min-h-screen flex-col pb-safe-bottom pl-safe-left pr-safe-right pt-safe-top">
                         <Header />
                         <main className="flex-1 pb-10 sm:pb-20">
                             <div className="container relative">{children}</div>

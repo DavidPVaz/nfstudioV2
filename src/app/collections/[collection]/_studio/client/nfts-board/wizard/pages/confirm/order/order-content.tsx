@@ -10,6 +10,8 @@ import { getPlatformOptionConfig } from '@/lib/utils';
 import { order, type OrderProps } from '@/app/_service';
 import { OrderError } from '@/app/_errors';
 
+type Config = Parameters<typeof HelioCheckout>[0]['config'];
+
 const HELIO_CHECKOUT_STORE_VARIABLES = [
     'wagmi.store',
     'wc@2:core:0.3//keychain',
@@ -121,38 +123,37 @@ export const OrderContent = ({ close }: { close: () => void }) => {
 
     const onPaymentSuccess = useCallback(
         ({
-            data: { statusToken, transactionSignature }
+            data: { transactionSignature }
         }: {
             data: {
-                statusToken: OrderProps['statusToken'];
                 transactionSignature: OrderProps['transactionSignature'];
             };
         }) => {
             send({
                 ...data,
-                transactionSignature,
-                statusToken
+                transactionSignature
             });
             close();
             notify({
                 title: 'Payment is complete!',
                 description:
-                    "NFStudio will now begin creating your image. We'll notify you once your download is available."
+                    "NFStudio will now begin creating your image. We'll notify you once your download is available. Do not close this tab."
             });
         },
         [close, notify, send, data]
     );
 
     const config = useMemo(
-        () => ({
-            additionalJSON: data,
-            paylinkId,
-            network: process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'main' : 'test',
-            showPayWithCard: false,
-            onCancel: onPaymentCancel,
-            onError: onPaymentError,
-            onSuccess: onPaymentSuccess
-        }),
+        () =>
+            ({
+                additionalJSON: data,
+                paylinkId,
+                network: process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'main' : 'test',
+                showPayWithCard: false,
+                onCancel: onPaymentCancel,
+                onError: onPaymentError,
+                onSuccess: onPaymentSuccess
+            }) as Config,
         [data, paylinkId, onPaymentCancel, onPaymentError, onPaymentSuccess]
     );
 

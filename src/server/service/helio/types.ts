@@ -60,12 +60,6 @@ type TransactionMeta = {
     transactionStatus: TransactionStatus;
 };
 
-export type StatusTokenPayload = {
-    transactionId: Transaction['id'];
-    transactionSignature: Transaction['meta']['transactionSignature'];
-    exp: number;
-};
-
 export type Transaction = {
     id: string;
     paylinkId: string;
@@ -93,7 +87,6 @@ export type NFStudioVerifiedRefundTransaction = {
     verified: boolean;
     refunded: boolean;
     paylinkId: Transaction['paylinkId'];
-    statusToken: string;
     helioTransactionId: Transaction['id'];
     createdAt: Transaction['createdAt'];
     clientPublicKey: Transaction['meta']['senderPK'];
@@ -107,7 +100,6 @@ export type NFStudioUnverifiedRefundTransaction = {
     _id: Transaction['meta']['transactionSignature'];
     verified: boolean;
     refunded: boolean;
-    statusToken: string;
     createdAt: Transaction['createdAt'];
     canDelete?: boolean;
 };

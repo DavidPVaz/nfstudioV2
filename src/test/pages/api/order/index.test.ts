@@ -20,8 +20,6 @@ const orderData = {
     mobile: true,
     logoSrc: 'url/name-logo.png',
     collection: 'collection_name',
-    statusToken:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cmFuc2FjdGlvblNpZ25hdHVyZSI6IjN2REJ5NEJETkRUNTZIaHlCUmhaQnNaQk0xckxZaFRHaTVUM0hEcFM0aHhrRTJBdzdXU1FnN2sxd1dzQkNWR2RpMTNNM1ljTEJaQVp3OGVkZkJ3QUhGRCIsInRyYW5zYWN0aW9uSWQiOiI2NmZjMTFiNmEwZGNlMTQ1MTk4N2ZjMzkiLCJpYXQiOjE3Mjc3OTU2NDEsImV4cCI6MTcyNzgwMjg0MX0.h-n3ZYoMxHNUkAb1NtMr9N7OTkTb_H91puHzt7Pl1Bc',
     transactionSignature:
         '3vDBy4BDNDT56HhyBRhZBsZBM1rLYhTGi5T3HDpS4hxkE2Aw7WSQg7k1wWsBCVGdi13M3YcLBZAZw8edfBwAHFD'
 };
@@ -31,7 +29,6 @@ const testValidatedTransaction = {
     refunded: false,
     verified: true,
     paylinkId: 'paylink',
-    statusToken: 'token',
     helioTransactionId: 'helioId',
     createdAt: 'iso string',
     clientPublicKey: 'public key',
@@ -389,38 +386,6 @@ describe('pages/api/order/index', () => {
         expect(response._isEndCalled()).toBe(true);
     });
 
-    it('should return 400 if not status token', async () => {
-        // setup
-        const body = { ...orderData, statusToken: undefined };
-        const { req, res } = createMocks({
-            body
-        }) as { req: NextApiRequest; res: NextApiResponse };
-
-        // exercise
-        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
-
-        // verify
-        expect(response.statusCode).toBe(400);
-        expect(response._getData()).toEqual('Bad request.');
-        expect(response._isEndCalled()).toBe(true);
-    });
-
-    it('should return 400 if invalid status token', async () => {
-        // setup
-        const body = { ...orderData, statusToken: 'thisIsNotAValidToken' };
-        const { req, res } = createMocks({
-            body
-        }) as { req: NextApiRequest; res: NextApiResponse };
-
-        // exercise
-        const response = (await OrderHandler(req, res)) as unknown as MockResponse<NextApiResponse>;
-
-        // verify
-        expect(response.statusCode).toBe(400);
-        expect(response._getData()).toEqual('Bad request.');
-        expect(response._isEndCalled()).toBe(true);
-    });
-
     it('should return 400 if not transaction signature', async () => {
         // setup
         const body = { ...orderData, transactionSignature: undefined };
@@ -473,13 +438,11 @@ describe('pages/api/order/index', () => {
         expect(response._isEndCalled()).toBe(true);
 
         expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: orderData.transactionSignature,
-            statusToken: orderData.statusToken
+            payloadTx: orderData.transactionSignature
         });
 
         expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
-            id: orderData.transactionSignature,
-            statusToken: orderData.statusToken
+            id: orderData.transactionSignature
         });
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error, scope);
     });
@@ -508,21 +471,18 @@ describe('pages/api/order/index', () => {
         expect(response._isEndCalled()).toBe(true);
 
         expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: orderData.transactionSignature,
-            statusToken: orderData.statusToken
+            payloadTx: orderData.transactionSignature
         });
 
         expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, {
             _id: orderData.transactionSignature,
             verified: false,
             refunded: false,
-            statusToken: orderData.statusToken,
             createdAt: expectedCreatedAt
         });
 
         expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
-            id: orderData.transactionSignature,
-            statusToken: orderData.statusToken
+            id: orderData.transactionSignature
         });
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, error, scope);
 
@@ -556,21 +516,18 @@ describe('pages/api/order/index', () => {
         expect(response._isEndCalled()).toBe(true);
 
         expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: orderData.transactionSignature,
-            statusToken: orderData.statusToken
+            payloadTx: orderData.transactionSignature
         });
 
         expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, {
             _id: orderData.transactionSignature,
             verified: false,
             refunded: false,
-            statusToken: orderData.statusToken,
             createdAt: expectedCreatedAt
         });
 
         expect(scope.setContext).toHaveBeenNthCalledWith(1, 'transaction', {
-            id: orderData.transactionSignature,
-            statusToken: orderData.statusToken
+            id: orderData.transactionSignature
         });
 
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, helioError, scope);
@@ -582,7 +539,7 @@ describe('pages/api/order/index', () => {
 
     it('should order the image wallpaper/banner', async () => {
         // setup
-        const { transactionSignature, statusToken, ...orderOptions } = orderData;
+        const { transactionSignature, ...orderOptions } = orderData;
         const { req, res } = createMocks({
             method: 'POST',
             body: orderData
@@ -598,8 +555,7 @@ describe('pages/api/order/index', () => {
         expect(response._isEndCalled()).toBe(true);
 
         expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: transactionSignature,
-            statusToken
+            payloadTx: transactionSignature
         });
         expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
     });
@@ -610,7 +566,7 @@ describe('pages/api/order/index', () => {
         const scope = { setContext: vi.fn() };
         getCurrentScopeMock.mockImplementationOnce(() => scope);
         orderMock.mockRejectedValueOnce(error);
-        const { transactionSignature, statusToken, ...orderOptions } = orderData;
+        const { transactionSignature, ...orderOptions } = orderData;
         const { req, res } = createMocks({
             method: 'POST',
             body: orderData
@@ -627,8 +583,7 @@ describe('pages/api/order/index', () => {
         expect(response._isEndCalled()).toBe(true);
 
         expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: transactionSignature,
-            statusToken
+            payloadTx: transactionSignature
         });
         expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
 
@@ -651,7 +606,7 @@ describe('pages/api/order/index', () => {
         getCurrentScopeMock.mockImplementationOnce(() => scope);
         orderMock.mockRejectedValueOnce(error);
         insertRefundTransactionMock.mockRejectedValueOnce(mongoError);
-        const { transactionSignature, statusToken, ...orderOptions } = orderData;
+        const { transactionSignature, ...orderOptions } = orderData;
         const { req, res } = createMocks({
             method: 'POST',
             body: orderData
@@ -668,8 +623,7 @@ describe('pages/api/order/index', () => {
         expect(response._isEndCalled()).toBe(true);
 
         expect(getVerifiedNFStudioRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: transactionSignature,
-            statusToken
+            payloadTx: transactionSignature
         });
         expect(orderMock).toHaveBeenNthCalledWith(1, orderOptions);
 

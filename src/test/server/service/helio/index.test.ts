@@ -6,9 +6,9 @@ import {
 import { HelioApiRequestError, TransactionValidationError } from '@/server/service/helio/core';
 import type { NFStudioUnverifiedRefundTransaction } from '@/server/service/helio/types';
 
-const { helioApiGETRequestMock, isValidTransactionMock } = vi.hoisted(() => ({
+const { helioApiGETRequestMock, isWithinWindowMock } = vi.hoisted(() => ({
     helioApiGETRequestMock: vi.fn(),
-    isValidTransactionMock: vi.fn()
+    isWithinWindowMock: vi.fn()
 }));
 
 vi.mock('@/server/service/helio/core', async importOriginal => {
@@ -16,7 +16,7 @@ vi.mock('@/server/service/helio/core', async importOriginal => {
     return {
         ...actual,
         helioApiGETRequest: helioApiGETRequestMock,
-        isValidTransaction: isValidTransactionMock
+        isWithinWindow: isWithinWindowMock
     };
 });
 
@@ -28,13 +28,11 @@ describe('server/service/helio/index', () => {
     it('should get a verified refund transaction', async () => {
         // setup
         const signature = 'signature';
-        const statusToken = 'token';
         const expectedTransactionInfo = {
             verified: true,
             refunded: false,
             _id: signature,
             paylinkId: 'paylinkId',
-            statusToken,
             helioTransactionId: 'helioId',
             createdAt: 'time',
             clientPublicKey: 'publicKey',
@@ -73,12 +71,11 @@ describe('server/service/helio/index', () => {
         helioApiGETRequestMock.mockImplementationOnce(() =>
             Promise.resolve(fetchedParsedTransaction)
         );
-        isValidTransactionMock.mockImplementationOnce(() => true);
+        isWithinWindowMock.mockImplementationOnce(() => true);
 
         // exercise
         const result = await getVerifiedNFStudioRefundTransaction({
-            payloadTx: signature,
-            statusToken
+            payloadTx: signature
         });
 
         // verify
@@ -86,13 +83,9 @@ describe('server/service/helio/index', () => {
         expect(helioApiGETRequestMock).toHaveBeenNthCalledWith(1, {
             path: `transactions/signature/${signature}`
         });
-        expect(isValidTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: signature,
-            fetchedTx: fetchedParsedTransaction.meta.transactionSignature,
-            id: fetchedParsedTransaction.id,
-            statusToken,
+        expect(isWithinWindowMock).toHaveBeenNthCalledWith(1, {
             createdAt: fetchedParsedTransaction.createdAt,
-            ignoreTxTime: false
+            minutes: 3
         });
     });
 
@@ -101,21 +94,19 @@ describe('server/service/helio/index', () => {
         const message = 'message';
         const code = 500;
         const signature = 'signature';
-        const statusToken = 'token';
         helioApiGETRequestMock.mockRejectedValueOnce(new HelioApiRequestError(message, code));
 
         // exercise && verify
         await expect(
             getVerifiedNFStudioRefundTransaction({
-                payloadTx: signature,
-                statusToken
+                payloadTx: signature
             })
         ).rejects.toThrowError(new HelioApiRequestError(message, code));
 
         expect(helioApiGETRequestMock).toHaveBeenNthCalledWith(1, {
             path: `transactions/signature/${signature}`
         });
-        expect(isValidTransactionMock).not.toHaveBeenCalled();
+        expect(isWithinWindowMock).not.toHaveBeenCalled();
     });
 
     it('should bubble a TransactionValidationError on helio api request', async () => {
@@ -123,33 +114,29 @@ describe('server/service/helio/index', () => {
         const message = 'message';
         const code = 401;
         const signature = 'signature';
-        const statusToken = 'token';
         helioApiGETRequestMock.mockRejectedValueOnce(new TransactionValidationError(message, code));
 
         // exercise && verify
         await expect(
             getVerifiedNFStudioRefundTransaction({
-                payloadTx: signature,
-                statusToken
+                payloadTx: signature
             })
         ).rejects.toThrowError(new TransactionValidationError(message, code));
 
         expect(helioApiGETRequestMock).toHaveBeenNthCalledWith(1, {
             path: `transactions/signature/${signature}`
         });
-        expect(isValidTransactionMock).not.toHaveBeenCalled();
+        expect(isWithinWindowMock).not.toHaveBeenCalled();
     });
 
-    it('should throw a TransactionValidationError if transaction is not valid', async () => {
+    it('should throw a TransactionValidationError if transaction is not within window', async () => {
         // setup
         const signature = 'signature';
-        const statusToken = 'token';
         const expectedTransactionInfo = {
             verified: true,
             refunded: false,
             _id: signature,
             paylinkId: 'paylinkId',
-            statusToken,
             helioTransactionId: 'helioId',
             createdAt: 'time',
             clientPublicKey: 'publicKey',
@@ -188,13 +175,12 @@ describe('server/service/helio/index', () => {
         helioApiGETRequestMock.mockImplementationOnce(() =>
             Promise.resolve(fetchedParsedTransaction)
         );
-        isValidTransactionMock.mockImplementationOnce(() => false);
+        isWithinWindowMock.mockImplementationOnce(() => false);
 
         // exercise && verify
         await expect(
             getVerifiedNFStudioRefundTransaction({
-                payloadTx: signature,
-                statusToken
+                payloadTx: signature
             })
         ).rejects.toThrowError(
             new TransactionValidationError(`Transaction ${signature} is not valid.`, 401)
@@ -203,28 +189,23 @@ describe('server/service/helio/index', () => {
         expect(helioApiGETRequestMock).toHaveBeenNthCalledWith(1, {
             path: `transactions/signature/${signature}`
         });
-        expect(isValidTransactionMock).toHaveBeenNthCalledWith(1, {
-            payloadTx: signature,
-            fetchedTx: fetchedParsedTransaction.meta.transactionSignature,
-            id: fetchedParsedTransaction.id,
-            statusToken,
+        expect(isWithinWindowMock).toHaveBeenNthCalledWith(1, {
             createdAt: fetchedParsedTransaction.createdAt,
-            ignoreTxTime: false
+            minutes: 3
         });
     });
 
     it('should reevaluate unverified refund transactions', async () => {
         // setup
-        const unverifiedTransaction1 = { _id: '1', statusToken: 'token1' };
-        const unverifiedTransaction2 = { _id: '2', statusToken: 'token2' };
-        const unverifiedTransaction3 = { _id: '3', statusToken: 'token3' };
-        const unverifiedTransaction4 = { _id: '4', statusToken: 'token4' };
+        const unverifiedTransaction1 = { _id: '1' };
+        const unverifiedTransaction2 = { _id: '2' };
+        const unverifiedTransaction3 = { _id: '3' };
+        const unverifiedTransaction4 = { _id: '4' };
         const refundTransaction = {
             verified: true,
             refunded: false,
             _id: unverifiedTransaction1._id,
             paylinkId: 'paylinkId',
-            statusToken: unverifiedTransaction1.statusToken,
             helioTransactionId: 'helioId',
             createdAt: 'time',
             clientPublicKey: 'publicKey',
@@ -278,11 +259,9 @@ describe('server/service/helio/index', () => {
         helioApiGETRequestMock.mockImplementationOnce(() =>
             Promise.resolve(fetchedParsedTransaction)
         );
-        isValidTransactionMock.mockImplementationOnce(() => true);
-        helioApiGETRequestMock.mockImplementationOnce(() =>
-            Promise.resolve(fetchedParsedTransaction)
+        helioApiGETRequestMock.mockRejectedValueOnce(
+            new TransactionValidationError('message', 401)
         );
-        isValidTransactionMock.mockImplementationOnce(() => false);
         helioApiGETRequestMock.mockRejectedValueOnce(
             new TransactionValidationError('message', 401)
         );
@@ -299,16 +278,6 @@ describe('server/service/helio/index', () => {
             });
         });
         expect(helioApiGETRequestMock).toHaveBeenCalledTimes(unverifiedRefundTransactions.length);
-        [unverifiedTransaction1, unverifiedTransaction2].forEach(transaction => {
-            expect(isValidTransactionMock).toHaveBeenCalledWith({
-                payloadTx: transaction._id,
-                fetchedTx: fetchedParsedTransaction.meta.transactionSignature,
-                id: fetchedParsedTransaction.id,
-                statusToken: transaction.statusToken,
-                createdAt: fetchedParsedTransaction.createdAt,
-                ignoreTxTime: true
-            });
-        });
-        expect(isValidTransactionMock).toHaveBeenCalledTimes(2);
+        expect(isWithinWindowMock).not.toHaveBeenCalled();
     });
 });

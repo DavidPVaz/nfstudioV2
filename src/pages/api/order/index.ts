@@ -20,7 +20,6 @@ const BodySchema = v.object({
     mobile: v.boolean(),
     collection: v.pipe(v.string(), v.regex(/^[a-zA-Z]+(?:_[a-zA-Z]+)*$/)),
     logoSrc: v.optional(v.pipe(v.string(), v.regex(/^(?!.*:\/\/).*?-logo.*\.png$/))),
-    statusToken: v.pipe(v.string(), v.regex(/^[A-Za-z0-9-_]+?\.[A-Za-z0-9-_]+?\.[A-Za-z0-9-_]+$/)), // JWT header.payload.signature Base64 encoded strings
     transactionSignature: v.pipe(v.string(), v.regex(/^[1-9A-HJ-NP-Za-km-z]{86,88}$/)) // Solana Tx -> 64-byte array, encoded in Base58
 });
 
@@ -40,20 +39,18 @@ export default async function handler(request: NextApiRequest, response: NextApi
         return response.status(400).send('Bad request.');
     }
 
-    const { statusToken, transactionSignature, ...orderOptions } = body;
+    const { transactionSignature, ...orderOptions } = body;
 
     let transaction: NFStudioVerifiedRefundTransaction;
 
     try {
         transaction = await getVerifiedNFStudioRefundTransaction({
-            payloadTx: transactionSignature,
-            statusToken
+            payloadTx: transactionSignature
         });
     } catch (error) {
         const scope = getCurrentScope();
         scope.setContext('transaction', {
-            id: transactionSignature,
-            statusToken
+            id: transactionSignature
         });
 
         if (error instanceof TransactionValidationError) {
@@ -67,7 +64,6 @@ export default async function handler(request: NextApiRequest, response: NextApi
                 _id: transactionSignature,
                 verified: false,
                 refunded: false,
-                statusToken,
                 createdAt: new Date().toISOString()
             });
         } catch (error) {

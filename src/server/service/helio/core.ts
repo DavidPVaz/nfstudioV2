@@ -1,6 +1,4 @@
-import { decodeToken, jwtHasExpired } from '@/server/service/auth';
 import { NFStudioRequestError, customFetch } from '@/server/service/shared/http';
-import type { StatusTokenPayload } from '@/server/service/helio/types';
 
 export class HelioApiRequestError extends NFStudioRequestError {
     constructor(message: string, code: number) {
@@ -66,51 +64,6 @@ export async function helioApiGETRequest<T>({ path, retries = 1 }: HelioApiGetRe
  * @param options.createdAt - timestamp
  * @param options.minutes - the number of minutes to assert for
  */
-const isWithinWindow = ({ createdAt, minutes }: { createdAt: string; minutes: number }) =>
+export const isWithinWindow = ({ createdAt, minutes }: { createdAt: string; minutes: number }) =>
     createdAt >= new Date(new Date().getTime() - minutes * 60000).toISOString() &&
     createdAt <= new Date().toISOString();
-
-/**
- * Validate the authenticity of a blockchain transaction.
- *
- * @param options
- * @param options.payloadTx - the transaction signature to verify received via NFStudio API call
- * @param options.fetchedTx - the transaction signature fetched via own HELIO API call, theoretically equal to the received one
- * @param options.id - the transaction id of this transaction signature fetched from Helio
- * @param options.statusToken - the JWT token to be decoded that includes the transaction signature and its id
- * @param options.createdAt - time at which the transaction was created
- * @param options.ignoreTxTime - wether to ignore the time at which transaction took place
- */
-export const isValidTransaction = ({
-    payloadTx,
-    fetchedTx,
-    id,
-    statusToken,
-    createdAt,
-    ignoreTxTime
-}: {
-    payloadTx: string;
-    fetchedTx: string;
-    id: string;
-    statusToken: string;
-    createdAt: string;
-    ignoreTxTime: boolean;
-}) => {
-    const { transactionSignature, transactionId, exp } =
-        decodeToken<StatusTokenPayload>(statusToken);
-
-    if (!transactionSignature || !transactionId) {
-        return false;
-    }
-
-    const isValid =
-        payloadTx === transactionSignature &&
-        fetchedTx === transactionSignature &&
-        id === transactionId;
-
-    if (ignoreTxTime) {
-        return isValid;
-    }
-
-    return isValid && !jwtHasExpired(exp) && isWithinWindow({ createdAt, minutes: 3 });
-};
