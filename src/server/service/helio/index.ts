@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js';
 import {
+    isWithinWindow,
     helioApiGETRequest,
-    isValidTransaction,
     TransactionValidationError
 } from '@/server/service/helio/core';
 import type {
@@ -16,7 +16,6 @@ import type {
  *
  * @param options
  * @param options.payloadTx - the transaction signature to verify received via NFStudio API call
- * @param options.statusToken - the JWT token to be decoded that includes the transaction signature and its id
  * @param options.ignoreTxTime - wether to ignore the time at which transaction took place
  *
  * @throws {HelioApiRequestError} if request to Helio api fails
@@ -24,11 +23,9 @@ import type {
  */
 export const getVerifiedNFStudioRefundTransaction = async ({
     payloadTx,
-    statusToken,
     ignoreTxTime = false
 }: {
     payloadTx: string;
-    statusToken: string;
     ignoreTxTime?: boolean;
 }): Promise<NFStudioVerifiedRefundTransaction> => {
     const {
@@ -47,16 +44,7 @@ export const getVerifiedNFStudioRefundTransaction = async ({
         path: `transactions/signature/${payloadTx}`
     });
 
-    if (
-        !isValidTransaction({
-            payloadTx,
-            fetchedTx,
-            id,
-            statusToken,
-            createdAt,
-            ignoreTxTime
-        })
-    ) {
+    if (!ignoreTxTime && !isWithinWindow({ createdAt, minutes: 3 })) {
         throw new TransactionValidationError(`Transaction ${payloadTx} is not valid.`, 401);
     }
 
@@ -65,7 +53,6 @@ export const getVerifiedNFStudioRefundTransaction = async ({
         refunded: false,
         _id: fetchedTx,
         paylinkId,
-        statusToken,
         helioTransactionId: id,
         createdAt,
         clientPublicKey,
@@ -84,11 +71,10 @@ export const reevaluateUnverifiedTransactions = (
     unverifiedRefundTransactions: NFStudioUnverifiedRefundTransaction[]
 ): Promise<(NFStudioVerifiedRefundTransaction | NFStudioUnverifiedRefundTransaction)[]> =>
     Promise.all(
-        unverifiedRefundTransactions.map(async ({ _id, statusToken, ...unverified }) => {
+        unverifiedRefundTransactions.map(async ({ _id, ...unverified }) => {
             try {
                 const verifiedTransaction = await getVerifiedNFStudioRefundTransaction({
                     payloadTx: _id,
-                    statusToken,
                     ignoreTxTime: true
                 });
 
@@ -96,12 +82,12 @@ export const reevaluateUnverifiedTransactions = (
             } catch (error) {
                 // It is not a valid transaction - flag for deletion
                 if (error instanceof TransactionValidationError) {
-                    return { ...unverified, _id, statusToken, canDelete: true };
+                    return { ...unverified, _id, canDelete: true };
                 }
 
                 // Fetch error, do nothing to the transaction
                 // attempt to reverify on later call
-                return { ...unverified, _id, statusToken };
+                return { ...unverified, _id };
             }
         })
     );
