@@ -8,6 +8,7 @@ import type { NotificationProps } from '@/components/atoms/notification';
 import { useModal } from '@/hooks/use-modal';
 import { useNotification } from '@/hooks/use-notification';
 import { useNetworkState } from '@/hooks/use-network-state';
+import { useMediaQuery } from '@/hooks/use-media-query';
 import { LoadForm } from '@/app/collections/[collection]/_studio/client/nfts-board/load-nfts/load-form';
 import {
     type IncompleteNFT,
@@ -42,6 +43,7 @@ export const LoadNFTs = () => {
     const { onIncompleteNFTsLoad } = useStudioContext();
     const { notify } = useNotification();
     const { isOnline } = useNetworkState();
+    const isMax645px = useMediaQuery('only screen and (max-height : 645px)');
 
     const onSubmit = useCallback(
         (incompleteNFTs: { ids: IncompleteNFT[] }) => {
@@ -56,8 +58,10 @@ export const LoadNFTs = () => {
     );
 
     return (
-        <div className="container flex w-full items-center justify-center overflow-y-auto">
-            <Card className="relative h-full w-full max-w-lg border-0 bg-background 2xs:h-auto 2xs:border">
+        <div
+            className={`container flex w-full ${isMax645px ? 'items-start' : 'items-center'} justify-center overflow-y-auto`}
+        >
+            <Card className="relative h-full w-full max-w-lg border-0 bg-background 2xs:h-auto">
                 <CardHeader className="gap-y-2 pb-2 pl-0 pr-0 pt-6 2xs:p-6 2xs:pb-3 sm:gap-y-3">
                     <Content />
                 </CardHeader>
@@ -106,7 +110,7 @@ export const RefreshNFTs = React.memo(() => {
                 description={tooltipContent}
                 className="max-w-lg border-0 2xs:min-h-[526px] 2xs:border"
             >
-                <Card className="pb-safe-bottom relative h-full w-full border-0 bg-background">
+                <Card className="relative h-full w-full border-0 bg-background">
                     <CardHeader className="gap-y-2 pb-2 pl-6 pr-6 pt-6 sm:gap-y-3">
                         <Content />
                     </CardHeader>
