@@ -137,7 +137,7 @@ export const OrderContent = ({ close }: { close: () => void }) => {
             notify({
                 title: 'Payment is complete!',
                 description:
-                    "NFStudio will now begin creating your image. We'll notify you once your download is available."
+                    "NFStudio will now begin creating your image. We'll notify you once your download is available. Do not close this tab."
             });
         },
         [close, notify, send, data]
