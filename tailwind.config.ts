@@ -23,6 +23,7 @@ const config = {
         },
         screens: {
             xs: '290px',
+            '1.5xs': '325px',
             '2xs': '475px',
             ...screens,
             '3xl': '1536px'
