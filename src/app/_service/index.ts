@@ -94,7 +94,6 @@ export type OrderProps = {
     width: number;
     height: number;
     dpi: number;
-    statusToken: string;
     transactionSignature: string;
 };
 

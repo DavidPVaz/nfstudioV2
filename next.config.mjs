@@ -69,13 +69,6 @@ if (process.env.VERCEL_ENV !== 'production') {
 }
 
 const config = {
-    typescript: {
-        // TODO: !! WARN !! Temporary!! Payments Integration Dependency needs to export types
-        // Dangerously allow production builds to successfully complete even if
-        // your project has type errors.
-        ignoreBuildErrors: true
-    },
-
     reactStrictMode: false,
     productionBrowserSourceMaps: false,
     experimental: {
