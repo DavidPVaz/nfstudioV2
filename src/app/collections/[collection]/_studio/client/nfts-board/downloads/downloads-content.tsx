@@ -9,7 +9,7 @@ const NoDownloadsFound = () => (
             You still haven&#39;t created an image!
         </span>
         <span className="relative text-center">
-            Make your first purchase, and your creation will be available here for download.
+            Make your first purchase, and it will show up in here.
         </span>
     </div>
 );
@@ -30,7 +30,7 @@ const Downloads = ({ downloads }: { downloads: Download[] }) => {
             <div className="flex flex-row items-center gap-2 bg-accent/70 p-2">
                 <Info className="h-7 w-7 2xs:h-5 2xs:w-5" />
                 <div className="relative text-sm 2xs:text-base">
-                    Click on your creations to download. Only your last two will be available.
+                    Click on your images to download. Only your last two will be available.
                 </div>
             </div>
 
