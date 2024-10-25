@@ -123,7 +123,7 @@ export const Preview = React.memo(() => {
                     })}
                 />
 
-                <span className="absolute bottom-3 w-full px-6 text-center text-sm">
+                <span className="absolute bottom-3 w-full px-6 text-center text-sm text-primary-brand-white">
                     Ordered image will not have any watermark and will have 100% quality.
                 </span>
             </Modal>
