@@ -15,8 +15,8 @@ importers:
         specifier: ^16.8.3
         version: 16.8.3
       '@heliofi/checkout-react':
-        specifier: ^2.1.1
-        version: 2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.2.0
+        version: 2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -1038,8 +1038,8 @@ packages:
   '@floating-ui/utils@0.2.2':
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
 
-  '@heliofi/checkout-react@2.1.1':
-    resolution: {integrity: sha512-VxdvRoJ3li3dzGuA7yeI1PAxp9zZSy8H1JQyX2RTfuZPmho7675ChNQpIc+chyghPj1V0ltgu5NsNAeAxGE/9g==}
+  '@heliofi/checkout-react@2.2.0':
+    resolution: {integrity: sha512-ad00GddytzHhAB6waanQime+rDQmKN/tB2zUVpUE6hnWKhb18vPsZkw+ZV5MSLa8PEjkph3yyn9UCD0+74dSMg==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -6325,7 +6325,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.2': {}
 
-  '@heliofi/checkout-react@2.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@heliofi/checkout-react@2.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

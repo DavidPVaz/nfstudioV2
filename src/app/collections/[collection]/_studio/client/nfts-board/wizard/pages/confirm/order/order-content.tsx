@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useEffect } from 'react';
 import { PLATFORMS } from '@/enums';
-import { HelioCheckout } from '@heliofi/checkout-react';
+import { HelioCheckout, type HelioEmbedConfig } from '@heliofi/checkout-react';
 import { useCollectionContext } from '@/app/collections/[collection]/context';
 import { useStudioContext } from '@/app/collections/[collection]/_studio/client';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
@@ -9,8 +9,6 @@ import { useApiWrite } from '@/hooks/use-api';
 import { getPlatformOptionConfig } from '@/lib/utils';
 import { order, type OrderProps } from '@/app/_service';
 import { OrderError } from '@/app/_errors';
-
-type Config = Parameters<typeof HelioCheckout>[0]['config'];
 
 const HELIO_CHECKOUT_STORE_VARIABLES = [
     'wagmi.store',
@@ -153,7 +151,7 @@ export const OrderContent = ({ close }: { close: () => void }) => {
                 onCancel: onPaymentCancel,
                 onError: onPaymentError,
                 onSuccess: onPaymentSuccess
-            }) as Config,
+            }) as HelioEmbedConfig,
         [data, paylinkId, onPaymentCancel, onPaymentError, onPaymentSuccess]
     );
 
