@@ -55,7 +55,7 @@ export const LoadForm = ({ onSubmit }: { onSubmit: LoadIncompleteNFTs }) => {
                         <FormItem>
                             <FormLabel htmlFor="ids">NFT IDs</FormLabel>
                             <FormControl>
-                                <Textarea autoFocus placeholder="e.g. 1200,400,3130" {...field} />
+                                <Textarea placeholder="e.g. 1200,400,3130" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

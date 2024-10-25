@@ -22,7 +22,6 @@ export const SearchContent = ({ onSelect, onChain, data, selectedChain }: Search
         <CommandInput
             aria-label="Search collections"
             placeholder="Search collections on NFStudio"
-            autoFocus
         />
         <ChainFilter onChain={onChain} selectedChain={selectedChain} />
         <CommandList>
