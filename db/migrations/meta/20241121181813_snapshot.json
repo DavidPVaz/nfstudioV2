@@ -1,9 +1,26 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "9e11386a-bb3a-4e4e-93f9-a8187bdd5a66",
+  "id": "25fc6fa5-ad2d-4471-844a-6405522c42ae",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "chains": {
+      "name": "chains",
+      "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "collections": {
       "name": "collections",
       "columns": {
@@ -102,7 +119,21 @@
           "isUnique": true
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "collections_chain_chains_name_fk": {
+          "name": "collections_chain_chains_name_fk",
+          "tableFrom": "collections",
+          "tableTo": "chains",
+          "columnsFrom": [
+            "chain"
+          ],
+          "columnsTo": [
+            "name"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -113,12 +144,12 @@
         "symbol": {
           "name": "symbol",
           "type": "text",
-          "primaryKey": true,
-          "notNull": true,
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
-        "mint_address": {
-          "name": "mint_address",
+        "address": {
+          "name": "address",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -130,19 +161,40 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "chain": {
+          "name": "chain",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
-      "indexes": {
-        "currencies_mint_address_unique": {
-          "name": "currencies_mint_address_unique",
-          "columns": [
-            "mint_address"
+      "indexes": {},
+      "foreignKeys": {
+        "currencies_chain_chains_name_fk": {
+          "name": "currencies_chain_chains_name_fk",
+          "tableFrom": "currencies",
+          "tableTo": "chains",
+          "columnsFrom": [
+            "chain"
           ],
-          "isUnique": true
+          "columnsTo": [
+            "name"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "currencies_symbol_chain_pk": {
+          "columns": [
+            "symbol",
+            "chain"
+          ],
+          "name": "currencies_symbol_chain_pk"
+        }
+      },
       "uniqueConstraints": {},
       "checkConstraints": {}
     },

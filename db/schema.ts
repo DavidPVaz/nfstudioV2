@@ -1,10 +1,17 @@
 import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
 import type { SupportedCurrencies } from '../src/server/service/db/types';
 
+// Chains Table
+export const chains = sqliteTable('chains', {
+    name: text('name').primaryKey()
+});
+
 // Collections Table
 export const collections = sqliteTable('collections', {
     name: text('name').primaryKey(),
-    chain: text({ enum: ['Solana', 'Ethereum', 'Polygon', 'Optimism', 'Arbitrum'] }).notNull(),
+    chain: text('chain')
+        .notNull()
+        .references(() => chains.name),
     presentationPictureUrl: text('presentation_picture_url').notNull(),
     marketplaceUrl: text('marketplace_url').notNull(),
     discordUrl: text('discord_url').notNull(),
@@ -56,11 +63,20 @@ export const unsupportedTraits = sqliteTable(
 );
 
 // Currencies Table
-export const currencies = sqliteTable('currencies', {
-    symbol: text('symbol').$type<SupportedCurrencies>().primaryKey(),
-    mintAddress: text('mint_address').notNull().unique(),
-    decimals: integer('decimals').notNull()
-});
+export const currencies = sqliteTable(
+    'currencies',
+    {
+        symbol: text('symbol').$type<SupportedCurrencies>(),
+        address: text('address').notNull(),
+        decimals: integer('decimals').notNull(),
+        chain: text('chain')
+            .notNull()
+            .references(() => chains.name)
+    },
+    table => ({
+        pk: primaryKey({ columns: [table.symbol, table.chain] })
+    })
+);
 
 // Refunds Table
 export const refunds = sqliteTable('refunds', {

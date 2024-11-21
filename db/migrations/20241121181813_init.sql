@@ -1,3 +1,7 @@
+CREATE TABLE `chains` (
+	`name` text PRIMARY KEY NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `collections` (
 	`name` text PRIMARY KEY NOT NULL,
 	`chain` text NOT NULL,
@@ -10,17 +14,20 @@ CREATE TABLE `collections` (
 	`active` integer DEFAULT true,
 	`paylink_id` text NOT NULL,
 	`cache_strategy_sMaxAge` integer,
-	`cache_strategy_maxAge` integer
+	`cache_strategy_maxAge` integer,
+	FOREIGN KEY (`chain`) REFERENCES `chains`(`name`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `collections_paylink_id_unique` ON `collections` (`paylink_id`);--> statement-breakpoint
 CREATE TABLE `currencies` (
-	`symbol` text PRIMARY KEY NOT NULL,
-	`mint_address` text NOT NULL,
-	`decimals` integer NOT NULL
+	`symbol` text,
+	`address` text NOT NULL,
+	`decimals` integer NOT NULL,
+	`chain` text NOT NULL,
+	PRIMARY KEY(`symbol`, `chain`),
+	FOREIGN KEY (`chain`) REFERENCES `chains`(`name`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `currencies_mint_address_unique` ON `currencies` (`mint_address`);--> statement-breakpoint
 CREATE TABLE `logos` (
 	`url` text PRIMARY KEY NOT NULL,
 	`collection` text NOT NULL,
