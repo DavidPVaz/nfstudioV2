@@ -20,11 +20,12 @@ CREATE TABLE `collections` (
 --> statement-breakpoint
 CREATE UNIQUE INDEX `collections_paylink_id_unique` ON `collections` (`paylink_id`);--> statement-breakpoint
 CREATE TABLE `currencies` (
-	`symbol` text,
-	`address` text NOT NULL,
-	`decimals` integer NOT NULL,
 	`chain` text NOT NULL,
-	PRIMARY KEY(`symbol`, `chain`),
+	`name` text NOT NULL,
+	`symbol` text,
+	`decimals` integer NOT NULL,
+	`address` text NOT NULL,
+	PRIMARY KEY(`chain`, `name`),
 	FOREIGN KEY (`chain`) REFERENCES `chains`(`name`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -53,9 +54,11 @@ CREATE TABLE `refunds` (
 	`client_public_key` text,
 	`amount` text,
 	`transaction_signature` text,
-	`currency` text,
+	`chain` text NOT NULL,
+	`currency` text NOT NULL,
 	FOREIGN KEY (`paylink_id`) REFERENCES `collections`(`paylink_id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`currency`) REFERENCES `currencies`(`symbol`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`chain`) REFERENCES `chains`(`name`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`chain`,`currency`) REFERENCES `currencies`(`chain`,`symbol`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `refunds_helio_transaction_id_unique` ON `refunds` (`helio_transaction_id`);--> statement-breakpoint

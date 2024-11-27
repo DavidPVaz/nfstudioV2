@@ -5,9 +5,7 @@ import { useSyncExternalStore } from 'react';
 const subscribe = (callback: () => void) => {
     window.addEventListener('scroll', callback);
 
-    return () => {
-        window.removeEventListener('scroll', callback);
-    };
+    return () => window.removeEventListener('scroll', callback);
 };
 const getServerSnapshot = () => false;
 

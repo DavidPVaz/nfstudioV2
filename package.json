@@ -5,6 +5,7 @@
     "type": "module",
     "author": "David Vaz <davidpvaz@protonmail.com>",
     "scripts": {
+        "db:seed": "tsx db/seeds/data/common/nft_metadata/index.ts; tsx db/seeds/index.ts",
         "db:migrate": "drizzle-kit migrate",
         "db:studio": "drizzle-kit studio",
         "db:generate": "drizzle-kit generate --name $1",
@@ -85,6 +86,7 @@
         "prettier": "^3.3.2",
         "prettier-plugin-tailwindcss": "^0.6.5",
         "tailwindcss": "^3.4.1",
+        "tsx": "^4.19.2",
         "typescript": "^5",
         "vite-tsconfig-paths": "^4.3.2",
         "vitest": "^2.0.4"

@@ -52,3 +52,5 @@ yarn-error.log*
 /playwright/.cache/
 
 *.db
+
+db/seeds/data/common/nft_metadata/index.json

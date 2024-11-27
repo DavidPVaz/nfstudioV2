@@ -1,5 +1,5 @@
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
-import type { SupportedCurrencies } from '../src/server/service/db/types';
+import { sqliteTable, text, integer, primaryKey, foreignKey } from 'drizzle-orm/sqlite-core';
+import type { SupportedCurrencies } from '../src/server/service/data/types';
 
 // Chains Table
 export const chains = sqliteTable('chains', {
@@ -23,6 +23,23 @@ export const collections = sqliteTable('collections', {
     cacheStrategySMaxAge: integer('cache_strategy_sMaxAge'),
     cacheStrategyMaxAge: integer('cache_strategy_maxAge')
 });
+
+// Currencies Table
+export const currencies = sqliteTable(
+    'currencies',
+    {
+        chain: text('chain')
+            .notNull()
+            .references(() => chains.name),
+        name: text('name').notNull(),
+        symbol: text('symbol').$type<SupportedCurrencies>(),
+        decimals: integer('decimals').notNull(),
+        address: text('address').notNull()
+    },
+    table => ({
+        pk: primaryKey({ columns: [table.chain, table.name] })
+    })
+);
 
 // Logos Table
 export const logos = sqliteTable('logos', {
@@ -62,36 +79,29 @@ export const unsupportedTraits = sqliteTable(
     })
 );
 
-// Currencies Table
-export const currencies = sqliteTable(
-    'currencies',
+// Refunds Table
+export const refunds = sqliteTable(
+    'refunds',
     {
-        symbol: text('symbol').$type<SupportedCurrencies>(),
-        address: text('address').notNull(),
-        decimals: integer('decimals').notNull(),
+        id: text('id').primaryKey(),
+        refunded: integer('refunded', { mode: 'boolean' }).default(false),
+        verified: integer('verified', { mode: 'boolean' }).default(false),
+        canDelete: integer('canDelete', { mode: 'boolean' }),
+        createdAt: text('created_at').notNull(),
+        paylinkId: text('paylink_id').references(() => collections.paylinkId),
+        helioTransactionId: text('helio_transaction_id').unique(),
+        clientPublicKey: text('client_public_key'),
+        amount: text('amount'),
+        transactionSignature: text('transaction_signature'),
         chain: text('chain')
             .notNull()
-            .references(() => chains.name)
+            .references(() => chains.name),
+        currency: text('currency').$type<SupportedCurrencies>().notNull()
     },
     table => ({
-        pk: primaryKey({ columns: [table.symbol, table.chain] })
+        currency_fk: foreignKey({
+            columns: [table.chain, table.currency], // Composite foreign key
+            foreignColumns: [currencies.chain, currencies.symbol] // Matches the composite primary key of currencies
+        })
     })
 );
-
-// Refunds Table
-export const refunds = sqliteTable('refunds', {
-    id: text('id').primaryKey(),
-    refunded: integer('refunded', { mode: 'boolean' }).default(false),
-    verified: integer('verified', { mode: 'boolean' }).default(false),
-    canDelete: integer('canDelete', { mode: 'boolean' }),
-    createdAt: text('created_at').notNull(),
-    paylinkId: text('paylink_id').references(() => collections.paylinkId),
-    helioTransactionId: text('helio_transaction_id').unique(),
-    clientPublicKey: text('client_public_key'),
-    amount: text('amount'),
-    transactionSignature: text('transaction_signature'),
-    currency: text('currency')
-        .$type<SupportedCurrencies>()
-        .references(() => currencies.symbol)
-});
-export type Refund = typeof refunds.$inferInsert;

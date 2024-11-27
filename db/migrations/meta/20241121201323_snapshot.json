@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "25fc6fa5-ad2d-4471-844a-6405522c42ae",
+  "id": "55d10b57-75dc-4464-a12d-d9254bbfec08",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "chains": {
@@ -141,18 +141,25 @@
     "currencies": {
       "name": "currencies",
       "columns": {
+        "chain": {
+          "name": "chain",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "symbol": {
           "name": "symbol",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false
-        },
-        "address": {
-          "name": "address",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
           "autoincrement": false
         },
         "decimals": {
@@ -162,8 +169,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "chain": {
-          "name": "chain",
+        "address": {
+          "name": "address",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -187,12 +194,12 @@
         }
       },
       "compositePrimaryKeys": {
-        "currencies_symbol_chain_pk": {
+        "currencies_chain_name_pk": {
           "columns": [
-            "symbol",
-            "chain"
+            "chain",
+            "name"
           ],
-          "name": "currencies_symbol_chain_pk"
+          "name": "currencies_chain_name_pk"
         }
       },
       "uniqueConstraints": {},
@@ -364,11 +371,18 @@
           "notNull": false,
           "autoincrement": false
         },
+        "chain": {
+          "name": "chain",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "currency": {
           "name": "currency",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -395,14 +409,29 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "refunds_currency_currencies_symbol_fk": {
-          "name": "refunds_currency_currencies_symbol_fk",
+        "refunds_chain_chains_name_fk": {
+          "name": "refunds_chain_chains_name_fk",
+          "tableFrom": "refunds",
+          "tableTo": "chains",
+          "columnsFrom": [
+            "chain"
+          ],
+          "columnsTo": [
+            "name"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "refunds_chain_currency_currencies_chain_symbol_fk": {
+          "name": "refunds_chain_currency_currencies_chain_symbol_fk",
           "tableFrom": "refunds",
           "tableTo": "currencies",
           "columnsFrom": [
+            "chain",
             "currency"
           ],
           "columnsTo": [
+            "chain",
             "symbol"
           ],
           "onDelete": "no action",
