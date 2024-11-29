@@ -10,7 +10,7 @@ const NFT_METADATA_FOLDER = path.join(__dirname);
 const prepareNftMetadata = async () => {
     const files = await promises.readdir(NFT_METADATA_FOLDER);
 
-    if (files.find(file => path.parse(file).name === 'index')) {
+    if (files.find(file => file === 'index.json')) {
         return Promise.resolve();
     }
 
@@ -29,9 +29,9 @@ const prepareNftMetadata = async () => {
                     }
 
                     resolve(
-                        (JSON.parse(data) as object[]).map(data => ({
-                            ...data,
-                            collection
+                        (JSON.parse(data) as { nftId: number; uri: string }[]).map(metadata => ({
+                            collection,
+                            ...metadata
                         }))
                     );
                 })

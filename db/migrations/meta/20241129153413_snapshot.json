@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "55d10b57-75dc-4464-a12d-d9254bbfec08",
+  "id": "90d3c6fd-7519-4088-b59d-1e48f6b59c02",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "chains": {
@@ -92,7 +92,7 @@
           "name": "paylink_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "cache_strategy_sMaxAge": {
@@ -159,7 +159,7 @@
           "name": "symbol",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "decimals": {
@@ -194,12 +194,12 @@
         }
       },
       "compositePrimaryKeys": {
-        "currencies_chain_name_pk": {
+        "currencies_chain_symbol_pk": {
           "columns": [
             "chain",
-            "name"
+            "symbol"
           ],
-          "name": "currencies_chain_name_pk"
+          "name": "currencies_chain_symbol_pk"
         }
       },
       "uniqueConstraints": {},
@@ -255,7 +255,7 @@
         },
         "nft_id": {
           "name": "nft_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -364,8 +364,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "transaction_signature": {
-          "name": "transaction_signature",
+        "associated_refund_transaction_signature": {
+          "name": "associated_refund_transaction_signature",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -396,32 +396,6 @@
         }
       },
       "foreignKeys": {
-        "refunds_paylink_id_collections_paylink_id_fk": {
-          "name": "refunds_paylink_id_collections_paylink_id_fk",
-          "tableFrom": "refunds",
-          "tableTo": "collections",
-          "columnsFrom": [
-            "paylink_id"
-          ],
-          "columnsTo": [
-            "paylink_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "refunds_chain_chains_name_fk": {
-          "name": "refunds_chain_chains_name_fk",
-          "tableFrom": "refunds",
-          "tableTo": "chains",
-          "columnsFrom": [
-            "chain"
-          ],
-          "columnsTo": [
-            "name"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "refunds_chain_currency_currencies_chain_symbol_fk": {
           "name": "refunds_chain_currency_currencies_chain_symbol_fk",
           "tableFrom": "refunds",

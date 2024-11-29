@@ -12,7 +12,7 @@ CREATE TABLE `collections` (
 	`website_url` text,
 	`created_at` text NOT NULL,
 	`active` integer DEFAULT true,
-	`paylink_id` text NOT NULL,
+	`paylink_id` text,
 	`cache_strategy_sMaxAge` integer,
 	`cache_strategy_maxAge` integer,
 	FOREIGN KEY (`chain`) REFERENCES `chains`(`name`) ON UPDATE no action ON DELETE no action
@@ -22,10 +22,10 @@ CREATE UNIQUE INDEX `collections_paylink_id_unique` ON `collections` (`paylink_i
 CREATE TABLE `currencies` (
 	`chain` text NOT NULL,
 	`name` text NOT NULL,
-	`symbol` text,
+	`symbol` text NOT NULL,
 	`decimals` integer NOT NULL,
 	`address` text NOT NULL,
-	PRIMARY KEY(`chain`, `name`),
+	PRIMARY KEY(`chain`, `symbol`),
 	FOREIGN KEY (`chain`) REFERENCES `chains`(`name`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
@@ -37,7 +37,7 @@ CREATE TABLE `logos` (
 --> statement-breakpoint
 CREATE TABLE `nft_metadata` (
 	`collection` text NOT NULL,
-	`nft_id` integer NOT NULL,
+	`nft_id` text NOT NULL,
 	`uri` text NOT NULL,
 	PRIMARY KEY(`collection`, `nft_id`),
 	FOREIGN KEY (`collection`) REFERENCES `collections`(`name`) ON UPDATE no action ON DELETE no action
@@ -53,11 +53,9 @@ CREATE TABLE `refunds` (
 	`helio_transaction_id` text,
 	`client_public_key` text,
 	`amount` text,
-	`transaction_signature` text,
+	`associated_refund_transaction_signature` text,
 	`chain` text NOT NULL,
 	`currency` text NOT NULL,
-	FOREIGN KEY (`paylink_id`) REFERENCES `collections`(`paylink_id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`chain`) REFERENCES `chains`(`name`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`chain`,`currency`) REFERENCES `currencies`(`chain`,`symbol`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

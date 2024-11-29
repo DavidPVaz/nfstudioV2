@@ -1,5 +1,4 @@
 import { sqliteTable, text, integer, primaryKey, foreignKey } from 'drizzle-orm/sqlite-core';
-import type { SupportedCurrencies } from '../src/server/service/data/types';
 
 // Chains Table
 export const chains = sqliteTable('chains', {
@@ -19,7 +18,7 @@ export const collections = sqliteTable('collections', {
     websiteUrl: text('website_url'),
     createdAt: text('created_at').notNull(),
     active: integer('active', { mode: 'boolean' }).default(true),
-    paylinkId: text('paylink_id').notNull().unique(),
+    paylinkId: text('paylink_id').unique(),
     cacheStrategySMaxAge: integer('cache_strategy_sMaxAge'),
     cacheStrategyMaxAge: integer('cache_strategy_maxAge')
 });
@@ -32,12 +31,12 @@ export const currencies = sqliteTable(
             .notNull()
             .references(() => chains.name),
         name: text('name').notNull(),
-        symbol: text('symbol').$type<SupportedCurrencies>(),
+        symbol: text('symbol').notNull(),
         decimals: integer('decimals').notNull(),
         address: text('address').notNull()
     },
     table => ({
-        pk: primaryKey({ columns: [table.chain, table.name] })
+        pk: primaryKey({ columns: [table.chain, table.symbol] })
     })
 );
 
@@ -50,13 +49,13 @@ export const logos = sqliteTable('logos', {
 });
 
 // NFT Metadata Table
-export const nftMetadata = sqliteTable(
+export const nft_metadata = sqliteTable(
     'nft_metadata',
     {
         collection: text('collection')
             .notNull()
             .references(() => collections.name),
-        nftId: integer('nft_id').notNull(),
+        nftId: text('nft_id').notNull(),
         uri: text('uri').notNull()
     },
     table => ({
@@ -65,7 +64,7 @@ export const nftMetadata = sqliteTable(
 );
 
 // Unsupported Traits Table
-export const unsupportedTraits = sqliteTable(
+export const unsupported_traits = sqliteTable(
     'unsupported_traits',
     {
         collection: text('collection')
@@ -88,15 +87,13 @@ export const refunds = sqliteTable(
         verified: integer('verified', { mode: 'boolean' }).default(false),
         canDelete: integer('canDelete', { mode: 'boolean' }),
         createdAt: text('created_at').notNull(),
-        paylinkId: text('paylink_id').references(() => collections.paylinkId),
+        paylinkId: text('paylink_id'),
         helioTransactionId: text('helio_transaction_id').unique(),
         clientPublicKey: text('client_public_key'),
         amount: text('amount'),
-        transactionSignature: text('transaction_signature'),
-        chain: text('chain')
-            .notNull()
-            .references(() => chains.name),
-        currency: text('currency').$type<SupportedCurrencies>().notNull()
+        associatedRefundTransactionSignature: text('associated_refund_transaction_signature'),
+        chain: text('chain').notNull(),
+        currency: text('currency').notNull()
     },
     table => ({
         currency_fk: foreignKey({

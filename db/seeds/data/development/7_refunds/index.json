@@ -12,14 +12,16 @@
         "currency": "SOL"
     },
     {
-        "_id": "4Fo1KedxAv73R4Y39NSB76WU9jiJ9iyLsgtnfXxYg4UbRzAcHvcXogSXv4YkJ24VvAoV1cfVWB2fhiEbfwhYW2T1",
+        "id": "4Fo1KedxAv73R4Y39NSB76WU9jiJ9iyLsgtnfXxYg4UbRzAcHvcXogSXv4YkJ24VvAoV1cfVWB2fhiEbfwhYW2T1",
         "verified": false,
         "refunded": false,
         "createdAt": "2024-10-12T15:05:50.647Z",
         "paylinkId": "65ce314ff1ad058534b213b7",
         "helioTransactionId": "670a904e61de979cb07482e6",
         "clientPublicKey": "8wVM54rccFir5VXZJx3QaLHrrg4TDWEh9LsVctawKUrQ",
-        "amount": "27251019"
+        "amount": "27251019",
+        "chain": "Solana",
+        "currency": "SOL"
     },
     {
         "id": "3YjtZymBjvJqTN5mHgRyHXbHpdcxZWU6i3Gjpfbgxp2w5jSuktgqdquNeRouY3DBwEiXFRmneyq2osnrdWrQxkPV",

@@ -1,35 +1,31 @@
-// TODO: seed script
+import { promises, readFile } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { drizzle } from 'drizzle-orm/libsql/node';
 import { createClient } from '@libsql/client';
 import * as schema from '../schema';
+import 'dotenv/config';
+import { SQLiteTable } from 'drizzle-orm/sqlite-core';
 
-import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const SEEDS_FOLDER = path.join(__dirname, 'data');
+const MAX_LENGTH = 500;
 
-import { promises, readFile } from 'fs';
-import path from 'path';
-
-/*
-import * as dotenv from "dotenv";
-dotenv.config({ path: "./.env.development" });
- */
-
-const SEEDS_FOLDER = path.join(__dirname, './data');
-
-// TODO: add filtering for environment. dev/preview/ + production
 const getTablesPerEnvironment = async () => {
     const environments = (await promises.readdir(SEEDS_FOLDER)).map(file => path.parse(file).name);
 
     return (
         await Promise.all(
-            environments.map(async env => {
-                const tables = await promises
-                    .readdir(`${SEEDS_FOLDER}/${env}`)
-                    .then(files => files.map(file => path.parse(file).name));
+            environments
+                .filter(env => env === 'common' || env === process.env.VERCEL_ENV)
+                .map(async env => {
+                    const tables = await promises
+                        .readdir(`${SEEDS_FOLDER}/${env}`)
+                        .then(files => files.map(file => path.parse(file).name));
 
-                return { [env]: tables };
-            })
+                    return { [env]: tables };
+                })
         )
     ).reduce((acc, current) => ({ ...acc, ...current }), {});
 };
@@ -40,9 +36,9 @@ const getSeedData = async () => {
     const tablesDataFilePath = Object.entries(tables).reduce(
         (acc, [env, tables]) => {
             const data = tables.reduce(
-                (acc, tableName) => ({
+                (acc, tableFolderName) => ({
                     ...acc,
-                    [tableName]: `${SEEDS_FOLDER}/${env}/${tableName}/index.json`
+                    [tableFolderName]: `${SEEDS_FOLDER}/${env}/${tableFolderName}/index.json`
                 }),
                 {}
             );
@@ -57,25 +53,30 @@ const getSeedData = async () => {
 
     return (
         await Promise.all(
-            Object.entries(tablesDataFilePath).map(async ([table, tableDataFilePath]) => ({
-                [table]: await new Promise((resolve, reject) =>
-                    readFile(tableDataFilePath, 'utf8', (error, data) => {
-                        if (error) {
-                            reject(error);
-                        }
+            Object.entries(tablesDataFilePath)
+                .sort(([a], [b]) => (a > b ? 1 : -1))
+                .map(async ([tableFolderName, tableDataFilePath]) => {
+                    const tableName = tableFolderName.slice(tableFolderName.indexOf('_') + 1);
 
-                        resolve(JSON.parse(data));
-                    })
-                )
-            }))
+                    return {
+                        [tableName]: await new Promise((resolve, reject) =>
+                            readFile(tableDataFilePath, 'utf8', (error, data) => {
+                                if (error) {
+                                    reject(error);
+                                }
+
+                                resolve(JSON.parse(data));
+                            })
+                        )
+                    };
+                })
         )
     ).reduce((acc, current) => ({ ...acc, ...current }), {});
 };
 
-await getSeedData();
-
-/*
 await (async () => {
+    const seeds = (await getSeedData()) as Record<string, object[]>;
+
     const db = drizzle({
         schema,
         client: createClient({
@@ -84,8 +85,24 @@ await (async () => {
         })
     });
 
-    console.log('Seed start');
-    await db.insert(users).values(data);
-    console.log('Seed done');
+    const tableNameTablesMap = Object.keys(seeds).reduce(
+        (acc, tableName) => ({
+            ...acc,
+            [tableName]: schema[tableName] as SQLiteTable
+        }),
+        {}
+    );
+
+    for (const [tableName, data] of Object.entries(seeds)) {
+        if (data.length <= MAX_LENGTH) {
+            await db.insert(tableNameTablesMap[tableName]).values(data);
+            continue;
+        }
+
+        for (let index = 0; index < data.length; index += MAX_LENGTH) {
+            const slice = index + MAX_LENGTH > data.length ? [index] : [index, index + MAX_LENGTH];
+
+            await db.insert(tableNameTablesMap[tableName]).values(data.slice(...slice));
+        }
+    }
 })();
-*/

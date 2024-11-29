@@ -1,0 +1,37 @@
+[
+    {
+        "chain": "Solana",
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "address": "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU"
+    },
+    {
+        "chain": "Solana",
+        "name": "Solana",
+        "symbol": "SOL",
+        "decimals": 9,
+        "address": "11111111111111111111111111111111"
+    },
+    {
+        "chain": "Solana",
+        "name": "USD Tether",
+        "symbol": "USDT",
+        "decimals": 6,
+        "address": "EJwZgeZrdC8TXTQbQBoL6bfuAnFUUy1PVCMB4DYPzVaS"
+    },
+    {
+        "chain": "Solana",
+        "name": "Jupiter",
+        "symbol": "JUP",
+        "decimals": 6,
+        "address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"
+    },
+    {
+        "chain": "Solana",
+        "name": "BONK",
+        "symbol": "Bonk",
+        "decimals": 5,
+        "address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"
+    }
+]

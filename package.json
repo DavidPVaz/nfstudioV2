@@ -5,7 +5,7 @@
     "type": "module",
     "author": "David Vaz <davidpvaz@protonmail.com>",
     "scripts": {
-        "db:seed": "tsx db/seeds/data/common/nft_metadata/index.ts; tsx db/seeds/index.ts",
+        "db:seed": "rm db/dev.db 2> /dev/null; drizzle-kit migrate;tsx db/seeds/data/common/5_nft_metadata/index.ts; tsx db/seeds/index.ts",
         "db:migrate": "drizzle-kit migrate",
         "db:studio": "drizzle-kit studio",
         "db:generate": "drizzle-kit generate --name $1",
