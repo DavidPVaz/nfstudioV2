@@ -9,6 +9,7 @@ import { Image } from '@/components/atoms/image';
 import { CreateButton } from '@/app/(home)/create-button';
 import { NFStudioList } from '@/app/(home)/nfstudio-list';
 import { queryCollectionsData } from '@/server/service/mongo';
+import { queryCollectionsData2 } from '@/server/service/data';
 
 const TopSection = () => (
     <section className="relative flex w-fit flex-row">
@@ -64,6 +65,12 @@ const CollectionsSection = async () => {
         projection: { _id: 1, presentation: 1, chain: 1 }
     });
 
+    const collections2 = await queryCollectionsData2({
+        limit: 1,
+        select: ['name', 'chain', 'presentationPictureUrl']
+    });
+
+    console.log('COLLECTIONS: ', collections2);
     return (
         <section className="flex w-full min-w-[226px] flex-col items-center justify-center gap-y-6 sm:gap-y-10">
             <h3 className="text-center text-2xl font-semibold leading-none sm:text-start sm:text-3xl">
