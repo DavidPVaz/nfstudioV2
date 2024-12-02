@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useMemo } from 'react';
-import { type CollectionConfiguration } from '@/server/service/mongo/types';
+import { type Collection } from '@/server/service/data/types';
 import { CollectionsList } from '@/components/organisms/collections';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
-export const NFStudioList = ({ collections }: { collections: CollectionConfiguration[] }) => {
+export const NFStudioList = ({ collections }: { collections: Collection[] }) => {
     const isXSBreakpoint = useMediaQuery(
         'only screen and (min-width : 290px) and (max-width : 767px)'
     );

@@ -1,3 +1,8 @@
+import * as schema from '../../../../db/schema';
+
+export type Collection = typeof schema.collections.$inferSelect;
+export type CollectionSelectFields = keyof Collection;
+
 export const SUPPORTED_CURRENCIES = {
     SOL: 'SOL',
     USDC: 'USDC',
