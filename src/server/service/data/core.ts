@@ -26,14 +26,14 @@ export const getDbConnection = () =>
     }));
 
 /**
- * Generates select query data from entity T field(s) name.
+ * Generates select query data from entity T column(s) name.
  *
- * @param fields - entity properties to select
+ * @param columns - entity properties to select
  */
-export const toSelectQuery = <T>(fields?: keyof T | (keyof T)[]) =>
-    !fields
-        ? undefined // if fields are not provided, select all fields
-        : (Array.isArray(fields) ? fields : [fields]).reduce(
-              (acc, field) => ({ ...acc, [field]: true }),
+export const toSelectQuery = <T>(columns?: keyof T | (keyof T)[]) =>
+    !columns
+        ? undefined // if columns are not specified, select all
+        : (Array.isArray(columns) ? columns : [columns]).reduce(
+              (acc, column) => ({ ...acc, [column]: true }),
               {} as Record<keyof T, boolean>
           );

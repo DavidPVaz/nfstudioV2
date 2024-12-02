@@ -40,11 +40,11 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
             'paylinkId',
             'cacheStrategySMaxAge',
             'cacheStrategyMaxAge'
-        ]
-        //filter: { name: collection },
+        ],
+        filter: { eq: { name: collection } }
         //relations: {}
     });
-
+    console.log('SELECTED: ', selectedCollectionConfig);
     if (!selectedCollectionConfig) {
         return redirect(PAGES.COLLECTIONS);
     }
