@@ -1,4 +1,5 @@
 import { sqliteTable, text, integer, primaryKey, foreignKey } from 'drizzle-orm/sqlite-core';
+import { relations } from 'drizzle-orm';
 
 // Chains Table
 export const chains = sqliteTable('chains', {
@@ -102,3 +103,73 @@ export const refunds = sqliteTable(
         })
     })
 );
+
+// Drizzle require both ways to be mapped, otherwise cannot infer
+
+// Define many relationship for chains
+export const chainsRelations = relations(chains, ({ many }) => ({
+    collections: many(collections), // one chain -> many collections - A
+    currencies: many(currencies) // one chain -> many currencies - B
+}));
+
+// Define many relationship for collections
+export const collectionsRelations = relations(collections, ({ many }) => ({
+    logos: many(logos), // one collection -> many logos - C
+    nftMetadata: many(nft_metadata), // one collection -> many nft metadata - D
+    unsupportedTraits: many(unsupported_traits) // one collection -> many unsupported traits - E
+}));
+
+// Define many relationship for currencies
+export const currenciesRelations = relations(currencies, ({ many }) => ({
+    refunds: many(refunds) // one currency -> many refunds - F
+}));
+
+// Inverse
+
+// F
+export const refundsToCurrency = relations(refunds, ({ one }) => ({
+    currency: one(currencies, {
+        fields: [refunds.chain, refunds.currency],
+        references: [currencies.chain, currencies.symbol]
+    })
+}));
+
+// E
+export const unsupportedTraitsToCollection = relations(unsupported_traits, ({ one }) => ({
+    collection: one(collections, {
+        fields: [unsupported_traits.collection],
+        references: [collections.name]
+    })
+}));
+
+// D
+export const nftMetadataToCollection = relations(nft_metadata, ({ one }) => ({
+    collection: one(collections, {
+        fields: [nft_metadata.collection],
+        references: [collections.name]
+    })
+}));
+
+// C
+export const logosToCollection = relations(logos, ({ one }) => ({
+    collection: one(collections, {
+        fields: [logos.collection],
+        references: [collections.name]
+    })
+}));
+
+// B
+export const currencyToChain = relations(currencies, ({ one }) => ({
+    chain: one(chains, {
+        fields: [currencies.chain],
+        references: [chains.name]
+    })
+}));
+
+// A
+export const collectionToChain = relations(collections, ({ one }) => ({
+    chain: one(chains, {
+        fields: [collections.chain],
+        references: [chains.name]
+    })
+}));

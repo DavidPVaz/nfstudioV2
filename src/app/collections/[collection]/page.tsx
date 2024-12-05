@@ -41,8 +41,8 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
             'cacheStrategySMaxAge',
             'cacheStrategyMaxAge'
         ],
-        filter: { eq: { name: collection } }
-        //relations: {}
+        filter: { eq: { name: collection } },
+        relation: ['logos', 'unsupportedTraits']
     });
     console.log('SELECTED: ', selectedCollectionConfig);
     if (!selectedCollectionConfig) {

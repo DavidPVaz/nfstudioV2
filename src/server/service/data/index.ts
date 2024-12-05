@@ -1,24 +1,26 @@
-import { getDbConnection, toSelectQuery } from '@/server/service/data/core';
-import type { Collection } from '@/server/service/data/types';
-import type { Operators } from 'drizzle-orm';
+import { getDbConnection, buildQuery } from '@/server/service/data/core';
+import type { Collection, CollectionManyRelation } from '@/server/service/data/types';
+import type { Operators, SQL } from 'drizzle-orm';
 
 export const queryCollectionsData = ({
     limit,
     orderBy = { operator: 'desc', column: 'createdAt' },
     select,
-    filter
+    filter,
+    relation
 }: {
     limit?: number;
     orderBy?: { operator: 'asc' | 'desc'; column: keyof Collection };
     select?: keyof Collection | (keyof Collection)[];
     filter?: Partial<Record<keyof Operators, Partial<Collection>>>;
+    relation?: keyof CollectionManyRelation | (keyof CollectionManyRelation)[];
 }) =>
     getDbConnection().query.collections.findMany({
         limit,
         orderBy: (collections, orderByOperators) => [
             orderByOperators[orderBy.operator](collections[orderBy.column])
         ],
-        columns: toSelectQuery(select),
+        columns: buildQuery<Collection>(select),
         where: (collections, operators) => {
             const { and, eq } = operators;
 
@@ -26,15 +28,22 @@ export const queryCollectionsData = ({
                 return eq(collections.active, true);
             }
 
-            const clauses = Object.entries(filter).reduce((acc, [operator, kv]) => {
-                const operation = operators[operator];
-                const queries = Object.entries(kv).map(([column, value]) =>
-                    operation(collections[column], value)
-                );
+            const filterQueries = Object.entries(filter).reduce(
+                (acc, [operator, kv]) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    const operation = operators[operator];
+                    const queries = Object.entries(kv).map(
+                        ([column, value]) =>
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                            operation(collections[column], value) as SQL<typeof collections>
+                    );
 
-                return [...acc, ...queries];
-            }, []);
+                    return [...acc, ...queries];
+                },
+                [] as SQL<typeof collections>[]
+            );
 
-            return and(eq(collections.active, true), ...clauses);
-        }
-    });
+            return and(eq(collections.active, true), ...filterQueries);
+        },
+        with: buildQuery<CollectionManyRelation>(relation)
+    }) as Promise<Collection[]>;

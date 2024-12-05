@@ -26,14 +26,32 @@ export const getDbConnection = () =>
     }));
 
 /**
+ * Build query data.
+ *
+ * @example
+ * // returns { id: true, name: true };
+ * buildQuery(['id', 'name']);
+ *
+ * @param args - arguments to build the query
+ */
+export const buildQuery = <T>(args?: keyof T | (keyof T)[]) =>
+    !args
+        ? undefined
+        : (Array.isArray(args) ? args : [args]).reduce(
+              (acc, arg) => ({ ...acc, [arg]: true }),
+              {} as Partial<Record<keyof T, boolean>>
+          );
+
+/**
  * Generates select query data from entity T column(s) name.
  *
  * @param columns - entity properties to select
  */
-export const toSelectQuery = <T>(columns?: keyof T | (keyof T)[]) =>
-    !columns
-        ? undefined // if columns are not specified, select all
-        : (Array.isArray(columns) ? columns : [columns]).reduce(
-              (acc, column) => ({ ...acc, [column]: true }),
-              {} as Record<keyof T, boolean>
-          );
+export const toSelectQuery = <T>(columns?: keyof T | (keyof T)[]) => buildQuery<T>(columns);
+
+/**
+ * Generates relations query data from entity mapped relations.
+ *
+ * @param relations - relations table names to fetch
+ */
+export const toRelationQuery = <T>(relations?: keyof T | (keyof T)[]) => buildQuery<T>(relations);
