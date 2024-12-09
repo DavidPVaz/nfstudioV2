@@ -6,11 +6,12 @@ export type NftMetadata = typeof schema.nft_metadata.$inferSelect;
 export type UnsupportedTraits = typeof schema.unsupported_traits.$inferSelect;
 
 export type Collection = typeof schema.collections.$inferSelect;
-export type CollectionWithRelations = typeof schema.collections.$inferSelect & {
-    logos?: Logo[];
-    nftMetadata?: NftMetadata[];
-    unsupportedTraits?: UnsupportedTraits[];
-};
+export type CollectionWithRelations = typeof schema.collections.$inferSelect &
+    Partial<{
+        logos: Logo[];
+        nftMetadata: NftMetadata[];
+        unsupportedTraits: UnsupportedTraits[];
+    }>;
 
 export type CollectionRelation = ExtractTablesWithRelations<
     typeof schema

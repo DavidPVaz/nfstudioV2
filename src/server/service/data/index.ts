@@ -6,6 +6,18 @@ import type {
 } from '@/server/service/data/types';
 import type { Operators, SQL } from 'drizzle-orm';
 
+/**
+ * Performs a query to NFStudio database to fetch available collections data.
+ *
+ * @param options
+ * @param options.limit - max number of entries to query
+ * @param options.orderBy - order operator and table column to decide the order of the fetched entries
+ * @param options.select - columns to select
+ * @param options.filter - filters to conditionally fetch collection data
+ * @param options.relation - relations to eagerly fetch
+ *
+ * @throws {Error} if request failed
+ */
 export const queryCollectionsData = ({
     limit,
     orderBy = { operator: 'desc', column: 'createdAt' },
@@ -51,3 +63,18 @@ export const queryCollectionsData = ({
         },
         with: buildQuery<CollectionManyRelation>(relation)
     }) as Promise<CollectionWithRelations[]>;
+
+/**
+ * Performs a query to NFStudio database to fetch a set of nfts metadata from a specific collection.
+ *
+ * @param options
+ * @param options.collection - name of the collection to query
+ * @param options.ids - id(s) to fetch from `collection`
+ *
+ * @throws {Error} if request failed
+ */
+export const queryMetadata = async ({ collection, ids }: { collection: string; ids: number[] }) =>
+    getDbConnection().query.nft_metadata.findMany({
+        where: (nftMetadata, { and, eq, inArray }) =>
+            and(eq(nftMetadata.collection, collection), inArray(nftMetadata.nftId, ids))
+    });

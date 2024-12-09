@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 }
 
 const CollectionPage = async ({ params: { collection } }: Slug) => {
-    const [selectedCollectionConfig] = await queryCollectionsData({
+    const [selectedCollection] = await queryCollectionsData({
         limit: 1,
         select: [
             'name',
@@ -46,13 +46,13 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
         relation: ['logos', 'unsupportedTraits']
     });
 
-    if (!selectedCollectionConfig) {
+    if (!selectedCollection) {
         return redirect(PAGES.COLLECTIONS);
     }
 
     return (
-        <CollectionContextProvider configuration={selectedCollectionConfig}>
-            <Studio configuration={selectedCollectionConfig} />
+        <CollectionContextProvider configuration={selectedCollection}>
+            <Studio configuration={selectedCollection} />
         </CollectionContextProvider>
     );
 };

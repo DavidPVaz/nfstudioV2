@@ -37,7 +37,7 @@ CREATE TABLE `logos` (
 --> statement-breakpoint
 CREATE TABLE `nft_metadata` (
 	`collection` text NOT NULL,
-	`nft_id` text NOT NULL,
+	`nft_id` integer NOT NULL,
 	`uri` text NOT NULL,
 	PRIMARY KEY(`collection`, `nft_id`),
 	FOREIGN KEY (`collection`) REFERENCES `collections`(`name`) ON UPDATE no action ON DELETE no action

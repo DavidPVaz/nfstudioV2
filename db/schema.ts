@@ -56,7 +56,7 @@ export const nft_metadata = sqliteTable(
         collection: text('collection')
             .notNull()
             .references(() => collections.name),
-        nftId: text('nft_id').notNull(),
+        nftId: integer('nft_id').notNull(),
         uri: text('uri').notNull()
     },
     table => ({

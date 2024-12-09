@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
-import { queryMetadata } from '@/server/service/mongo';
+import { queryMetadata } from '@/server/service/data';
 import { captureException } from '@sentry/nextjs';
 
 const QueryParamsSchema = v.object({

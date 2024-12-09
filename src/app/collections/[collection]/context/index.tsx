@@ -1,17 +1,21 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import type { CollectionWithRelations } from '@/server/service/data/types';
+import type {
+    CollectionWithRelations,
+    Collection,
+    UnsupportedTraits
+} from '@/server/service/data/types';
 
 type CollectionContext = {
-    selectedCollection: CollectionWithRelations['name'];
-    paylinkId: CollectionWithRelations['paylinkId'];
+    selectedCollection: Collection['name'];
+    paylinkId: Collection['paylinkId'];
     cacheStrategy: {
-        maxAge?: CollectionWithRelations['cacheStrategyMaxAge'];
-        sMaxAge?: CollectionWithRelations['cacheStrategySMaxAge'];
+        maxAge?: Collection['cacheStrategyMaxAge'];
+        sMaxAge?: Collection['cacheStrategySMaxAge'];
     };
-    logos: CollectionWithRelations['logos'];
-    unsupportedTraits: CollectionWithRelations['unsupportedTraits'];
+    logos: string[];
+    unsupportedTraits: UnsupportedTraits[];
 };
 
 const Context = createContext({});
@@ -39,7 +43,7 @@ export const CollectionContextProvider = ({
                 ? paylinkId
                 : process.env.NEXT_PUBLIC_PAYLINK_ID,
         cacheStrategy: { maxAge: cacheStrategyMaxAge, sMaxAge: cacheStrategySMaxAge },
-        logos,
+        logos: logos?.map(({ url }) => url),
         unsupportedTraits
     };
 

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "90d3c6fd-7519-4088-b59d-1e48f6b59c02",
+  "id": "3a84602d-a974-4d76-b63e-9c36c444c14b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "chains": {
@@ -255,7 +255,7 @@
         },
         "nft_id": {
           "name": "nft_id",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
