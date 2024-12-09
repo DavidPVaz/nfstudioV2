@@ -41,17 +41,3 @@ export const buildQuery = <T>(args?: keyof T | (keyof T)[]) =>
               (acc, arg) => ({ ...acc, [arg]: true }),
               {} as Partial<Record<keyof T, boolean>>
           );
-
-/**
- * Generates select query data from entity T column(s) name.
- *
- * @param columns - entity properties to select
- */
-export const toSelectQuery = <T>(columns?: keyof T | (keyof T)[]) => buildQuery<T>(columns);
-
-/**
- * Generates relations query data from entity mapped relations.
- *
- * @param relations - relations table names to fetch
- */
-export const toRelationQuery = <T>(relations?: keyof T | (keyof T)[]) => buildQuery<T>(relations);

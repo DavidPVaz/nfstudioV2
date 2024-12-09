@@ -33,6 +33,7 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
     const [selectedCollectionConfig] = await queryCollectionsData({
         limit: 1,
         select: [
+            'name',
             'marketplaceUrl',
             'discordUrl',
             'twitterUrl',
@@ -44,7 +45,7 @@ const CollectionPage = async ({ params: { collection } }: Slug) => {
         filter: { eq: { name: collection } },
         relation: ['logos', 'unsupportedTraits']
     });
-    console.log('SELECTED: ', selectedCollectionConfig);
+
     if (!selectedCollectionConfig) {
         return redirect(PAGES.COLLECTIONS);
     }

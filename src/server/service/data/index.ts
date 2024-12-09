@@ -1,5 +1,9 @@
 import { getDbConnection, buildQuery } from '@/server/service/data/core';
-import type { Collection, CollectionManyRelation } from '@/server/service/data/types';
+import type {
+    Collection,
+    CollectionWithRelations,
+    CollectionManyRelation
+} from '@/server/service/data/types';
 import type { Operators, SQL } from 'drizzle-orm';
 
 export const queryCollectionsData = ({
@@ -46,4 +50,4 @@ export const queryCollectionsData = ({
             return and(eq(collections.active, true), ...filterQueries);
         },
         with: buildQuery<CollectionManyRelation>(relation)
-    }) as Promise<Collection[]>;
+    }) as Promise<CollectionWithRelations[]>;

@@ -51,8 +51,8 @@ const NFTDisplay = React.memo(
     }: {
         src: string;
         id: number;
-        maxAge?: number;
-        sMaxAge?: number;
+        maxAge?: number | null;
+        sMaxAge?: number | null;
     }) => (
         <div className="flex w-full justify-center px-14 lg:px-0">
             <Image

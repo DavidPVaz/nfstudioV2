@@ -35,8 +35,8 @@ type ImageProps = React.ImgHTMLAttributes<HTMLImageElement> &
         usePlaceholder?: boolean;
         optimizedWidth?: number;
         quality?: number;
-        maxAge?: number;
-        sMaxAge?: number;
+        maxAge?: number | null;
+        sMaxAge?: number | null;
     };
 
 export const Image = ({

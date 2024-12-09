@@ -10,8 +10,8 @@ type NFTCardProps = {
     id: number;
     selected: boolean;
     onClick: (id: number) => void;
-    sMaxAge?: number;
-    maxAge?: number;
+    sMaxAge?: number | null;
+    maxAge?: number | null;
 };
 
 export const NFTCard = React.memo(
