@@ -86,15 +86,15 @@ export const refunds = sqliteTable(
         id: text('id').primaryKey(),
         refunded: integer('refunded', { mode: 'boolean' }).default(false),
         verified: integer('verified', { mode: 'boolean' }).default(false),
-        canDelete: integer('canDelete', { mode: 'boolean' }),
+        canDelete: integer('can_delete', { mode: 'boolean' }),
         createdAt: text('created_at').notNull(),
         paylinkId: text('paylink_id'),
         helioTransactionId: text('helio_transaction_id').unique(),
         clientPublicKey: text('client_public_key'),
         amount: text('amount'),
         associatedRefundTransactionSignature: text('associated_refund_transaction_signature'),
-        chain: text('chain').notNull(),
-        currency: text('currency').notNull()
+        chain: text('chain'),
+        currency: text('currency')
     },
     table => ({
         currency_fk: foreignKey({

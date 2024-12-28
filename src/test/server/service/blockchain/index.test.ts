@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { refund, getRefundedIdsFromProcessedTransactions } from '@/server/service/blockchain';
-import { type NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
+import { type RefundWithCurrency } from '@/server/service/data/types';
 import { PublicKey } from '@solana/web3.js';
 
 const ConnectionMock = class {
@@ -17,7 +17,7 @@ const connectionMock = new ConnectionMock();
 
 const TEST_REFUNDS = [
     {
-        _id: '3oyRzLcufBx8vy1w14jimc3uyJJioiNaVGc3t2CysueU1dWSe93dkAKUzUdtQCHVSK6AXkr5TavE4WeDeBrRckZi',
+        id: '3oyRzLcufBx8vy1w14jimc3uyJJioiNaVGc3t2CysueU1dWSe93dkAKUzUdtQCHVSK6AXkr5TavE4WeDeBrRckZi',
         refunded: false,
         verified: true,
         createdAt: '2024-01-16T14:07:24.630Z',
@@ -31,7 +31,7 @@ const TEST_REFUNDS = [
         helioTransactionId: '65a68d9c891bf6285d7d1656'
     },
     {
-        _id: '2nz2WYmB9daDEh815sMqgpKrpUWySw5sxgeFXScU1kznQep6mb4P6fNis7x9NzGsDuNHaVVX3aMEpi5k6hqC1Sdr',
+        id: '2nz2WYmB9daDEh815sMqgpKrpUWySw5sxgeFXScU1kznQep6mb4P6fNis7x9NzGsDuNHaVVX3aMEpi5k6hqC1Sdr',
         refunded: false,
         verified: true,
         createdAt: '2024-01-16T14:06:21.661Z',
@@ -44,7 +44,7 @@ const TEST_REFUNDS = [
         },
         helioTransactionId: '65a68d5d71e9e9f5094428b3'
     }
-] as NFStudioVerifiedRefundTransaction[];
+] as unknown as RefundWithCurrency[];
 
 const MOCK_TRANSACTION_1 = {
     serialize: () => 'serialized1'
@@ -157,7 +157,7 @@ describe('server/service/blockchain/index', () => {
                                     programId: new PublicKey(
                                         'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'
                                     ),
-                                    parsed: `["${TEST_REFUNDS[index]._id}"]`
+                                    parsed: `["${TEST_REFUNDS[index].id}"]`
                                 }
                             ]
                         }
@@ -169,12 +169,12 @@ describe('server/service/blockchain/index', () => {
             {
                 associatedRefundTransactionSignature: TEST_REFUND_TRANSACTIONS_OUTPUT[0].signature,
                 confirmed: TEST_REFUND_TRANSACTIONS_OUTPUT[0].confirmed,
-                refundedIds: [TEST_REFUNDS[0]._id]
+                refundedIds: [TEST_REFUNDS[0].id]
             },
             {
                 associatedRefundTransactionSignature: TEST_REFUND_TRANSACTIONS_OUTPUT[1].signature,
                 confirmed: TEST_REFUND_TRANSACTIONS_OUTPUT[1].confirmed,
-                refundedIds: [TEST_REFUNDS[1]._id]
+                refundedIds: [TEST_REFUNDS[1].id]
             }
         ];
 

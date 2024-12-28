@@ -3,7 +3,7 @@ import * as v from 'valibot';
 import {
     queryVerifiedRefundTransactionsToProcess,
     updateManyRefundTransactions
-} from '@/server/service/mongo';
+} from '@/server/service/data';
 import { refund, getRefundedIdsFromProcessedTransactions } from '@/server/service/blockchain';
 import { captureException } from '@sentry/nextjs';
 

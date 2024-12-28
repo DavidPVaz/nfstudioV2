@@ -93,16 +93,23 @@ await (async () => {
         {}
     );
 
-    for (const [tableName, data] of Object.entries(seeds)) {
-        if (data.length <= MAX_LENGTH) {
-            await db.insert(tableNameTablesMap[tableName]).values(data);
-            continue;
-        }
+    try {
+        for (const [tableName, data] of Object.entries(seeds)) {
+            if (data.length <= MAX_LENGTH) {
+                await db.insert(tableNameTablesMap[tableName]).values(data);
+                continue;
+            }
 
-        for (let index = 0; index < data.length; index += MAX_LENGTH) {
-            const slice = index + MAX_LENGTH > data.length ? [index] : [index, index + MAX_LENGTH];
+            for (let index = 0; index < data.length; index += MAX_LENGTH) {
+                const slice =
+                    index + MAX_LENGTH > data.length ? [index] : [index, index + MAX_LENGTH];
 
-            await db.insert(tableNameTablesMap[tableName]).values(data.slice(...slice));
+                await db.insert(tableNameTablesMap[tableName]).values(data.slice(...slice));
+            }
         }
+    } catch (error) {
+        console.error('Error seeding the database. ', error);
+    } finally {
+        db.$client.close();
     }
 })();

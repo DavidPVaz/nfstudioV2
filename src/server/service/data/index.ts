@@ -2,9 +2,11 @@ import { getDbConnection, buildQuery } from '@/server/service/data/core';
 import type {
     Collection,
     CollectionWithRelations,
-    CollectionManyRelation
+    CollectionManyRelation,
+    RefundInsert,
+    RefundWithCurrency
 } from '@/server/service/data/types';
-import type { Operators, SQL } from 'drizzle-orm';
+import { inArray, type Operators, type SQL } from 'drizzle-orm';
 
 /**
  * Performs a query to NFStudio database to fetch available collections data.
@@ -73,8 +75,59 @@ export const queryCollectionsData = ({
  *
  * @throws {Error} if request failed
  */
-export const queryMetadata = async ({ collection, ids }: { collection: string; ids: number[] }) =>
+export const queryMetadata = ({ collection, ids }: { collection: string; ids: number[] }) =>
     getDbConnection().query.nft_metadata.findMany({
         where: (nftMetadata, { and, eq, inArray }) =>
             and(eq(nftMetadata.collection, collection), inArray(nftMetadata.nftId, ids))
     });
+
+/**
+ * Performs an insert query to NFStudio database to save a refund transaction.
+ *
+ * @param transaction - the NFStudio refund transaction to persist
+ *
+ * @throws {Error} if request failed
+ */
+export const insertRefundTransaction = (transaction: RefundInsert) =>
+    getDbConnection().insert(getDbConnection()._.fullSchema.refunds).values(transaction);
+
+/**
+ * Performs a query to NFStudio database to fetch verified refund transactions to be processed.
+ *
+ * @throws {Error} if request failed
+ */
+export const queryVerifiedRefundTransactionsToProcess = () =>
+    getDbConnection().query.refunds.findMany({
+        with: {
+            currency: true
+        },
+        where: (refunds, { and, eq, isNull }) =>
+            and(
+                eq(refunds.verified, true),
+                eq(refunds.refunded, false),
+                isNull(refunds.associatedRefundTransactionSignature)
+            ),
+        orderBy: (refunds, { asc }) => asc(refunds.createdAt)
+    }) as Promise<RefundWithCurrency[]>;
+
+/**
+ * Performs an update query to NFStudio database to update the new refund transactions state.
+ * Updates multiple refund transactions.
+ *
+ * @param options
+ * @param options.ids - the transactions id to update
+ * @param options.newState - the transactions new state
+ *
+ * @throws {Error} if request failed
+ */
+export const updateManyRefundTransactions = ({
+    ids,
+    newState
+}: {
+    ids: RefundWithCurrency['id'][];
+    newState: Partial<RefundInsert>;
+}) => {
+    const refunds = getDbConnection()._.fullSchema.refunds;
+
+    return getDbConnection().update(refunds).set(newState).where(inArray(refunds.id, ids));
+};

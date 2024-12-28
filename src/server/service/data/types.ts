@@ -27,3 +27,16 @@ export const SUPPORTED_CURRENCIES = {
 } as const;
 
 export type SupportedCurrencies = (typeof SUPPORTED_CURRENCIES)[keyof typeof SUPPORTED_CURRENCIES];
+
+export const SUPPORTED_PAYMENT_CHAINS = {
+    Solana: 'Solana'
+} as const;
+
+export type SupportedPaymentChains =
+    (typeof SUPPORTED_PAYMENT_CHAINS)[keyof typeof SUPPORTED_PAYMENT_CHAINS];
+
+export type RefundInsert = typeof schema.refunds.$inferInsert;
+
+export type RefundWithCurrency = Omit<typeof schema.refunds.$inferSelect, 'currency'> & {
+    currency: typeof schema.currencies.$inferSelect;
+};

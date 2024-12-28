@@ -5,7 +5,6 @@ import { createMocks, type MockResponse } from 'node-mocks-http';
 import OrderHandler from '@/pages/api/order';
 import { getOptionsMinMaxConfig } from '@/lib/utils';
 import { HelioApiRequestError, TransactionValidationError } from '@/server/service/helio/core';
-import { MongoDataApiRequestError } from '@/server/service/mongo/core';
 
 const { width, height, dpi } = getOptionsMinMaxConfig();
 const ORDERED_IMAGE = Buffer.from('test');
@@ -25,7 +24,7 @@ const orderData = {
 };
 
 const testValidatedTransaction = {
-    _id: 'id',
+    id: 'id',
     refunded: false,
     verified: true,
     paylinkId: 'paylink',
@@ -33,18 +32,7 @@ const testValidatedTransaction = {
     createdAt: 'iso string',
     clientPublicKey: 'public key',
     amount: '100',
-    currency: { decimals: 9, mintAddress: 'address', symbol: 'symbol' },
-    purchaseDetails: {
-        src: 'image src',
-        width: 1500,
-        height: 500,
-        atRight: true,
-        coverStyle: false,
-        mobile: false,
-        logoSrc: 'logo image src',
-        dpi: 72,
-        collection: 'name'
-    }
+    currency: 'symbol'
 };
 
 const {
@@ -63,7 +51,7 @@ const {
         .mockImplementation(() => Promise.resolve(testValidatedTransaction))
 }));
 
-vi.mock('@/server/service/mongo', () => ({
+vi.mock('@/server/service/data', () => ({
     insertRefundTransaction: insertRefundTransactionMock
 }));
 
@@ -475,7 +463,7 @@ describe('pages/api/order/index', () => {
         });
 
         expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            _id: orderData.transactionSignature,
+            id: orderData.transactionSignature,
             verified: false,
             refunded: false,
             createdAt: expectedCreatedAt
@@ -494,11 +482,11 @@ describe('pages/api/order/index', () => {
         // setup
         vi.useFakeTimers();
         const helioError = new HelioApiRequestError('message', 500);
-        const mongoError = new MongoDataApiRequestError('message', 500);
+        const dbError = new Error('message');
         const scope = { setContext: vi.fn() };
         getCurrentScopeMock.mockImplementationOnce(() => scope);
         getVerifiedNFStudioRefundTransactionMock.mockRejectedValueOnce(helioError);
-        insertRefundTransactionMock.mockRejectedValueOnce(mongoError);
+        insertRefundTransactionMock.mockRejectedValueOnce(dbError);
         const expectedCreatedAt = new Date().toISOString();
         const { req, res } = createMocks({
             method: 'POST',
@@ -520,7 +508,7 @@ describe('pages/api/order/index', () => {
         });
 
         expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, {
-            _id: orderData.transactionSignature,
+            id: orderData.transactionSignature,
             verified: false,
             refunded: false,
             createdAt: expectedCreatedAt
@@ -531,7 +519,7 @@ describe('pages/api/order/index', () => {
         });
 
         expect(captureExceptionMock).toHaveBeenNthCalledWith(1, helioError, scope);
-        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, mongoError, scope);
+        expect(captureExceptionMock).toHaveBeenNthCalledWith(1, dbError, scope);
 
         // cleanup
         vi.useRealTimers();
@@ -601,11 +589,11 @@ describe('pages/api/order/index', () => {
     it('should return 500 on order error and capture error when saving refund transaction fails', async () => {
         // setup
         const error = new Error('order');
-        const mongoError = new MongoDataApiRequestError('message', 500);
+        const dbError = Error('message');
         const scope = { setContext: vi.fn() };
         getCurrentScopeMock.mockImplementationOnce(() => scope);
         orderMock.mockRejectedValueOnce(error);
-        insertRefundTransactionMock.mockRejectedValueOnce(mongoError);
+        insertRefundTransactionMock.mockRejectedValueOnce(dbError);
         const { transactionSignature, ...orderOptions } = orderData;
         const { req, res } = createMocks({
             method: 'POST',
@@ -635,7 +623,7 @@ describe('pages/api/order/index', () => {
 
         expect(insertRefundTransactionMock).toHaveBeenNthCalledWith(1, testValidatedTransaction);
 
-        expect(captureExceptionMock).toHaveBeenCalledWith(mongoError, scope);
+        expect(captureExceptionMock).toHaveBeenCalledWith(dbError, scope);
         expect(captureExceptionMock).toHaveBeenCalledWith(error, scope);
         expect(captureExceptionMock).toHaveBeenCalledTimes(2);
     });

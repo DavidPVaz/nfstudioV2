@@ -17,7 +17,7 @@ import { useFallbackApiRead } from '@/hooks/use-api';
 import { useNotification } from '@/hooks/use-notification';
 import { useCollectionContext } from '@/app/collections/[collection]/context';
 
-const areCompleteNFTs = (nfts: SelectedNFTs): nfts is NFT[] =>
+const areCompleteNFTs = (nfts: SelectedNFTs) =>
     nfts.every(
         nft =>
             typeof (nft as NFT).id === 'number' &&

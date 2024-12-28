@@ -47,15 +47,15 @@ CREATE TABLE `refunds` (
 	`id` text PRIMARY KEY NOT NULL,
 	`refunded` integer DEFAULT false,
 	`verified` integer DEFAULT false,
-	`canDelete` integer,
+	`can_delete` integer,
 	`created_at` text NOT NULL,
 	`paylink_id` text,
 	`helio_transaction_id` text,
 	`client_public_key` text,
 	`amount` text,
 	`associated_refund_transaction_signature` text,
-	`chain` text NOT NULL,
-	`currency` text NOT NULL,
+	`chain` text,
+	`currency` text,
 	FOREIGN KEY (`chain`,`currency`) REFERENCES `currencies`(`chain`,`symbol`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint

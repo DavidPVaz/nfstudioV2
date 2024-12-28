@@ -3,7 +3,7 @@ import * as v from 'valibot';
 import { getVerifiedNFStudioRefundTransaction } from '@/server/service/helio';
 import { TransactionValidationError } from '@/server/service/helio/core';
 import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
-import { insertRefundTransaction } from '@/server/service/mongo';
+import { insertRefundTransaction } from '@/server/service/data';
 import { order } from '@/server/service/nft-converter';
 import { captureException, getCurrentScope } from '@sentry/nextjs';
 import { getOptionsMinMaxConfig } from '@/lib/utils';
@@ -61,7 +61,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
         // save tx as unverified. It can be authentic, but due to error we need to re-evaluate
         try {
             await insertRefundTransaction({
-                _id: transactionSignature,
+                id: transactionSignature,
                 verified: false,
                 refunded: false,
                 createdAt: new Date().toISOString()

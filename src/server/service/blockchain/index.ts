@@ -1,6 +1,6 @@
 import { ParsedInstruction, PublicKey } from '@solana/web3.js';
 import { createRefundTransactions, getRpcConnection } from '@/server/service/blockchain/core';
-import { type NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
+import { type RefundWithCurrency } from '@/server/service/data/types';
 
 /**
  * Refund purchases made by NFStudio clients.
@@ -13,7 +13,7 @@ export const refund = async ({
     refundsToProcess,
     maxInstructionsPerTransaction = 6
 }: {
-    refundsToProcess: NFStudioVerifiedRefundTransaction[];
+    refundsToProcess: RefundWithCurrency[];
     maxInstructionsPerTransaction?: number;
 }) => {
     const connection = getRpcConnection();
@@ -80,7 +80,7 @@ export const getRefundedIdsFromProcessedTransactions = async (
                 confirmed,
                 refundedIds: JSON.parse(
                     memoInstruction.parsed as string
-                ) as NFStudioVerifiedRefundTransaction['_id'][]
+                ) as RefundWithCurrency['id'][]
             };
         })
     );

@@ -7,7 +7,7 @@ import {
     createTokenTransfer,
     createMemoInstruction
 } from '@/server/service/blockchain/instruction';
-import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
+import type { RefundWithCurrency } from '@/server/service/data/types';
 
 const {
     SystemProgramMock,
@@ -65,11 +65,11 @@ describe('server/service/blockchain/instruction', () => {
         const transactionData = {
             clientPublicKey: '2Jt9K7DHVmX34XDURAryKEMtk4unvYsFt9d3MmCWY8Kk',
             amount: '500'
-        } as unknown as NFStudioVerifiedRefundTransaction;
+        } as unknown as RefundWithCurrency;
         const expectedTransferData = {
             fromPubkey: signer.publicKey,
-            toPubkey: new PublicKey(transactionData.clientPublicKey),
-            lamports: BigInt(transactionData.amount)
+            toPubkey: new PublicKey(transactionData.clientPublicKey!),
+            lamports: BigInt(transactionData.amount!)
         };
 
         // exercise
@@ -87,8 +87,8 @@ describe('server/service/blockchain/instruction', () => {
         const transactionData = {
             clientPublicKey: '2Jt9K7DHVmX34XDURAryKEMtk4unvYsFt9d3MmCWY8Kk',
             amount: '500',
-            currency: { mintAddress: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU' }
-        } as unknown as NFStudioVerifiedRefundTransaction;
+            currency: { address: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU' }
+        } as unknown as RefundWithCurrency;
         const nfstudioTokenAccount = { address: 'A' };
         const toClientTokenAccount = { address: 'B' };
         getOrCreateAssociatedTokenAccountMock.mockImplementationOnce(() =>
@@ -97,7 +97,7 @@ describe('server/service/blockchain/instruction', () => {
         getOrCreateAssociatedTokenAccountMock.mockImplementationOnce(() =>
             Promise.resolve(toClientTokenAccount)
         );
-        const tokenMintAddress = new PublicKey(transactionData.currency.mintAddress);
+        const tokenMintAddress = new PublicKey(transactionData.currency.address);
 
         // exercise
         await createTokenTransfer({ signer, transactionData });
@@ -114,7 +114,7 @@ describe('server/service/blockchain/instruction', () => {
             connection,
             signer,
             tokenMintAddress,
-            new PublicKey(transactionData.clientPublicKey)
+            new PublicKey(transactionData.clientPublicKey!)
         );
         expect(getOrCreateAssociatedTokenAccountMock).toHaveBeenCalledTimes(2);
         expect(createTransferInstructionMock).toHaveBeenNthCalledWith(
@@ -122,7 +122,7 @@ describe('server/service/blockchain/instruction', () => {
             nfstudioTokenAccount.address,
             toClientTokenAccount.address,
             signer.publicKey,
-            BigInt(transactionData.amount)
+            BigInt(transactionData.amount!)
         );
     });
 

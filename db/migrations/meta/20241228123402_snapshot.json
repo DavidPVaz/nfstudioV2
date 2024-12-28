@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "3a84602d-a974-4d76-b63e-9c36c444c14b",
+  "id": "d510bb91-ca7b-4b7f-ae4e-c1fdfce51106",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "chains": {
@@ -322,8 +322,8 @@
           "autoincrement": false,
           "default": false
         },
-        "canDelete": {
-          "name": "canDelete",
+        "can_delete": {
+          "name": "can_delete",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -375,14 +375,14 @@
           "name": "chain",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "currency": {
           "name": "currency",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         }
       },
