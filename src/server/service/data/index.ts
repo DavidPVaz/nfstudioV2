@@ -4,9 +4,11 @@ import type {
     CollectionWithRelations,
     CollectionManyRelation,
     RefundInsert,
-    RefundWithCurrency
+    RefundWithCurrency,
+    RefundFetch
 } from '@/server/service/data/types';
-import { inArray, type Operators, type SQL } from 'drizzle-orm';
+import { eq, inArray, type Operators, type SQL } from 'drizzle-orm';
+import type { BatchItem } from 'drizzle-orm/batch';
 
 /**
  * Performs a query to NFStudio database to fetch available collections data.
@@ -130,4 +132,59 @@ export const updateManyRefundTransactions = ({
     const refunds = getDbConnection()._.fullSchema.refunds;
 
     return getDbConnection().update(refunds).set(newState).where(inArray(refunds.id, ids));
+};
+
+/**
+ * Performs a query to NFStudio database to fetch unverified refund transactions to be re-evaluated.
+ * It ignores the ones flagged for deletion because that means they are already reevaluated.
+ *
+ * @throws {Error} if request failed
+ */
+export const queryUnverifiedRefundTransactionsToReevaluate = () =>
+    getDbConnection().query.refunds.findMany({
+        where: (refunds, { and, eq, isNull }) =>
+            and(eq(refunds.verified, false), isNull(refunds.canDelete)),
+        orderBy: (refunds, { asc }) => asc(refunds.createdAt)
+    }) as Promise<RefundFetch[]>;
+
+/**
+ * Performs an update query to NFStudio database to update the new refund transaction state.
+ * Update one refund transaction with its own state.
+ *
+ * @param refundTransaction transaction to update
+ *
+ * @throws {Error} if request failed
+ */
+export const updateOneRefundTransaction = ({ id, ...newState }: RefundInsert) => {
+    const refunds = getDbConnection()._.fullSchema.refunds;
+
+    return getDbConnection().update(refunds).set(newState).where(eq(refunds.id, id));
+};
+
+/**
+ * Performs a delete query to NFStudio database to delete any invalid refund transactions flagged for deletion.
+ *
+ * @throws {Error} if request failed
+ */
+export const deleteInvalidRefundTransactions = () => {
+    const refunds = getDbConnection()._.fullSchema.refunds;
+
+    return getDbConnection().delete(refunds).where(eq(refunds.canDelete, true));
+};
+
+/**
+ * One or more SQL statements executed in order in an implicit transaction, as a single call to the database.
+ * If all of the statements are successful, the transaction is committed. If any of the statements fail, the entire transaction is rolled back and no changes are made.
+ * Each statement will execute and commit, sequentially, non-concurrently.
+ *
+ * @param queries queries to execute as a batch
+ *
+ * @throws {Error} if request failed or if at least one query is not provided.
+ */
+export const batch = (queries: BatchItem<'sqlite'>[]) => {
+    if (queries.length === 0) {
+        throw new Error('At least one query must be present.');
+    }
+
+    return getDbConnection().batch(queries as [BatchItem<'sqlite'>, ...BatchItem<'sqlite'>[]]);
 };

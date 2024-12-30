@@ -75,8 +75,8 @@ export type NFStudioVerifiedRefundTransaction = {
 
 export type NFStudioUnverifiedRefundTransaction = {
     id: Transaction['meta']['transactionSignature'];
-    verified: boolean;
-    refunded: boolean;
+    verified: boolean | null;
+    refunded: boolean | null;
     createdAt: Transaction['createdAt'];
-    canDelete?: boolean;
+    canDelete: boolean | null;
 };

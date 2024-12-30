@@ -8,7 +8,7 @@ const { deleteInvalidRefundTransactionsMock, captureExceptionMock } = vi.hoisted
     captureExceptionMock: vi.fn().mockImplementation(() => Promise.resolve())
 }));
 
-vi.mock('@/server/service/mongo', () => ({
+vi.mock('@/server/service/data', () => ({
     deleteInvalidRefundTransactions: deleteInvalidRefundTransactionsMock
 }));
 

@@ -84,7 +84,7 @@ export const reevaluateUnverifiedTransactions = (
                 }
 
                 // Fetch error, do nothing to the transaction
-                // attempt to reverify on later call
+                // Attempt to reverify on later reevaluation
                 return { ...unverified, id };
             }
         })

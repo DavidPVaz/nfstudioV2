@@ -2,8 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
 import {
     queryUnverifiedRefundTransactionsToReevaluate,
-    updateOneRefundTransaction
-} from '@/server/service/mongo';
+    updateOneRefundTransaction,
+    batch
+} from '@/server/service/data';
 import { reevaluateUnverifiedTransactions } from '@/server/service/helio';
 import { captureException } from '@sentry/nextjs';
 
@@ -39,7 +40,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
         const reevaluationResult = await reevaluateUnverifiedTransactions(
             unverifiedRefundTransactions
         );
-        await Promise.all(
+
+        await batch(
             reevaluationResult.map(reevaluatedTransaction =>
                 updateOneRefundTransaction(reevaluatedTransaction)
             )

@@ -22,22 +22,25 @@ const {
     queryUnverifiedRefundTransactionsToReevaluateMock,
     updateOneRefundTransactionMock,
     reevaluateUnverifiedTransactionsMock,
+    batchMock,
     captureExceptionMock
 } = vi.hoisted(() => ({
     queryUnverifiedRefundTransactionsToReevaluateMock: vi
         .fn()
         .mockImplementation(() => Promise.resolve(TEST_UNVERIFIED_REFUNDS)),
     updateOneRefundTransactionMock: vi.fn().mockImplementation(() => Promise.resolve()),
+    batchMock: vi.fn().mockImplementation(() => Promise.resolve()),
     reevaluateUnverifiedTransactionsMock: vi
         .fn()
         .mockImplementation(() => Promise.resolve(TEST_UNVERIFIED_REFUNDS)),
     captureExceptionMock: vi.fn().mockImplementation(() => Promise.resolve())
 }));
 
-vi.mock('@/server/service/mongo', () => ({
+vi.mock('@/server/service/data', () => ({
     queryUnverifiedRefundTransactionsToReevaluate:
         queryUnverifiedRefundTransactionsToReevaluateMock,
-    updateOneRefundTransaction: updateOneRefundTransactionMock
+    updateOneRefundTransaction: updateOneRefundTransactionMock,
+    batch: batchMock
 }));
 
 vi.mock('@/server/service/helio', () => ({
@@ -151,6 +154,10 @@ describe('pages/api/reevaluate-refund/index', () => {
         });
         expect(updateOneRefundTransactionMock).toHaveBeenCalledTimes(
             TEST_UNVERIFIED_REFUNDS.length
+        );
+        expect(batchMock).toHaveBeenNthCalledWith(
+            1,
+            TEST_UNVERIFIED_REFUNDS.map(() => Promise.resolve())
         );
     });
 

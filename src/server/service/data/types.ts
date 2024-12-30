@@ -36,7 +36,7 @@ export type SupportedPaymentChains =
     (typeof SUPPORTED_PAYMENT_CHAINS)[keyof typeof SUPPORTED_PAYMENT_CHAINS];
 
 export type RefundInsert = typeof schema.refunds.$inferInsert;
-
+export type RefundFetch = typeof schema.refunds.$inferSelect;
 export type RefundWithCurrency = Omit<typeof schema.refunds.$inferSelect, 'currency'> & {
     currency: typeof schema.currencies.$inferSelect;
 };
