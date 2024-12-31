@@ -75,7 +75,9 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
 
             return null;
         })
-    ).then(collection => collection.filter(nft => nft !== null).sort((a, b) => a.id - b.id));
+    ).then(collection =>
+        (collection.filter(nft => nft !== null) as NFT[]).sort((a, b) => a.id - b.id)
+    );
 
     if (withoutUnsupportedTraits.length === 0) {
         throw new UnsupportedTraitsError();
