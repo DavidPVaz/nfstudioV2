@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d510bb91-ca7b-4b7f-ae4e-c1fdfce51106",
+  "id": "86f38883-1b3f-4176-82d7-8510b02c9853",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "chains": {
@@ -393,6 +393,33 @@
             "helio_transaction_id"
           ],
           "isUnique": true
+        },
+        "verified_refund_transactions_index": {
+          "name": "verified_refund_transactions_index",
+          "columns": [
+            "verified",
+            "refunded",
+            "associated_refund_transaction_signature"
+          ],
+          "isUnique": false,
+          "where": "refunds.verified = true AND refunds.refunded = false and associated_refund_transaction_signature = null"
+        },
+        "unverified_refund_transactions_index": {
+          "name": "unverified_refund_transactions_index",
+          "columns": [
+            "verified",
+            "can_delete"
+          ],
+          "isUnique": false,
+          "where": "refunds.verified = false AND refunds.can_delete = null"
+        },
+        "flagged_for_deletion_index": {
+          "name": "flagged_for_deletion_index",
+          "columns": [
+            "can_delete"
+          ],
+          "isUnique": false,
+          "where": "refunds.can_delete = true"
         }
       },
       "foreignKeys": {
