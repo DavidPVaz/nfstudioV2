@@ -1,5 +1,5 @@
-import { sqliteTable, text, integer, primaryKey, foreignKey } from 'drizzle-orm/sqlite-core';
-import { relations } from 'drizzle-orm';
+import { sqliteTable, text, integer, primaryKey, foreignKey, index } from 'drizzle-orm/sqlite-core';
+import { relations, sql } from 'drizzle-orm';
 
 // Chains Table
 export const chains = sqliteTable('chains', {
@@ -100,7 +100,18 @@ export const refunds = sqliteTable(
         currency_fk: foreignKey({
             columns: [table.chain, table.currency], // Composite foreign key
             foreignColumns: [currencies.chain, currencies.symbol] // Matches the composite primary key of currencies
-        })
+        }),
+        verifiedRefundTransactionsIndex: index('verified_refund_transactions_index')
+            .on(table.verified, table.refunded, table.associatedRefundTransactionSignature)
+            .where(
+                sql`refunds.verified = true AND refunds.refunded = false and associated_refund_transaction_signature = null`
+            ),
+        unverifiedRefundTransactionsIndex: index('unverified_refund_transactions_index')
+            .on(table.verified, table.canDelete)
+            .where(sql`refunds.verified = false AND refunds.can_delete = null`),
+        flaggedForDeletionIndex: index('flagged_for_deletion_index')
+            .on(table.canDelete)
+            .where(sql`refunds.can_delete = true`)
     })
 );
 

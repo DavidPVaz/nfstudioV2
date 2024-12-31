@@ -60,6 +60,9 @@ CREATE TABLE `refunds` (
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `refunds_helio_transaction_id_unique` ON `refunds` (`helio_transaction_id`);--> statement-breakpoint
+CREATE INDEX `verified_refund_transactions_index` ON `refunds` (`verified`,`refunded`,`associated_refund_transaction_signature`) WHERE refunds.verified = true AND refunds.refunded = false and associated_refund_transaction_signature = null;--> statement-breakpoint
+CREATE INDEX `unverified_refund_transactions_index` ON `refunds` (`verified`,`can_delete`) WHERE refunds.verified = false AND refunds.can_delete = null;--> statement-breakpoint
+CREATE INDEX `flagged_for_deletion_index` ON `refunds` (`can_delete`) WHERE refunds.can_delete = true;--> statement-breakpoint
 CREATE TABLE `unsupported_traits` (
 	`collection` text NOT NULL,
 	`trait_type` text NOT NULL,
