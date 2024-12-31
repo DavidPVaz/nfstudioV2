@@ -2,8 +2,8 @@ import { buildQueryString } from '@/lib/utils';
 import type { ImageLoaderProps, ImageLoader } from 'next/image';
 
 type LoaderProps = Omit<ImageLoaderProps, 'width'> & {
-    maxAge?: number | string;
-    sMaxAge?: number | string;
+    maxAge?: number | string | null;
+    sMaxAge?: number | string | null;
     width?: number | string;
     quality?: number | string;
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import { Collections, CollectionsList } from '@/components/organisms/collections';
 import { PageTitle } from '@/components/molecules/page-title';
 import { SearchCollections } from '@/components/molecules/search-collections';
-import { queryCollectionsData } from '@/server/service/mongo';
+import { queryCollectionsData } from '@/server/service/data';
 
 export const metadata: Metadata = {
     title: 'Collections | NFStudio'
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const CollectionsPage = async () => {
     const collections = await queryCollectionsData({
-        projection: { _id: 1, presentation: 1, chain: 1 }
+        select: ['name', 'chain', 'presentationPictureUrl']
     });
 
     return (

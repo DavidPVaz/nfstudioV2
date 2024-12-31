@@ -1,5 +1,6 @@
 import React from 'react';
-import { type CollectionConfiguration } from '@/server/service/mongo/types';
+import { type Collection } from '@/server/service/data/types';
+import { type Chain } from '@/enums';
 import { CollectionCard } from '@/components/molecules/card/collection';
 
 export const Collections = ({ children }: { children: React.ReactElement }) => (
@@ -8,13 +9,13 @@ export const Collections = ({ children }: { children: React.ReactElement }) => (
     </div>
 );
 
-export const CollectionsList = ({ collections }: { collections: CollectionConfiguration[] }) =>
-    collections.map(({ _id, chain, presentation }) => (
+export const CollectionsList = ({ collections }: { collections: Collection[] }) =>
+    collections.map(({ name, chain, presentationPictureUrl }) => (
         <CollectionCard
-            key={_id}
-            imgSrc={presentation}
-            href={`/collections/${_id}`}
-            chain={chain}
-            name={_id}
+            key={name}
+            imgSrc={presentationPictureUrl}
+            href={`/collections/${name}`}
+            chain={chain as Chain}
+            name={name}
         />
     ));

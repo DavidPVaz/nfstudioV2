@@ -6,9 +6,10 @@ import {
     createMemoInstruction
 } from '@/server/service/blockchain/instruction';
 import {
-    type NFStudioVerifiedRefundTransaction,
-    SUPPORTED_CURRENCIES
-} from '@/server/service/helio/types';
+    SUPPORTED_CURRENCIES,
+    type RefundWithCurrency,
+    type SupportedCurrencies
+} from '@/server/service/data/types';
 
 /**
  * Pointer for a loaded RPC connection in memory.
@@ -39,7 +40,7 @@ export const SYMBOL_TRANSFER_METHOD = {
  */
 export const createNFStudioTransferInstruction = (options: {
     signer: Keypair;
-    transactionData: NFStudioVerifiedRefundTransaction;
+    transactionData: RefundWithCurrency;
 }) => {
     const {
         transactionData: {
@@ -47,7 +48,7 @@ export const createNFStudioTransferInstruction = (options: {
         }
     } = options;
 
-    const transferMethod = SYMBOL_TRANSFER_METHOD[symbol];
+    const transferMethod = SYMBOL_TRANSFER_METHOD[symbol as SupportedCurrencies];
 
     if (!transferMethod) {
         throw new InvalidCurrencyError(symbol);
@@ -73,7 +74,7 @@ export const createRefundTransactions = async ({
     lastValidBlockHeight,
     signer = Keypair.fromSecretKey(bs58.decode(process.env.NFSTUDIO_WALLET_PRIVATE_KEY!))
 }: {
-    refundsToProcess: NFStudioVerifiedRefundTransaction[];
+    refundsToProcess: RefundWithCurrency[];
     maxInstructionsPerTransaction: number;
     blockhash: string;
     lastValidBlockHeight: number;
@@ -98,7 +99,7 @@ export const createRefundTransactions = async ({
 
                 return {
                     transferInstructions,
-                    nfstudioTransactionIds: batch.map(({ _id }) => _id)
+                    nfstudioTransactionIds: batch.map(({ id }) => id)
                 };
             })
         )
@@ -130,10 +131,10 @@ export const prepareNFStudioTransactionBatches = ({
     refundsToProcess,
     maxInstructionsPerTransaction
 }: {
-    refundsToProcess: NFStudioVerifiedRefundTransaction[];
+    refundsToProcess: RefundWithCurrency[];
     maxInstructionsPerTransaction: number;
 }) => {
-    const batches: NFStudioVerifiedRefundTransaction[][] = [];
+    const batches: RefundWithCurrency[][] = [];
 
     for (let index = 0; index < refundsToProcess.length; index += maxInstructionsPerTransaction) {
         const slice =

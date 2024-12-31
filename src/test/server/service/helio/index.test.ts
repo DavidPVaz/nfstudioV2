@@ -31,23 +31,14 @@ describe('server/service/helio/index', () => {
         const expectedTransactionInfo = {
             verified: true,
             refunded: false,
-            _id: signature,
+            id: signature,
             paylinkId: 'paylinkId',
             helioTransactionId: 'helioId',
             createdAt: 'time',
             clientPublicKey: 'publicKey',
             amount: '18723562',
-            currency: { decimals: 11, mintAddress: 'mint', symbol: 'SOL' },
-            purchaseDetails: {
-                src: 'https://www.arweave.net/Qsi_oLzJUdR7PG8Cz82Wyp2Peg4VB1H0G-Kin6XNAxk?ext=png',
-                width: 1920,
-                height: 1080,
-                atRight: false,
-                coverStyle: false,
-                mobile: false,
-                dpi: 72,
-                collection: 'name'
-            }
+            currency: 'SOL',
+            chain: 'Solana'
         };
         const fetchedParsedTransaction = {
             id: expectedTransactionInfo.helioTransactionId,
@@ -56,14 +47,9 @@ describe('server/service/helio/index', () => {
             meta: {
                 amount: '18723000',
                 senderPK: expectedTransactionInfo.clientPublicKey,
-                transactionSignature: expectedTransactionInfo._id,
+                transactionSignature: expectedTransactionInfo.id,
                 currency: {
-                    decimals: expectedTransactionInfo.currency.decimals,
-                    mintAddress: expectedTransactionInfo.currency.mintAddress,
-                    symbol: expectedTransactionInfo.currency.symbol
-                },
-                customerDetails: {
-                    additionalJSON: JSON.stringify(expectedTransactionInfo.purchaseDetails)
+                    symbol: expectedTransactionInfo.currency
                 }
             },
             fee: '562'
@@ -135,23 +121,14 @@ describe('server/service/helio/index', () => {
         const expectedTransactionInfo = {
             verified: true,
             refunded: false,
-            _id: signature,
+            id: signature,
             paylinkId: 'paylinkId',
             helioTransactionId: 'helioId',
             createdAt: 'time',
             clientPublicKey: 'publicKey',
             amount: '18724562',
-            currency: { decimals: 11, mintAddress: 'mint', symbol: 'SOL' },
-            purchaseDetails: {
-                src: 'https://www.arweave.net/Qsi_oLzJUdR7PG8Cz82Wyp2Peg4VB1H0G-Kin6XNAxk?ext=png',
-                width: 1920,
-                height: 1080,
-                atRight: false,
-                coverStyle: false,
-                mobile: false,
-                dpi: 72,
-                collection: 'name'
-            }
+            currency: 'SOL',
+            chain: 'Solana'
         };
         const fetchedParsedTransaction = {
             id: expectedTransactionInfo.helioTransactionId,
@@ -160,14 +137,9 @@ describe('server/service/helio/index', () => {
             meta: {
                 amount: '18724000',
                 senderPK: expectedTransactionInfo.clientPublicKey,
-                transactionSignature: expectedTransactionInfo._id,
+                transactionSignature: expectedTransactionInfo.id,
                 currency: {
-                    decimals: expectedTransactionInfo.currency.decimals,
-                    mintAddress: expectedTransactionInfo.currency.mintAddress,
-                    symbol: expectedTransactionInfo.currency.symbol
-                },
-                customerDetails: {
-                    additionalJSON: JSON.stringify(expectedTransactionInfo.purchaseDetails)
+                    symbol: expectedTransactionInfo.currency
                 }
             },
             fee: '562'
@@ -197,30 +169,21 @@ describe('server/service/helio/index', () => {
 
     it('should reevaluate unverified refund transactions', async () => {
         // setup
-        const unverifiedTransaction1 = { _id: '1' };
-        const unverifiedTransaction2 = { _id: '2' };
-        const unverifiedTransaction3 = { _id: '3' };
-        const unverifiedTransaction4 = { _id: '4' };
+        const unverifiedTransaction1 = { id: '1' };
+        const unverifiedTransaction2 = { id: '2' };
+        const unverifiedTransaction3 = { id: '3' };
+        const unverifiedTransaction4 = { id: '4' };
         const refundTransaction = {
             verified: true,
             refunded: false,
-            _id: unverifiedTransaction1._id,
+            id: unverifiedTransaction1.id,
             paylinkId: 'paylinkId',
             helioTransactionId: 'helioId',
             createdAt: 'time',
             clientPublicKey: 'publicKey',
             amount: '18723562',
-            currency: { decimals: 11, mintAddress: 'mint', symbol: 'SOL' },
-            purchaseDetails: {
-                src: 'https://www.arweave.net/Qsi_oLzJUdR7PG8Cz82Wyp2Peg4VB1H0G-Kin6XNAxk?ext=png',
-                width: 1920,
-                height: 1080,
-                atRight: false,
-                coverStyle: false,
-                mobile: false,
-                dpi: 72,
-                collection: 'name'
-            }
+            currency: 'SOL',
+            chain: 'Solana'
         };
         const fetchedParsedTransaction = {
             id: refundTransaction.helioTransactionId,
@@ -229,14 +192,9 @@ describe('server/service/helio/index', () => {
             meta: {
                 amount: '18723000',
                 senderPK: refundTransaction.clientPublicKey,
-                transactionSignature: refundTransaction._id,
+                transactionSignature: refundTransaction.id,
                 currency: {
-                    decimals: refundTransaction.currency.decimals,
-                    mintAddress: refundTransaction.currency.mintAddress,
-                    symbol: refundTransaction.currency.symbol
-                },
-                customerDetails: {
-                    additionalJSON: JSON.stringify(refundTransaction.purchaseDetails)
+                    symbol: refundTransaction.currency
                 }
             },
             fee: '562'
@@ -274,7 +232,7 @@ describe('server/service/helio/index', () => {
         expect(result).toEqual(expectedReevaluation);
         unverifiedRefundTransactions.forEach(transaction => {
             expect(helioApiGETRequestMock).toHaveBeenCalledWith({
-                path: `transactions/signature/${transaction._id}`
+                path: `transactions/signature/${transaction.id}`
             });
         });
         expect(helioApiGETRequestMock).toHaveBeenCalledTimes(unverifiedRefundTransactions.length);

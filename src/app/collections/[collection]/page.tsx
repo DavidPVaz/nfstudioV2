@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { queryCollectionsData } from '@/server/service/mongo';
+import { queryCollectionsData } from '@/server/service/data';
 import { PAGES } from '@/enums';
 import { CollectionContextProvider } from '@/app/collections/[collection]/context';
 import { Studio } from '@/app/collections/[collection]/_studio';
@@ -23,31 +23,36 @@ export function generateMetadata({ params: { collection } }: Slug): Metadata {
 
 export async function generateStaticParams() {
     const nfstudioCollections = await queryCollectionsData({
-        projection: { _id: 1 }
+        select: 'name'
     });
 
-    return nfstudioCollections.map(({ _id: collection }) => ({ collection }));
+    return nfstudioCollections.map(({ name: collection }) => ({ collection }));
 }
 
 const CollectionPage = async ({ params: { collection } }: Slug) => {
-    const [selectedCollectionConfig] = await queryCollectionsData({
-        filter: { _id: { $eq: collection } },
-        projection: {
-            config: 1,
-            marketplace: 1,
-            discord: 1,
-            twitter: 1,
-            website: 1
-        }
+    const [selectedCollection] = await queryCollectionsData({
+        limit: 1,
+        select: [
+            'name',
+            'marketplaceUrl',
+            'discordUrl',
+            'twitterUrl',
+            'websiteUrl',
+            'paylinkId',
+            'cacheStrategySMaxAge',
+            'cacheStrategyMaxAge'
+        ],
+        filter: { eq: { name: collection } },
+        relation: ['logos', 'unsupportedTraits']
     });
 
-    if (!selectedCollectionConfig) {
+    if (!selectedCollection) {
         return redirect(PAGES.COLLECTIONS);
     }
 
     return (
-        <CollectionContextProvider configuration={selectedCollectionConfig}>
-            <Studio configuration={selectedCollectionConfig} />
+        <CollectionContextProvider configuration={selectedCollection}>
+            <Studio configuration={selectedCollection} />
         </CollectionContextProvider>
     );
 };

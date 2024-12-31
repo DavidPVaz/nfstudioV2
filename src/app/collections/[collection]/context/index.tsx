@@ -1,14 +1,21 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import type { CollectionConfiguration } from '@/server/service/mongo/types';
+import type {
+    CollectionWithRelations,
+    Collection,
+    UnsupportedTraits
+} from '@/server/service/data/types';
 
 type CollectionContext = {
-    selectedCollection: CollectionConfiguration['_id'];
-    cacheStrategy: CollectionConfiguration['config']['cacheStrategy'];
-    logos: CollectionConfiguration['config']['logos'];
-    unsupportedTraits: CollectionConfiguration['config']['unsupportedTraits'];
-    paylinkId: CollectionConfiguration['config']['paylinkId'];
+    selectedCollection: Collection['name'];
+    paylinkId: Collection['paylinkId'];
+    cacheStrategy: {
+        maxAge?: Collection['cacheStrategyMaxAge'];
+        sMaxAge?: Collection['cacheStrategySMaxAge'];
+    };
+    logos: string[];
+    unsupportedTraits: UnsupportedTraits[];
 };
 
 const Context = createContext({});
@@ -17,23 +24,27 @@ export const CollectionContextProvider = ({
     configuration,
     children
 }: {
-    configuration: CollectionConfiguration;
+    configuration: CollectionWithRelations;
     children: React.ReactNode;
 }) => {
     const {
-        _id: selectedCollection,
-        config: { logos, unsupportedTraits, cacheStrategy, paylinkId }
+        name: selectedCollection,
+        paylinkId,
+        cacheStrategyMaxAge,
+        cacheStrategySMaxAge,
+        logos,
+        unsupportedTraits
     } = configuration;
 
     const context = {
         selectedCollection,
-        cacheStrategy,
-        logos,
-        unsupportedTraits,
         paylinkId:
             process.env.NEXT_PUBLIC_VERCEL_ENV === 'production'
                 ? paylinkId
-                : process.env.NEXT_PUBLIC_PAYLINK_ID
+                : process.env.NEXT_PUBLIC_PAYLINK_ID,
+        cacheStrategy: { maxAge: cacheStrategyMaxAge, sMaxAge: cacheStrategySMaxAge },
+        logos: logos?.map(({ url }) => url),
+        unsupportedTraits
     };
 
     return <Context.Provider value={context}>{children}</Context.Provider>;

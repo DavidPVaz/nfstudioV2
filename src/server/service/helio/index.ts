@@ -6,7 +6,6 @@ import {
 } from '@/server/service/helio/core';
 import type {
     Transaction,
-    PurchaseDetails,
     NFStudioVerifiedRefundTransaction,
     NFStudioUnverifiedRefundTransaction
 } from '@/server/service/helio/types';
@@ -37,8 +36,7 @@ export const getVerifiedNFStudioRefundTransaction = async ({
             amount,
             senderPK: clientPublicKey,
             transactionSignature: fetchedTx,
-            currency: { decimals, mintAddress, symbol },
-            customerDetails: { additionalJSON = '{}' }
+            currency: { symbol }
         }
     } = await helioApiGETRequest<Transaction>({
         path: `transactions/signature/${payloadTx}`
@@ -51,14 +49,14 @@ export const getVerifiedNFStudioRefundTransaction = async ({
     return {
         verified: true,
         refunded: false,
-        _id: fetchedTx,
+        id: fetchedTx,
         paylinkId,
         helioTransactionId: id,
         createdAt,
         clientPublicKey,
         amount: Decimal.add(amount, helioXFee).toString(),
-        currency: { decimals, mintAddress, symbol },
-        purchaseDetails: JSON.parse(additionalJSON) as PurchaseDetails
+        currency: symbol,
+        chain: 'Solana'
     };
 };
 
@@ -71,10 +69,10 @@ export const reevaluateUnverifiedTransactions = (
     unverifiedRefundTransactions: NFStudioUnverifiedRefundTransaction[]
 ): Promise<(NFStudioVerifiedRefundTransaction | NFStudioUnverifiedRefundTransaction)[]> =>
     Promise.all(
-        unverifiedRefundTransactions.map(async ({ _id, ...unverified }) => {
+        unverifiedRefundTransactions.map(async ({ id, ...unverified }) => {
             try {
                 const verifiedTransaction = await getVerifiedNFStudioRefundTransaction({
-                    payloadTx: _id,
+                    payloadTx: id,
                     ignoreTxTime: true
                 });
 
@@ -82,12 +80,12 @@ export const reevaluateUnverifiedTransactions = (
             } catch (error) {
                 // It is not a valid transaction - flag for deletion
                 if (error instanceof TransactionValidationError) {
-                    return { ...unverified, _id, canDelete: true };
+                    return { ...unverified, id, canDelete: true };
                 }
 
                 // Fetch error, do nothing to the transaction
-                // attempt to reverify on later call
-                return { ...unverified, _id };
+                // Attempt to reverify on later reevaluation
+                return { ...unverified, id };
             }
         })
     );

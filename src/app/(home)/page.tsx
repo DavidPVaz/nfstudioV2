@@ -8,7 +8,7 @@ import { Button } from '@/components/atoms/button';
 import { Image } from '@/components/atoms/image';
 import { CreateButton } from '@/app/(home)/create-button';
 import { NFStudioList } from '@/app/(home)/nfstudio-list';
-import { queryCollectionsData } from '@/server/service/mongo';
+import { queryCollectionsData } from '@/server/service/data';
 
 const TopSection = () => (
     <section className="relative flex w-fit flex-row">
@@ -61,7 +61,8 @@ const IntroSection = () => (
 
 const CollectionsSection = async () => {
     const collections = await queryCollectionsData({
-        projection: { _id: 1, presentation: 1, chain: 1 }
+        limit: 12,
+        select: ['name', 'chain', 'presentationPictureUrl']
     });
 
     return (

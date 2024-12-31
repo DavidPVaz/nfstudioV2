@@ -74,7 +74,7 @@ const LeftPage = ({ mobileSrcOne, mobileSrcTwo, desktopSrc }: LeftPageData) => (
                 quality={30}
                 optimizedWidth={340}
                 alt="gallery"
-                className="rounded-lg"
+                className="rounded-sm"
                 src={mobileSrcOne}
                 width={278.4}
                 height={391.94}
@@ -85,7 +85,7 @@ const LeftPage = ({ mobileSrcOne, mobileSrcTwo, desktopSrc }: LeftPageData) => (
                 quality={30}
                 optimizedWidth={340}
                 alt="gallery"
-                className="rounded-lg"
+                className="rounded-sm"
                 src={mobileSrcTwo}
                 width={278.4}
                 height={391.94}
@@ -96,7 +96,7 @@ const LeftPage = ({ mobileSrcOne, mobileSrcTwo, desktopSrc }: LeftPageData) => (
                 quality={40}
                 optimizedWidth={573}
                 alt="gallery"
-                className="rounded-lg"
+                className="rounded-sm"
                 src={desktopSrc}
                 width={572.8}
                 height={322.2}
@@ -112,7 +112,7 @@ const RightPage = ({ bannerSrcOne, bannerSrcTwo, desktopSrc }: RightPageData) =>
                 quality={40}
                 optimizedWidth={573}
                 alt="gallery"
-                className="rounded-lg"
+                className="rounded-sm"
                 src={bannerSrcOne}
                 width={572.8}
                 height={190.93}
@@ -123,7 +123,7 @@ const RightPage = ({ bannerSrcOne, bannerSrcTwo, desktopSrc }: RightPageData) =>
                 quality={40}
                 optimizedWidth={573}
                 alt="gallery"
-                className="rounded-lg"
+                className="rounded-sm"
                 src={desktopSrc}
                 width={572.8}
                 height={322.2}
@@ -134,7 +134,7 @@ const RightPage = ({ bannerSrcOne, bannerSrcTwo, desktopSrc }: RightPageData) =>
                 quality={40}
                 optimizedWidth={573}
                 alt="gallery"
-                className="rounded-lg"
+                className="rounded-sm"
                 src={bannerSrcTwo}
                 width={572.8}
                 height={190.93}

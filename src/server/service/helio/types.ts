@@ -1,3 +1,5 @@
+import type { SupportedCurrencies, SupportedPaymentChains } from '@/server/service/data/types';
+
 type TokenQuoteMeta = {
     from: string;
     fromAmountDecimal: string;
@@ -7,19 +9,6 @@ type TokenQuoteMeta = {
 type PaymentRequestType = 'PAYLINK' | 'PAYSTREAM';
 type TransactionType = 'REFUND' | 'PAYLINK';
 type TransactionStatus = 'INITIATED' | 'PENDING' | 'SUCCESS' | 'FAILED' | 'CANCELED' | 'SETTLED';
-
-/**
- * Supported currency symbols
- */
-export const SUPPORTED_CURRENCIES = {
-    SOL: 'SOL',
-    USDC: 'USDC',
-    USDT: 'USDT',
-    JUP: 'JUP',
-    Bonk: 'Bonk'
-} as const;
-
-type SupportedCurrencySymbol = (typeof SUPPORTED_CURRENCIES)[keyof typeof SUPPORTED_CURRENCIES];
 
 type TransactionMeta = {
     id: string;
@@ -53,7 +42,7 @@ type TransactionMeta = {
     currency: {
         decimals: number;
         mintAddress: string;
-        symbol: SupportedCurrencySymbol;
+        symbol: SupportedCurrencies;
     };
     transactionType?: TransactionType;
     tokenQuote: TokenQuoteMeta;
@@ -70,20 +59,8 @@ export type Transaction = {
     meta: TransactionMeta;
 };
 
-export type PurchaseDetails = {
-    src: string;
-    width: number;
-    height: number;
-    atRight: boolean;
-    coverStyle: boolean;
-    mobile: boolean;
-    logoSrc?: string;
-    dpi: number;
-    collection: string;
-};
-
 export type NFStudioVerifiedRefundTransaction = {
-    _id: Transaction['meta']['transactionSignature'];
+    id: Transaction['meta']['transactionSignature'];
     verified: boolean;
     refunded: boolean;
     paylinkId: Transaction['paylinkId'];
@@ -91,15 +68,15 @@ export type NFStudioVerifiedRefundTransaction = {
     createdAt: Transaction['createdAt'];
     clientPublicKey: Transaction['meta']['senderPK'];
     amount: string;
-    currency: Transaction['meta']['currency'];
-    purchaseDetails: PurchaseDetails;
+    currency: Transaction['meta']['currency']['symbol'];
+    chain: SupportedPaymentChains;
     associatedRefundTransactionSignature?: Transaction['meta']['transactionSignature'];
 };
 
 export type NFStudioUnverifiedRefundTransaction = {
-    _id: Transaction['meta']['transactionSignature'];
-    verified: boolean;
-    refunded: boolean;
+    id: Transaction['meta']['transactionSignature'];
+    verified: boolean | null;
+    refunded: boolean | null;
     createdAt: Transaction['createdAt'];
-    canDelete?: boolean;
+    canDelete: boolean | null;
 };

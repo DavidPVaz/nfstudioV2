@@ -5,7 +5,7 @@ import RefundHandler from '@/pages/api/refund';
 
 const TEST_REFUNDS = [
     {
-        _id: '3oyRzLcufBx8vy1w14jimc3uyJJioiNaVGc3t2CysueU1dWSe93dkAKUzUdtQCHVSK6AXkr5TavE4WeDeBrRckZi',
+        id: '3oyRzLcufBx8vy1w14jimc3uyJJioiNaVGc3t2CysueU1dWSe93dkAKUzUdtQCHVSK6AXkr5TavE4WeDeBrRckZi',
         refunded: false,
         verified: true,
         createdAt: '2024-01-16T14:07:24.630Z',
@@ -19,7 +19,7 @@ const TEST_REFUNDS = [
         helioTransactionId: '65a68d9c891bf6285d7d1656'
     },
     {
-        _id: '2nz2WYmB9daDEh815sMqgpKrpUWySw5sxgeFXScU1kznQep6mb4P6fNis7x9NzGsDuNHaVVX3aMEpi5k6hqC1Sdr',
+        id: '2nz2WYmB9daDEh815sMqgpKrpUWySw5sxgeFXScU1kznQep6mb4P6fNis7x9NzGsDuNHaVVX3aMEpi5k6hqC1Sdr',
         refunded: false,
         verified: true,
         createdAt: '2024-01-16T14:06:21.661Z',
@@ -73,7 +73,7 @@ const {
     captureExceptionMock: vi.fn().mockImplementation(() => Promise.resolve())
 }));
 
-vi.mock('@/server/service/mongo', () => ({
+vi.mock('@/server/service/data', () => ({
     queryVerifiedRefundTransactionsToProcess: queryVerifiedRefundTransactionsToProcessMock,
     updateManyRefundTransactions: updateManyRefundTransactionsMock
 }));

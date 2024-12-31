@@ -1,0 +1,79 @@
+[
+    {
+        "name": "Primates",
+        "chain": "Solana",
+        "presentationPictureUrl": "3mGbV08MTEHURGTkKYTX1n/3587f558048cd490049b51578c95abd8/primates.webp",
+        "marketplaceUrl": "https://magiceden.io/marketplace/primates",
+        "discordUrl": "https://discord.com/invite/theprimates",
+        "twitterUrl": "https://x.com/Primatesnft",
+        "websiteUrl": "https://primatesmap.com",
+        "createdAt": "2024-03-01T13:39:16.000+00:00",
+        "active": true,
+        "paylinkId": "6613c01ba3c20e0a54640b8f",
+        "cacheStrategySMaxAge": 60,
+        "cacheStrategyMaxAge": 0
+    },
+    {
+        "name": "Degen_Dojo",
+        "chain": "Solana",
+        "presentationPictureUrl": "4x6yL12rIYqu2gpxHL8Oos/3cb777ede6b49538353ae7fb54382db6/degen_dojo.webp",
+        "marketplaceUrl": "https://magiceden.io/marketplace/degendojonft",
+        "discordUrl": "https://discord.gg/6wqSwK26PG",
+        "twitterUrl": "https://x.com/DegenDojoArt",
+        "websiteUrl": "https://degendojo.art/",
+        "createdAt": "2103-01-01T13:35:16.000+00:00",
+        "active": true,
+        "paylinkId": "6613c0176f9810cb120e5bf2"
+    },
+    {
+        "name": "BVDCAT",
+        "chain": "Solana",
+        "presentationPictureUrl": "7H6JJ5mkr30DKsQI0lY5bV/10d76bc6eb8e2e856a5fc1d91be4725e/bvdcat.webp",
+        "marketplaceUrl": "https://magiceden.io/marketplace/bvdcat",
+        "discordUrl": "https://www.discord.gg/bvdcat",
+        "twitterUrl": "https://x.com/BVDCAT_",
+        "websiteUrl": "https://www.beverydifferent.com/",
+        "createdAt": "2024-02-21T12:17:16.000+00:00",
+        "active": true,
+        "paylinkId": "6613c00a544bc3dbb2c29b80",
+        "cacheStrategySMaxAge": 60,
+        "cacheStrategyMaxAge": 0
+    },
+    {
+        "name": "Froganas",
+        "chain": "Solana",
+        "presentationPictureUrl": "4ZjVOXkQpssY8mESR5gTYm/4d9b634d5d48b16a654435e8c9393c50/froganas.webp",
+        "marketplaceUrl": "https://magiceden.io/marketplace/froganas",
+        "discordUrl": "https://discord.com/invite/ZZgWvF7aDD",
+        "twitterUrl": "https://x.com/froganasnft",
+        "createdAt": "2024-03-24T14:25:16.000+00:00",
+        "active": true,
+        "paylinkId": "6613c007dc96df7365310510"
+    },
+    {
+        "name": "Lily",
+        "chain": "Solana",
+        "presentationPictureUrl": "5kY1rFfTiNHDCSBiXx5yqw/5293cc4c6558931aef7e683250825cae/lily.webp",
+        "marketplaceUrl": "https://magiceden.io/marketplace/lily",
+        "discordUrl": "https://discord.gg/fudinc",
+        "twitterUrl": "https://x.com/thelilynft",
+        "websiteUrl": "https://www.thelotus.io/",
+        "createdAt": "2024-03-01T09:36:16.000+00:00",
+        "active": true,
+        "paylinkId": "6613c005893a42624f311875"
+    },
+    {
+        "name": "Mayhem",
+        "chain": "Solana",
+        "presentationPictureUrl": "6Oadd2KfppZwuETFoPRsoq/13d0a6d53d62753f0da26b01eee11f57/mayhem.webp",
+        "marketplaceUrl": "https://magiceden.io/marketplace/mayhem",
+        "discordUrl": "https://discord.gg/H7XJTE5jNq",
+        "twitterUrl": "https://x.com/MayhemonSol",
+        "websiteUrl": "https://www.mayhem.co.in/",
+        "createdAt": "2024-02-25T13:36:16.000+00:00",
+        "active": true,
+        "paylinkId": "6613c010dc96df73653105fa",
+        "cacheStrategySMaxAge": 60,
+        "cacheStrategyMaxAge": 0
+    }
+]

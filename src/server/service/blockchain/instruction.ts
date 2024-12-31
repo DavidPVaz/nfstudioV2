@@ -1,7 +1,7 @@
 import { PublicKey, TransactionInstruction, SystemProgram, type Keypair } from '@solana/web3.js';
 import { getOrCreateAssociatedTokenAccount, createTransferInstruction } from '@solana/spl-token';
 import { getRpcConnection } from '@/server/service/blockchain/core';
-import type { NFStudioVerifiedRefundTransaction } from '@/server/service/helio/types';
+import type { RefundWithCurrency } from '@/server/service/data/types';
 
 /**
  * Create a transaction instruction to transfer SOL in solana network.
@@ -15,12 +15,12 @@ export const createSolTransfer = ({
     transactionData: { clientPublicKey, amount }
 }: {
     signer: Keypair;
-    transactionData: NFStudioVerifiedRefundTransaction;
+    transactionData: RefundWithCurrency;
 }) =>
     SystemProgram.transfer({
         fromPubkey: signer.publicKey,
-        toPubkey: new PublicKey(clientPublicKey),
-        lamports: BigInt(amount)
+        toPubkey: new PublicKey(clientPublicKey!),
+        lamports: BigInt(amount!)
     });
 
 /**
@@ -35,13 +35,13 @@ export const createTokenTransfer = async ({
     transactionData: {
         clientPublicKey,
         amount,
-        currency: { mintAddress }
+        currency: { address }
     }
 }: {
     signer: Keypair;
-    transactionData: NFStudioVerifiedRefundTransaction;
+    transactionData: RefundWithCurrency;
 }) => {
-    const tokenMintAddress = new PublicKey(mintAddress);
+    const tokenMintAddress = new PublicKey(address);
     const connection = getRpcConnection();
 
     const [nfstudioTokenAccount, toClientTokenAccount] = await Promise.all([
@@ -50,7 +50,7 @@ export const createTokenTransfer = async ({
             connection,
             signer,
             tokenMintAddress,
-            new PublicKey(clientPublicKey)
+            new PublicKey(clientPublicKey!)
         )
     ]);
 
@@ -58,7 +58,7 @@ export const createTokenTransfer = async ({
         nfstudioTokenAccount.address,
         toClientTokenAccount.address,
         signer.publicKey,
-        BigInt(amount)
+        BigInt(amount!)
     );
 };
 
@@ -74,7 +74,7 @@ export const createMemoInstruction = ({
     nfstudioTransactionIds
 }: {
     signer: Keypair;
-    nfstudioTransactionIds: NFStudioVerifiedRefundTransaction['_id'][];
+    nfstudioTransactionIds: RefundWithCurrency['id'][];
 }) =>
     new TransactionInstruction({
         keys: [{ pubkey: signer.publicKey, isSigner: true, isWritable: true }],

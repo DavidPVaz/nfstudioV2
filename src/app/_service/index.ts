@@ -1,5 +1,5 @@
 import { buildQueryString } from '@/lib/utils';
-import type { CollectionMetadata, CollectionConfiguration } from '@/server/service/mongo/types';
+import type { NftMetadata, UnsupportedTraits } from '@/server/service/data/types';
 import type { NFT, IncompleteNFT } from '@/app/collections/[collection]/_studio/client';
 import {
     FetchMetadataError,
@@ -11,7 +11,7 @@ import {
 export type LoadMetadataProps = {
     collection: string;
     nfts: IncompleteNFT[];
-    unsupportedTraits: CollectionConfiguration['config']['unsupportedTraits'];
+    unsupportedTraits: UnsupportedTraits[];
 };
 
 type TokenMetadata = {
@@ -42,14 +42,14 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
         throw new FetchMetadataError();
     }
 
-    const metadata = (await response.json()) as CollectionMetadata[];
+    const metadata = (await response.json()) as NftMetadata[];
 
     if (metadata.length === 0) {
         throw new EmptyMetadataError();
     }
 
     const withoutUnsupportedTraits = await Promise.all(
-        metadata.map(async ({ _id: id, uri }) => {
+        metadata.map(async ({ nftId: id, uri }) => {
             const { image: src, attributes } = await fetch(uri).then(
                 response => response.json() as Promise<TokenMetadata>
             );
@@ -62,20 +62,20 @@ export const loadMetadata = async ({ collection, nfts, unsupportedTraits }: Load
             // this collection does not have any unsupported traits or
             // it did not find any unsupported trait in this nft
             if (
-                Object.keys(unsupportedTraits).length === 0 ||
-                !Object.entries(traits).find(([trait, value]) =>
-                    unsupportedTraits[trait]?.includes(value)
+                unsupportedTraits.length === 0 ||
+                !unsupportedTraits.find(unsupported =>
+                    Object.entries(traits).find(
+                        ([trait, value]) =>
+                            unsupported.traitType === trait && unsupported.value === value
+                    )
                 )
             ) {
-                return { id, src, selected: false };
+                return { id, src, selected: false } as NFT;
             }
 
             return null;
         })
-    ).then(collection =>
-        // ts is not smart enough to recognize a filter has taken place and gives an error on type check, hence cast
-        (collection.filter(nft => nft !== null) as NFT[]).sort((a, b) => a.id - b.id)
-    );
+    ).then(collection => collection.filter(nft => nft !== null).sort((a, b) => a.id - b.id));
 
     if (withoutUnsupportedTraits.length === 0) {
         throw new UnsupportedTraitsError();

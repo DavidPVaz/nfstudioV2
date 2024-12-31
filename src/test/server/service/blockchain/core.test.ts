@@ -9,14 +9,11 @@ import {
     prepareNFStudioTransactionBatches,
     getRpcConnection
 } from '@/server/service/blockchain/core';
-import {
-    SUPPORTED_CURRENCIES,
-    type NFStudioVerifiedRefundTransaction
-} from '@/server/service/helio/types';
+import { SUPPORTED_CURRENCIES, type RefundWithCurrency } from '@/server/service/data/types';
 
 const TEST_REFUNDS = [
     {
-        _id: '3oyRzLcufBx8vy1w14jimc3uyJJioiNaVGc3t2CysueU1dWSe93dkAKUzUdtQCHVSK6AXkr5TavE4WeDeBrRckZi',
+        id: '3oyRzLcufBx8vy1w14jimc3uyJJioiNaVGc3t2CysueU1dWSe93dkAKUzUdtQCHVSK6AXkr5TavE4WeDeBrRckZi',
         refunded: false,
         verified: true,
         createdAt: '2024-01-16T14:07:24.630Z',
@@ -30,7 +27,7 @@ const TEST_REFUNDS = [
         helioTransactionId: '65a68d9c891bf6285d7d1656'
     },
     {
-        _id: '2nz2WYmB9daDEh815sMqgpKrpUWySw5sxgeFXScU1kznQep6mb4P6fNis7x9NzGsDuNHaVVX3aMEpi5k6hqC1Sdr',
+        id: '2nz2WYmB9daDEh815sMqgpKrpUWySw5sxgeFXScU1kznQep6mb4P6fNis7x9NzGsDuNHaVVX3aMEpi5k6hqC1Sdr',
         refunded: false,
         verified: true,
         createdAt: '2024-01-16T14:06:21.661Z',
@@ -43,7 +40,7 @@ const TEST_REFUNDS = [
         },
         helioTransactionId: '65a68d5d71e9e9f5094428b3'
     }
-] as NFStudioVerifiedRefundTransaction[];
+] as unknown as RefundWithCurrency[];
 
 const {
     ConnectionMock,
@@ -126,7 +123,7 @@ describe('server/service/blockchain/core', () => {
             transactionData: {
                 amount: '500',
                 currency: { symbol: 'SOL' }
-            } as unknown as NFStudioVerifiedRefundTransaction
+            } as unknown as RefundWithCurrency
         };
         const tokenOptions = {
             connection: {} as Connection,
@@ -134,7 +131,7 @@ describe('server/service/blockchain/core', () => {
             transactionData: {
                 amount: '1000',
                 currency: { symbol: 'USDC' }
-            } as unknown as NFStudioVerifiedRefundTransaction
+            } as unknown as RefundWithCurrency
         };
         const invalidOptions = {
             connection: {} as Connection,
@@ -142,7 +139,7 @@ describe('server/service/blockchain/core', () => {
             transactionData: {
                 amount: '2000',
                 currency: { symbol: 'INVALID' }
-            } as unknown as NFStudioVerifiedRefundTransaction
+            } as unknown as RefundWithCurrency
         };
 
         // exercise && verify
@@ -201,11 +198,11 @@ describe('server/service/blockchain/core', () => {
 
         expect(createMemoInstructionMock).toHaveBeenCalledWith({
             signer,
-            nfstudioTransactionIds: [TEST_REFUNDS[0]._id]
+            nfstudioTransactionIds: [TEST_REFUNDS[0].id]
         });
         expect(createMemoInstructionMock).toHaveBeenCalledWith({
             signer,
-            nfstudioTransactionIds: [TEST_REFUNDS[1]._id]
+            nfstudioTransactionIds: [TEST_REFUNDS[1].id]
         });
         expect(createMemoInstructionMock).toHaveBeenCalledTimes(nfstudioTransactionBatches.length);
 

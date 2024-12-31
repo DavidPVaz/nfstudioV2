@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import * as v from 'valibot';
-import { deleteInvalidRefundTransactions } from '@/server/service/mongo';
+import { deleteInvalidRefundTransactions } from '@/server/service/data';
 import { captureException } from '@sentry/nextjs';
 
 const HeadersSchema = v.object({

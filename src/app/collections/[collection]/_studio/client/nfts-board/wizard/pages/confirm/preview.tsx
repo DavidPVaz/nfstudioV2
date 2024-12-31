@@ -12,8 +12,8 @@ import { useCollectionContext } from '@/app/collections/[collection]/context';
 import { useWizardContext } from '@/app/collections/[collection]/_studio/client/nfts-board/wizard/wizard';
 
 type LoaderProps = ImageLoaderProps & {
-    maxAge?: number | string;
-    sMaxAge?: number | string;
+    maxAge?: number | string | null;
+    sMaxAge?: number | string | null;
     height: number;
     atRight: boolean;
     coverStyle: boolean;
