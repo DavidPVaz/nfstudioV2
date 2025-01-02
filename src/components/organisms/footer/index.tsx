@@ -45,7 +45,7 @@ export const Footer = () => (
                 </div>
             </div>
 
-            <span>© 2024, NFStudio</span>
+            <span>{`© ${new Date().getFullYear()}, NFStudio`}</span>
         </div>
     </footer>
 );
