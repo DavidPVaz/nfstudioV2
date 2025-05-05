@@ -38,9 +38,9 @@ describe('server/service/data/core', () => {
 
         // verify
         expect(connection).toEqual(db);
+        expect(getDbConnection()).toBe(connection);
         expect(createClientMock).toHaveBeenNthCalledWith(1, { url: 'url', authToken: 'auth' });
         expect(drizzleMock).toHaveBeenNthCalledWith(1, { schema, client });
-        expect(getDbConnection()).toBe(connection);
 
         // cleanup
         vi.unstubAllEnvs();
