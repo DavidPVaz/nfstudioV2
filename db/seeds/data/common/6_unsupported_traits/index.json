@@ -1,31 +1,47 @@
 [
-    { "collection": "Degen_Dojo", "traitType": "Background", "value": "Purple Night" },
-    { "collection": "Degen_Dojo", "traitType": "Background", "value": "Purple Nightt" },
-    { "collection": "Degen_Dojo", "traitType": "Background", "value": "Teal Daytime" },
-    { "collection": "Degen_Dojo", "traitType": "Background", "value": "Orange Afternoon" },
-    { "collection": "Degen_Dojo", "traitType": "Background", "value": "Night Forest" },
-    { "collection": "Degen_Dojo", "traitType": "Weapon", "value": "Floral Parasol" },
-
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Abc Dog Paws" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Abc Dog Treats" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Abc Space Boy Universe" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Abc Stars" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Bonk" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Catventure" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Degenft Vegas" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Gold Moon Mission" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Graveyard" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Moon Mission" },
-    { "collection": "BVDCAT", "traitType": "Background", "value": "Piet Mondrian" },
-
-    { "collection": "Froganas", "traitType": "Background", "value": "Rainbow" },
-    { "collection": "Froganas", "traitType": "Head", "value": "Space" },
-    { "collection": "Froganas", "traitType": "Body", "value": "Mutated" },
-
-    { "collection": "Lily", "traitType": "Background", "value": "None" },
-    { "collection": "Lily", "traitType": "Aura", "value": "Fire" },
-    { "collection": "Lily", "traitType": "Auro", "value": "Party" },
-
-    { "collection": "Mayhem", "traitType": "Background", "value": "Solana" },
-    { "collection": "Mayhem", "traitType": "1/1", "value": "Yes" }
+    {
+        "collection": "Degen_Dojo",
+        "traitType": "Background",
+        "value": "Purple Night"
+    },
+    {
+        "collection": "Degen_Dojo",
+        "traitType": "Background",
+        "value": "Purple Nightt"
+    },
+    {
+        "collection": "Degen_Dojo",
+        "traitType": "Background",
+        "value": "Teal Daytime"
+    },
+    {
+        "collection": "Degen_Dojo",
+        "traitType": "Background",
+        "value": "Orange Afternoon"
+    },
+    {
+        "collection": "Degen_Dojo",
+        "traitType": "Background",
+        "value": "Night Forest"
+    },
+    {
+        "collection": "Degen_Dojo",
+        "traitType": "Weapon",
+        "value": "Floral Parasol"
+    },
+    {
+        "collection": "Froganas",
+        "traitType": "Background",
+        "value": "Rainbow"
+    },
+    {
+        "collection": "Froganas",
+        "traitType": "Head",
+        "value": "Space"
+    },
+    {
+        "collection": "Froganas",
+        "traitType": "Body",
+        "value": "Mutated"
+    }
 ]

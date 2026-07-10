@@ -35,11 +35,6 @@
     },
 
     {
-        "collection": "BVDCAT",
-        "url": "72F1tIcXlZlVZ8xvzRnJTd/70871e10fad50fab059434d29a884a2e/bvd-logo1.png"
-    },
-
-    {
         "collection": "Froganas",
         "url": "3MSMOdznG45MbSZ6foZdcu/1ffe633c6bfe806f8fc1a99d5321c986/froganas-logo1.png"
     },
@@ -63,27 +58,5 @@
     {
         "collection": "Froganas",
         "url": "2yI6kmYQF4iu50aCW2EhWS/ee49991d0cdc875cdd900b1402670d06/froganas-logo6.png"
-    },
-
-    {
-        "collection": "Lily",
-        "url": "EPlOYrt2QWeuz5LuE1kYW/66d09e1fd491efa9ab7f0137d2239739/lily-logo1.png"
-    },
-    {
-        "collection": "Lily",
-        "url": "6hQBkgonfyXF9TLBI5FKxm/25271b75cf6f2357b342b0733cb4870a/lily-logo2.png"
-    },
-    {
-        "collection": "Lily",
-        "url": "1fuOlRAl24qytxNEvk4ZY9/afac1aaaf2e4e46ed93996bd47692bb2/lily-logo3.png"
-    },
-
-    {
-        "collection": "Mayhem",
-        "url": "3RT6Yl2sBmPRDtQrxuoptF/9dd4df36d2feeede93160ba3e0ab67e1/mayhem-logo1.png"
-    },
-    {
-        "collection": "Mayhem",
-        "url": "2QiaRn6QP11vKvRMkfaxm2/940457d6a90811c35a66602c213cd2df/mayhem-logo2.png"
     }
 ]
