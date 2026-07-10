@@ -17,7 +17,15 @@ export const NotificationProvider = () => {
 
     return (
         <Provider>
-            {notifications.map(({ id, title, description, action, cleanup, ...props }) => (
+            {notifications.map(({
+                id,
+                title,
+                description,
+                action,
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars -- destructured to exclude from the DOM-bound spread. consumed later by the reducer via dispatch, not here
+                cleanup,
+                ...props
+            }) => (
                 <Notification key={id} {...props}>
                     <div className="grid w-full gap-1">
                         {title && <NotificationTitle>{title}</NotificationTitle>}
