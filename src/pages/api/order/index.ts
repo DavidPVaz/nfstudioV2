@@ -10,8 +10,20 @@ import { getOptionsMinMaxConfig } from '@/lib/utils';
 
 const { width, height, dpi } = getOptionsMinMaxConfig();
 
+const TRUSTED_CONTENT_HOSTS = /^https:\/\/(uploader\.irys\.xyz|gateway\.irys\.xyz)\/[a-zA-Z0-9_-]+$/;
+
 const BodySchema = v.object({
-    src: v.pipe(v.string(), v.regex(/^https:\/\/.*(\.png|ext=png).*$/)),
+    src: v.pipe(
+        v.string(),
+        v.regex(
+            new RegExp(
+                `(${TRUSTED_CONTENT_HOSTS.source})` +
+                `|(^https:\\/\\/.*(\\.png|ext=png).*$)` +
+                `|(^(?!.*:\\/\\/).*?-logo.*\\.png$)` +
+                `|(^(?!.*:\\/\\/).*(\\/[0-9a-zA-Z]+(?:_[0-9a-zA-Z]+)*)\\.webp$)`
+            )
+        )
+    ),
     width: v.pipe(v.number(), v.minValue(width.min), v.maxValue(width.max)),
     height: v.pipe(v.number(), v.minValue(height.min), v.maxValue(height.max)),
     dpi: v.pipe(v.number(), v.minValue(dpi.min), v.maxValue(dpi.max)),

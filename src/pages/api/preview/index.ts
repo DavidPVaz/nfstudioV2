@@ -6,8 +6,20 @@ import { getOptionsMinMaxConfig } from '@/lib/utils';
 
 const { width, height } = getOptionsMinMaxConfig();
 
+const TRUSTED_CONTENT_HOSTS = /^https:\/\/(uploader\.irys\.xyz|gateway\.irys\.xyz)\/[a-zA-Z0-9_-]+$/;
+
 const QueryParamsSchema = v.object({
-    src: v.pipe(v.string(), v.regex(/^https:\/\/.*(\.png|ext=png).*$/)),
+    src: v.pipe(
+        v.string(),
+        v.regex(
+            new RegExp(
+                `(${TRUSTED_CONTENT_HOSTS.source})` +
+                `|(^https:\\/\\/.*(\\.png|ext=png).*$)` +
+                `|(^(?!.*:\\/\\/).*?-logo.*\\.png$)` +
+                `|(^(?!.*:\\/\\/).*(\\/[0-9a-zA-Z]+(?:_[0-9a-zA-Z]+)*)\\.webp$)`
+            )
+        )
+    ),
     width: v.pipe(
         v.string(),
         v.transform(Number),

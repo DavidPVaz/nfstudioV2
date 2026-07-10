@@ -8,12 +8,11 @@ import Analyzer from '@next/bundle-analyzer';
 const withBundleAnalyzer = Analyzer({ enabled: process.env.ANALYZE === 'true' });
 
 let ContentSecurityPolicy = `
-    navigate-to 'self';
     style-src 'self' 'unsafe-inline' https://embed.hel.io/assets/index-v1.css;
     img-src 'self' blob: data: https:;
     worker-src 'self';
     connect-src 'self' wss://relay.walletconnect.com wss://www.walletlink.org/rpc https:;
-    font-src 'self' https://helio-assets.s3.eu-west-1.amazonaws.com/fonts/inter-var-latin.woff2 https://helio-assets.s3.eu-west-1.amazonaws.com/fonts/Poppins-Bold.woff2 https://helio-assets.s3.eu-west-1.amazonaws.com/fonts/Poppins-Regular.woff2;
+    font-src 'self' data: https://helio-assets.s3.eu-west-1.amazonaws.com/fonts/inter-var-latin.woff2 https://helio-assets.s3.eu-west-1.amazonaws.com/fonts/Poppins-Bold.woff2 https://helio-assets.s3.eu-west-1.amazonaws.com/fonts/Poppins-Regular.woff2 https://assets.hel.io/fonts/Sohne.woff2 https://assets.hel.io/fonts/Sohne.woff;
     object-src 'none';
     media-src 'none';
     frame-src https://verify.walletconnect.com/ https://verify.walletconnect.org/;
